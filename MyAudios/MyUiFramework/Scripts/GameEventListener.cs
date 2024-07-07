@@ -1,12 +1,12 @@
-using Doozy.Engine;
-using Doozy.Engine.Events;
 using Doozy.Engine.Utils;
+using MyAudios.MyUiFramework.Events;
+using MyAudios.MyUiFramework.Settings;
 using MyAudios.MyUiFramework.Utils;
-using MyAudios.Settings;
+using MyAudios.Scripts;
 using UnityEditor;
 using UnityEngine;
 
-namespace MyAudios.Scripts
+namespace MyAudios.MyUiFramework.Scripts
 {
     /// <inheritdoc />
     /// <summary>

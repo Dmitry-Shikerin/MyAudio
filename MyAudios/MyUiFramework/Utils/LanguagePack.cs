@@ -1,4 +1,5 @@
 using System;
+using MyAudios.MyUiFramework.Enums;
 using UnityEngine;
 
 namespace MyAudios.MyUiFramework.Utils
@@ -7,18 +8,18 @@ namespace MyAudios.MyUiFramework.Utils
     public class LanguagePack : ScriptableObject
     {
         private const string CURRENT_LANGUAGE_PREFS_KEY = "Doozy.CurrentLanguage";
-        public const Doozy.Engine.Language DEFAULT_LANGUAGE = Doozy.Engine.Language.English;
+        public const Language DEFAULT_LANGUAGE = Language.English;
 
-        private static Doozy.Engine.Language s_currentLanguage = Doozy.Engine.Language.Unknown;
+        private static Language s_currentLanguage = Language.Unknown;
 
-        public static Doozy.Engine.Language CurrentLanguage
+        public static Language CurrentLanguage
         {
             get
             {
-                if (s_currentLanguage != Doozy.Engine.Language.Unknown)
+                if (s_currentLanguage != Language.Unknown)
                     return s_currentLanguage;
                 
-                CurrentLanguage = (Doozy.Engine.Language)
+                CurrentLanguage = (Language)
                     PlayerPrefs.GetInt(CURRENT_LANGUAGE_PREFS_KEY, (int) DEFAULT_LANGUAGE);
                 
                 return s_currentLanguage;
@@ -30,10 +31,10 @@ namespace MyAudios.MyUiFramework.Utils
             }
         }
 
-        private static void SaveLanguagePreference(Doozy.Engine.Language language) =>
+        private static void SaveLanguagePreference(Language language) =>
             SaveLanguagePreference(CURRENT_LANGUAGE_PREFS_KEY, language);
 
-        private static void SaveLanguagePreference(string prefsKey, Doozy.Engine.Language language)
+        private static void SaveLanguagePreference(string prefsKey, Language language)
         {
             PlayerPrefs.SetInt(prefsKey, (int) language);
             PlayerPrefs.Save();

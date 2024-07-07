@@ -1,8 +1,9 @@
 using System;
 using Doozy.Engine;
 using Doozy.Engine.Utils;
+using MyAudios.MyUiFramework.Enums;
+using MyAudios.MyUiFramework.Settings;
 using MyAudios.MyUiFramework.Utils;
-using MyAudios.Settings;
 using UnityEditor;
 using UnityEngine;
 

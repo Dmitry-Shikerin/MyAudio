@@ -1,4 +1,4 @@
-﻿namespace MyAudios.Soundy.Enums
+﻿namespace MyAudios.Soundy.SounSources.Enums
 {
     /// <summary> Describes types of available sound sources </summary>
     public enum SoundSource

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace MyAudios.Scripts
+namespace MyAudios.MyUiFramework.Scripts
 {
     /// <inheritdoc />
     /// <summary> Special class used to run Coroutines on. When using any of its public static methods, it will instantiate itself and run any number of coroutines </summary>

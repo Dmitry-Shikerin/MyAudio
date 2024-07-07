@@ -1,9 +1,9 @@
 using System;
-using Doozy.Engine.Utils;
+using MyAudios.MyUiFramework.Enums;
 using MyAudios.MyUiFramework.Utils;
 using UnityEngine;
 
-namespace MyAudios.Settings
+namespace MyAudios.MyUiFramework.Settings
 {
     [Serializable]
     public class DoozySettings : ScriptableObject
@@ -28,7 +28,7 @@ namespace MyAudios.Settings
         }
 
 
-        public Doozy.Engine.Language SelectedLanguage = LanguagePack.DEFAULT_LANGUAGE;
+        public Language SelectedLanguage = LanguagePack.DEFAULT_LANGUAGE;
 
         public bool AutoDisableUIInteractions = true;
         public bool DebugBackButton;
@@ -155,10 +155,12 @@ namespace MyAudios.Settings
       
         /// <summary> [Editor Only] Marks target object as dirty. (Only suitable for non-scene objects) </summary>
         /// <param name="saveAssets"> Write all unsaved asset changes to disk? </param>
-        public void SetDirty(bool saveAssets) { DoozyUtils.SetDirty(this, saveAssets); }
+        public void SetDirty(bool saveAssets) =>
+            DoozyUtils.SetDirty(this, saveAssets);
 
         /// <summary> Records any changes done on the object after this function </summary>
         /// <param name="undoMessage"> The title of the action to appear in the undo history (i.e. visible in the undo menu) </param>
-        public void UndoRecord(string undoMessage) { DoozyUtils.UndoRecordObject(this, undoMessage); }
+        public void UndoRecord(string undoMessage) =>
+            DoozyUtils.UndoRecordObject(this, undoMessage);
     }
 }

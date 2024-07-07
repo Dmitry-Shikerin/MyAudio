@@ -1,14 +1,8 @@
-﻿// Copyright (c) 2015 - 2020 Doozy Entertainment. All Rights Reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement
-// A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-
-using System;
+﻿using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-// ReSharper disable MemberCanBePrivate.Global
-
-namespace Doozy.Engine.Events
+namespace MyAudios.MyUiFramework.Events
 {
     /// <summary>
     ///     Event-like class that allows interacting with an Animator's parameters in a dynamic way.
@@ -74,7 +68,10 @@ namespace Doozy.Engine.Events
         #region Constructors
 
         /// <summary> Constructs a new AnimatorEvent with default values </summary>
-        public AnimatorEvent() { Reset(); }
+        public AnimatorEvent()
+        {
+            Reset();
+        }
 
         /// <summary> Constructs a new AnimatorEvent and initializes it to target a parameter name and set its bool value </summary>
         /// <param name="animator"> Target Animator </param>
@@ -196,7 +193,9 @@ namespace Doozy.Engine.Events
         /// <param name="value"> Passed value </param>
         private static void InvokeCallback(UnityAction<bool> callback, bool value)
         {
-            if (callback == null) return;
+            if (callback == null)
+                return;
+            
             callback.Invoke(value);
         }
 

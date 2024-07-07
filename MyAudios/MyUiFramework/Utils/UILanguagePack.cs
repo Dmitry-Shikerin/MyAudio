@@ -1,4 +1,5 @@
 ﻿using System;
+using MyAudios.MyUiFramework.Enums;
 using UnityEngine;
 
 namespace MyAudios.MyUiFramework.Utils
@@ -6,7 +7,7 @@ namespace MyAudios.MyUiFramework.Utils
     [Serializable]
     public class UILanguagePack : LanguagePack
     {
-        private static Doozy.Engine.Language s_loadedLanguage = Doozy.Engine.Language.Unknown;
+        private static Language s_loadedLanguage = Enums.Language.Unknown;
         private static UILanguagePack s_instance;
 
         public static UILanguagePack Instance
@@ -23,7 +24,7 @@ namespace MyAudios.MyUiFramework.Utils
             }
         }
 
-        public Doozy.Engine.Language TargetLanguage = DEFAULT_LANGUAGE;
+        public Language TargetLanguage = DEFAULT_LANGUAGE;
 
         [Header("Labels")]
         public string Action = "Action";

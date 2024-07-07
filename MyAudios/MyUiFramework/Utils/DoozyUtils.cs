@@ -1,5 +1,5 @@
-using Doozy.Engine.Extensions;
-using MyAudios.Settings;
+using MyAudios.MyUiFramework.Extensions;
+using MyAudios.MyUiFramework.Settings;
 using UnityEngine;
 using UnityEngine.UI;
 

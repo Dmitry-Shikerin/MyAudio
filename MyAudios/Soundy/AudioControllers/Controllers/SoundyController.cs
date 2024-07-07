@@ -5,7 +5,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Doozy.Engine.Utils;
-using MyAudios.Settings;
+using MyAudios.MyUiFramework.Settings;
 using UnityEngine;
 using UnityEngine.Audio;
 

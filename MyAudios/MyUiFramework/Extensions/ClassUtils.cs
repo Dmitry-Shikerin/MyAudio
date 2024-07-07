@@ -1,8 +1,6 @@
-﻿// Copyright (c) 2015 - 2020 Doozy Entertainment. All Rights Reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement
-// A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
+﻿using System;
 
-namespace Doozy.Engine.Extensions
+namespace MyAudios.MyUiFramework.Extensions
 {
     public static class ClassUtils
     {
@@ -14,22 +12,20 @@ namespace Doozy.Engine.Extensions
         public static T Clone<T>(this T source)
         {
             if(!typeof(T).IsSerializable)
-            {
-                throw new System.ArgumentException("The type must be serializable.", "source");
-            }
+                throw new ArgumentException("The type must be serializable.", "source");
 
             // Don't serialize a null object, simply return the default for that object
             if(UnityEngine.Object.ReferenceEquals(source, null))
-            {
                 return default(T);
-            }
 
             System.Runtime.Serialization.IFormatter formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
             System.IO.Stream stream = new System.IO.MemoryStream();
+            
             using(stream)
             {
                 formatter.Serialize(stream, source);
                 stream.Seek(0, System.IO.SeekOrigin.Begin);
+                
                 return (T)formatter.Deserialize(stream);
             }
         }

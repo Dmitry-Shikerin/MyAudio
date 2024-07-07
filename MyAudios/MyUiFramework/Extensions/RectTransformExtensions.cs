@@ -1,10 +1,6 @@
-// Copyright (c) 2015 - 2020 Doozy Entertainment. All Rights Reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement
-// A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-
 using UnityEngine;
 
-namespace Doozy.Engine.Extensions
+namespace MyAudios.MyUiFramework.Extensions
 {
     public static class RectTransformExtensions
     {
@@ -26,7 +22,9 @@ namespace Doozy.Engine.Extensions
         /// <param name="resetScaleToOne"> Reset LocalScale to Vector3.one </param>
         public static void FullScreen(this RectTransform target, bool resetScaleToOne)
         {
-            if(resetScaleToOne) target.ResetLocalScaleToOne();
+            if(resetScaleToOne)
+                target.ResetLocalScaleToOne();
+            
             target.AnchorMinToZero();
             target.AnchorMaxToOne();
             target.CenterPivot();
@@ -40,7 +38,9 @@ namespace Doozy.Engine.Extensions
         /// <param name="resetScaleToOne"> Reset LocalScale to Vector3.one </param>
         public static void Center(this RectTransform target, bool resetScaleToOne)
         {
-            if(resetScaleToOne) target.ResetLocalScaleToOne();
+            if(resetScaleToOne)
+                target.ResetLocalScaleToOne();
+            
             target.AnchorMinToCenter();
             target.AnchorMaxToCenter();
             target.CenterPivot();
@@ -49,38 +49,47 @@ namespace Doozy.Engine.Extensions
         
         /// <summary> Resets the target's anchoredPosition3D to Vector3.zero </summary>
         /// <param name="target"> Target RectTransform </param>
-        public static void ResetAnchoredPosition3D(this RectTransform target) { target.anchoredPosition3D = Vector3.zero;}
+        public static void ResetAnchoredPosition3D(this RectTransform target) =>
+            target.anchoredPosition3D = Vector3.zero;
 
         /// <summary> Resets the target's localPosition to Vector3.zero </summary>
         /// <param name="target"> Target RectTransform </param>
-        public static void ResetLocalPosition(this RectTransform target) {target.localPosition = Vector3.zero; }
-        
+        public static void ResetLocalPosition(this RectTransform target) =>
+            target.localPosition = Vector3.zero;
+
         /// <summary> Resets the target's localScale to Vector3.one </summary>
         /// <param name="target"> Target RectTransform </param>
-        public static void ResetLocalScaleToOne(this RectTransform target) { target.localScale = Vector3.one; }
-        
+        public static void ResetLocalScaleToOne(this RectTransform target) =>
+            target.localScale = Vector3.one;
+
         /// <summary> Resets the target's anchorMin to Vector2.zero </summary>
         /// <param name="target"> Target RectTransform </param>
-        public static void AnchorMinToZero(this RectTransform target) { target.anchorMin = Vector2.zero; }
-        
+        public static void AnchorMinToZero(this RectTransform target) =>
+            target.anchorMin = Vector2.zero;
+
         /// <summary> Sets the target's anchorMin to Vector2(0.5f, 0.5f) </summary>
         /// <param name="target"> Target RectTransform </param>
-        public static void AnchorMinToCenter(this RectTransform target) { target.anchorMin =  new Vector2(0.5f, 0.5f); }
-        
+        public static void AnchorMinToCenter(this RectTransform target) =>
+            target.anchorMin =  new Vector2(0.5f, 0.5f);
+
         /// <summary> Resets the target's anchorMax to Vector2.one </summary>
         /// <param name="target"> Target RectTransform </param>
-        public static void AnchorMaxToOne(this RectTransform target) {  target.anchorMax = Vector2.one;}
-        
+        public static void AnchorMaxToOne(this RectTransform target) =>
+            target.anchorMax = Vector2.one;
+
         /// <summary> Sets the target's anchorMax to Vector2(0.5f, 0.5f) </summary>
         /// <param name="target"> Target RectTransform </param>
-        public static void AnchorMaxToCenter(this RectTransform target) {  target.anchorMax =  new Vector2(0.5f, 0.5f);}
-        
+        public static void AnchorMaxToCenter(this RectTransform target) =>
+            target.anchorMax =  new Vector2(0.5f, 0.5f);
+
         /// <summary> Sets the target's pivot to Vector2(0.5f, 0.5f) </summary>
         /// <param name="target"> Target RectTransform </param>
-        public static void CenterPivot(this RectTransform target) { target.pivot = new Vector2(0.5f, 0.5f); }
-        
+        public static void CenterPivot(this RectTransform target) =>
+            target.pivot = new Vector2(0.5f, 0.5f);
+
         /// <summary> Resets the target's sizeDelta to Vector2.zero </summary>
         /// <param name="target"> Target RectTransform </param>
-        public static void SizeDeltaToZero(this RectTransform target) {target.sizeDelta = Vector2.zero;}
+        public static void SizeDeltaToZero(this RectTransform target) =>
+            target.sizeDelta = Vector2.zero;
     }
 }
