@@ -5,7 +5,9 @@ MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - m_ViewDataDictionary: {instanceID: 0}
-  - VisualTreeAsset: {fileID: 9197481963319205126, guid: 6645887746324964b96ff09c64622d71, type: 3}
+  - RootUxml: {fileID: 9197481963319205126, guid: 6645887746324964b96ff09c64622d71, type: 3}
+  - DataBaseFoldoutUxml: {fileID: 9197481963319205126, guid: 67abe34e6c61baa4ab548bf816506010, type: 3}
+  - DataBaseUxml: {fileID: 9197481963319205126, guid: 6a087e86e27da5741a66c43d511d2aad, type: 3}
   - Database: {fileID: 11400000, guid: ce211865843a8ae4b8383bc96541d4cb, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}

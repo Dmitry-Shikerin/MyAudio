@@ -19,7 +19,7 @@ namespace Doozy.Engine.Soundy
     ///     NamesDatabaseType of database, of SoundGroupData, used by Soundy
     /// </summary>
     [Serializable]
-//    [CreateAssetMenu(fileName = "SoundDatabase", menuName = "Soundy/Sound Database", order = 500)]
+    [CreateAssetMenu(fileName = "SoundDatabase", menuName = "Soundy/Sound Database", order = 51)]
     public class SoundDatabase : ScriptableObject
     {
         #region Static Properties
@@ -169,35 +169,35 @@ namespace Doozy.Engine.Soundy
         /// <param name="saveAssets"> Write all unsaved asset changes to disk? </param>
         public void RefreshDatabase(bool performUndo, bool saveAssets)
         {
-            DoozyUtils.DisplayProgressBar(
-                UILabels.SoundyDatabase + ": " + DatabaseName, UILabels.RefreshDatabase, 0.1f);
+            // DoozyUtils.DisplayProgressBar(
+            //     UILabels.SoundyDatabase + ": " + DatabaseName, UILabels.RefreshDatabase, 0.1f);
             
             if (performUndo)
                 UndoRecord(UILabels.RefreshDatabase);
             
             bool addedTheNoSoundSoundGroup = AddNoSound();
             RemoveUnreferencedData();
-            DoozyUtils.DisplayProgressBar(
-                UILabels.SoundyDatabase + ": " + DatabaseName, UILabels.RefreshDatabase, 0.2f);
+            // DoozyUtils.DisplayProgressBar(
+            //     UILabels.SoundyDatabase + ": " + DatabaseName, UILabels.RefreshDatabase, 0.2f);
             RemoveUnnamedEntries(false);
-            DoozyUtils.DisplayProgressBar(
-                UILabels.SoundyDatabase + ": " + DatabaseName, UILabels.RefreshDatabase, 0.3f);
+            // DoozyUtils.DisplayProgressBar(
+            //     UILabels.SoundyDatabase + ": " + DatabaseName, UILabels.RefreshDatabase, 0.3f);
             RemoveDuplicateEntries(false);
-            DoozyUtils.DisplayProgressBar(
-                UILabels.SoundyDatabase + ": " + DatabaseName, UILabels.RefreshDatabase, 0.4f);
+            // DoozyUtils.DisplayProgressBar(
+            //     UILabels.SoundyDatabase + ": " + DatabaseName, UILabels.RefreshDatabase, 0.4f);
             bool foundDataWithWrongDatabaseName = CheckAllDataForCorrectDatabaseName(false);
-            DoozyUtils.DisplayProgressBar(
-                UILabels.SoundyDatabase + ": " + DatabaseName, UILabels.RefreshDatabase, 0.5f);
+            // DoozyUtils.DisplayProgressBar(
+            //     UILabels.SoundyDatabase + ": " + DatabaseName, UILabels.RefreshDatabase, 0.5f);
             Sort(false);
-            DoozyUtils.DisplayProgressBar(
-                UILabels.SoundyDatabase + ": " + DatabaseName, UILabels.RefreshDatabase, 0.6f);
+            // DoozyUtils.DisplayProgressBar(
+            //     UILabels.SoundyDatabase + ": " + DatabaseName, UILabels.RefreshDatabase, 0.6f);
             UpdateSoundNames(false);
-            DoozyUtils.DisplayProgressBar(
-                UILabels.SoundyDatabase + ": " + DatabaseName, UILabels.RefreshDatabase, 0.7f);
+            // DoozyUtils.DisplayProgressBar(
+            //     UILabels.SoundyDatabase + ": " + DatabaseName, UILabels.RefreshDatabase, 0.7f);
             SetDirty(saveAssets && (addedTheNoSoundSoundGroup || foundDataWithWrongDatabaseName));
-            DoozyUtils.DisplayProgressBar(
-                UILabels.SoundyDatabase + ": " + DatabaseName, UILabels.RefreshDatabase, 1f);
-            DoozyUtils.ClearProgressBar();
+            // DoozyUtils.DisplayProgressBar(
+            //     UILabels.SoundyDatabase + ": " + DatabaseName, UILabels.RefreshDatabase, 1f);
+            // DoozyUtils.ClearProgressBar();
         }
 
         /// <summary> Iterates through the database to look for the data. If found, removes the entry and returns TRUE </summary>
@@ -269,7 +269,8 @@ namespace Doozy.Engine.Soundy
         /// <param name="saveAssets"> Write all unsaved asset changes to disk? </param>
         public void RemoveDuplicateEntries(bool performUndo, bool saveAssets = false)
         {
-            if (performUndo) UndoRecord(UILabels.RemovedDuplicateEntries);
+            if (performUndo)
+                UndoRecord(UILabels.RemovedDuplicateEntries);
 
             Database = Database.GroupBy(data => data.SoundName)
                                .Select(n => n.First())
@@ -283,34 +284,44 @@ namespace Doozy.Engine.Soundy
         /// <param name="saveAssets"> Write all unsaved asset changes to disk? </param>
         public void RemoveUnnamedEntries(bool performUndo, bool saveAssets = false)
         {
-            if (performUndo) UndoRecord(UILabels.RemoveEmptyEntries);
+            if (performUndo)
+                UndoRecord(UILabels.RemoveEmptyEntries);
+            
             Database = Database.Where(data => !string.IsNullOrEmpty(data.SoundName.Trim())).ToList();
             SetDirty(saveAssets);
         }
 
         /// <summary> [Editor Only] Marks target object as dirty. (Only suitable for non-scene objects) </summary>
         /// <param name="saveAssets"> Write all unsaved asset changes to disk? </param>
-        public void SetDirty(bool saveAssets) { DoozyUtils.SetDirty(this, saveAssets); }
+        public void SetDirty(bool saveAssets) =>
+            DoozyUtils.SetDirty(this, saveAssets);
 
         /// <summary> Sorts the entire database by sound name </summary>
         /// <param name="performUndo"> Record changes? </param>
         /// <param name="saveAssets"> Write all unsaved asset changes to disk? </param>
         public void Sort(bool performUndo, bool saveAssets = false)
         {
-            if (performUndo) UndoRecord(UILabels.SortDatabase);
+            if (performUndo)
+                UndoRecord(UILabels.SortDatabase);
+            
             Database = Database.OrderBy(data => data.SoundName).ToList();
 
             //remove the 'No Sound' entry wherever it is
             SoundGroupData noSoundSoundGroupData = null;
+            
             foreach (SoundGroupData audioData in Database)
             {
-                if (!audioData.SoundName.Equals(SoundyManager.NO_SOUND)) continue;
+                if (!audioData.SoundName.Equals(SoundyManager.NO_SOUND))
+                    continue;
+                
                 noSoundSoundGroupData = audioData;
                 Database.Remove(audioData);
+                
                 break;
             }
 
-            if (noSoundSoundGroupData != null) Database.Insert(0, noSoundSoundGroupData); //insert back the 'No Sound' entry at the top
+            if (noSoundSoundGroupData != null)
+                Database.Insert(0, noSoundSoundGroupData); //insert back the 'No Sound' entry at the top
 
             UpdateSoundNames(false);
             SetDirty(saveAssets);
@@ -318,22 +329,29 @@ namespace Doozy.Engine.Soundy
 
         /// <summary> Records any changes done on the object after this function </summary>
         /// <param name="undoMessage"> The title of the action to appear in the undo history (i.e. visible in the undo menu) </param>
-        public void UndoRecord(string undoMessage) { DoozyUtils.UndoRecordObject(this, undoMessage); }
+        public void UndoRecord(string undoMessage) =>
+            DoozyUtils.UndoRecordObject(this, undoMessage);
 
         /// <summary> Updates the list of sound names found in the database </summary>
         /// <param name="saveAssets"> Write all unsaved asset changes to disk? </param>
         public void UpdateSoundNames(bool saveAssets)
         {
 #if UNITY_EDITOR
-            if (SoundNames == null) SoundNames = new List<string>();
-            if (Database == null) Database = new List<SoundGroupData>();
+            if (SoundNames == null)
+                SoundNames = new List<string>();
+            
+            if (Database == null)
+                Database = new List<SoundGroupData>();
+            
             AddNoSound();
 #endif
             SoundNames.Clear();
             SoundNames.Add(SoundyManager.NO_SOUND);
             var list = new List<string>();
+            
             foreach (SoundGroupData data in Database)
                 list.Add(data.SoundName);
+            
             list.Sort();
             SoundNames.AddRange(list);
             SetDirty(saveAssets);
@@ -347,15 +365,22 @@ namespace Doozy.Engine.Soundy
         /// <param name="saveAssets"> Write all unsaved asset changes to disk? </param>
         private bool AddNoSound(bool saveAssets = false)
         {
-            if (Contains(SoundyManager.NO_SOUND)) return false;
-            if (SoundNames == null) SoundNames = new List<string>();
+            if (Contains(SoundyManager.NO_SOUND))
+                return false;
+            
+            if (SoundNames == null)
+                SoundNames = new List<string>();
+            
             SoundNames.Add(SoundyManager.NO_SOUND);
-            var data = CreateInstance<SoundGroupData>();
+            SoundGroupData data = CreateInstance<SoundGroupData>();
             data.DatabaseName = DatabaseName;
             data.SoundName = SoundyManager.NO_SOUND;
             data.name = data.SoundName;
             data.SetDirty(false);
-            if (Database == null) Database = new List<SoundGroupData>();
+            
+            if (Database == null)
+                Database = new List<SoundGroupData>();
+            
             Database.Add(data);
             AddObjectToAsset(data);
             SetDirty(saveAssets);
@@ -365,23 +390,30 @@ namespace Doozy.Engine.Soundy
 
         /// <summary>[Editor Only] Adds an object to this asset </summary>
         /// <param name="objectToAdd"> Object that will get added under the asset</param>
-        private void AddObjectToAsset(Object objectToAdd) { DoozyUtils.AddObjectToAsset(objectToAdd, this); }
+        private void AddObjectToAsset(Object objectToAdd) =>
+            DoozyUtils.AddObjectToAsset(objectToAdd, this);
 
         /// <summary> Checks that all the sound group data entries have the correct database name. Returns TRUE if an inconsistency was found </summary>
         /// <param name="saveAssets"> Write all unsaved asset changes to disk? </param>
         private bool CheckAllDataForCorrectDatabaseName(bool saveAssets)
         {
             bool foundSoundGroupWithWrongDatabaseName = false;
+            
             foreach (SoundGroupData data in Database)
             {
-                if (data == null) continue;
-                if (data.DatabaseName.Equals(DatabaseName)) continue;
+                if (data == null)
+                    continue;
+                
+                if (data.DatabaseName.Equals(DatabaseName))
+                    continue;
+                
                 foundSoundGroupWithWrongDatabaseName = true;
                 data.DatabaseName = DatabaseName;
                 data.SetDirty(false);
             }
 
             SetDirty(saveAssets);
+            
             return foundSoundGroupWithWrongDatabaseName;
         }
 
@@ -391,18 +423,29 @@ namespace Doozy.Engine.Soundy
         {
 #if UNITY_EDITOR
             Object[] objects = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(this)); //load all of the data assets
-            if (objects == null) return;                                                            //make sure they are not null
+            
+            if (objects == null)
+                return;      
+            //make sure they are not null
             List<SoundGroupData> foundAudioData = objects.OfType<SoundGroupData>().ToList();        //create a temp list of all the found sub assets data
-            if (Database == null) Database = new List<SoundGroupData>();                            //sanity check
-            bool save = false;                                                                      //mark true if any sub asset was destroyed
+            
+            if (Database == null)
+                Database = new List<SoundGroupData>();                            //sanity check
+            
+            bool save = false; 
+            //mark true if any sub asset was destroyed
             foreach (SoundGroupData data in foundAudioData)
             {
-                if (Database.Contains(data)) continue; //reference was FOUND in the list -> continue
+                if (Database.Contains(data))
+                    continue; //reference was FOUND in the list -> continue
+                
                 DestroyImmediate(data, true);          //reference was NOT FOUND in the list -> destroy the asset
                 save = true;                           //mark true to set as dirty and save
             }
 
-            if (!save) return;    //if no sub asset was destroyed -> stop here
+            if (!save)
+                return;    //if no sub asset was destroyed -> stop here
+            
             SetDirty(saveAssets); //save database
 #endif
         }

@@ -13,7 +13,7 @@ namespace MyAudios.MyUiFramework.Utils
 
         private const string DATA = "Data";
         private const string DATABASE = "Database";
-        private const string DOOZY = "Doozy";
+        private const string MyAudios = "MyAudios";
         private const string EDITOR = "Editor";
         private const string ENGINE = "Engine";
         private const string FONTS = "Fonts";
@@ -144,17 +144,19 @@ namespace MyAudios.MyUiFramework.Utils
             get
             {
 #if UNITY_EDITOR
-                if (!string.IsNullOrEmpty(s_basePath)) return s_basePath;
-                var obj = CreateInstance<DoozyPath>();
+                if (!string.IsNullOrEmpty(s_basePath))
+                    return s_basePath;
+                
+                DoozyPath obj = CreateInstance<DoozyPath>();
                 UnityEditor.MonoScript s = UnityEditor.MonoScript.FromScriptableObject(obj);
                 string assetPath = UnityEditor.AssetDatabase.GetAssetPath(s);
                 DestroyImmediate(obj);
                 var fileInfo = new FileInfo(assetPath);
-                UnityEngine.Debug.Assert(fileInfo.Directory != null, "fileInfo.Directory != null");
-                UnityEngine.Debug.Assert(fileInfo.Directory.Parent != null, "fileInfo.Directory.Parent != null");
+                Debug.Assert(fileInfo.Directory != null, "fileInfo.Directory != null");
+                Debug.Assert(fileInfo.Directory.Parent != null, "fileInfo.Directory.Parent != null");
                 DirectoryInfo baseDir = fileInfo.Directory.Parent.Parent;
-                UnityEngine.Debug.Assert(baseDir != null, "baseDir != null");
-                Assert.AreEqual(DOOZY, baseDir.Name);
+                Debug.Assert(baseDir != null, "baseDir != null");
+                Assert.AreEqual(MyAudios, baseDir.Name);
                 string baseDirPath = ReplaceBackslashesWithForwardSlashes(baseDir.ToString());
                 int index = baseDirPath.LastIndexOf(ASSETS_PATH, StringComparison.Ordinal);
                 Assert.IsTrue(index >= 0);

@@ -119,7 +119,8 @@ namespace Doozy.Engine.Soundy
             if (string.IsNullOrEmpty(databaseName))
             {
 #if UNITY_EDITOR
-                if (showDialog) EditorUtility.DisplayDialog(UILabels.NewSoundDatabase, UILabels.EnterDatabaseName, UILabels.Ok);
+                if (showDialog)
+                    EditorUtility.DisplayDialog(UILabels.NewSoundDatabase, UILabels.EnterDatabaseName, UILabels.Ok);
 #endif
                 return false;
             }
@@ -127,13 +128,15 @@ namespace Doozy.Engine.Soundy
             if (Contains(databaseName))
             {
 #if UNITY_EDITOR
-                if (showDialog) EditorUtility.DisplayDialog(UILabels.NewSoundDatabase, UILabels.DatabaseAlreadyExists, UILabels.Ok);
+                if (showDialog)
+                    EditorUtility.DisplayDialog(UILabels.NewSoundDatabase, UILabels.DatabaseAlreadyExists, UILabels.Ok);
 #endif
                 return false;
             }
 
 #if UNITY_EDITOR
-            SoundDatabase soundDatabase = AssetUtils.CreateAsset<SoundDatabase>(relativePath, SoundyManager.GetSoundDatabaseFilename(databaseName.Replace(" ", string.Empty)));
+            SoundDatabase soundDatabase = AssetUtils.CreateAsset<SoundDatabase>(
+                relativePath, $"SoundDataBase_{databaseName}");
 
 #else
             SoundDatabase soundDatabase = ScriptableObject.CreateInstance<SoundDatabase>();
@@ -142,6 +145,7 @@ namespace Doozy.Engine.Soundy
             soundDatabase.Initialize(false);
             AddSoundDatabase(soundDatabase, false);
             SetDirty(saveAssets);
+            
             return true;
         }
 
@@ -152,13 +156,13 @@ namespace Doozy.Engine.Soundy
             if (database == null) return false;
 
 #if UNITY_EDITOR
-            if (!EditorUtility.DisplayDialog(UILabels.DeleteDatabase + " '" + database.DatabaseName + "'",
-                                             UILabels.AreYouSureYouWantToDeleteDatabase +
-                                             "\n\n" +
-                                             UILabels.OperationCannotBeUndone,
-                                             UILabels.Yes,
-                                             UILabels.No))
-                return false;
+            // if (!EditorUtility.DisplayDialog(UILabels.DeleteDatabase + " '" + database.DatabaseName + "'",
+            //                                  UILabels.AreYouSureYouWantToDeleteDatabase +
+            //                                  "\n\n" +
+            //                                  UILabels.OperationCannotBeUndone,
+            //                                  UILabels.Yes,
+            //                                  UILabels.No))
+            //     return false;
 
             SoundDatabases.Remove(database);
             AssetDatabase.MoveAssetToTrash(AssetDatabase.GetAssetPath(database));
