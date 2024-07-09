@@ -333,6 +333,9 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors
                 
                 foreach (AudioData audioData in soundGroup.Sounds)
                 {
+                    if (audioData.AudioClip == null)
+                        audioData.AudioClip = PlugAudio;
+                    
                     VisualElement audioDataVisualElement = DesignUtils.row;
                     Label audioDataLabel = new Label();
                     audioDataLabel.SetStyleMinWidth(150);
@@ -358,7 +361,9 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors
                         audioDataLabel.SetText("_");
 
                     FluidRangeSlider rangeSlider = new FluidRangeSlider();
-                    rangeSlider.slider.highValue = audioData.AudioClip.length;
+                    rangeSlider.slider.highValue = audioData.AudioClip != null 
+                        ? audioData.AudioClip.length 
+                        : PlugAudio.length;
                     rangeSlider
                         .RegisterCallback<ChangeEvent<float>>(value =>
                         {
@@ -432,6 +437,22 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors
                 // renameSoundGroupButton.OnClick += () => soundGroup.
 
                 VisualElement addSoundVisualElement = DesignUtils.row;
+                Label addSoundGroupLabel = new Label();
+                addSoundGroupLabel.SetText("CreateSoundGroup");
+                TextField addSoundGroupTextField = new TextField();
+                addSoundGroupTextField.SetStyleMinWidth(170);
+                FluidButton addSoundGroupButton = new FluidButton();
+                addSoundGroupButton
+                    .SetButtonStyle(ButtonStyle.Contained)
+                    .SetElementSize(ElementSize.Normal)
+                    .SetIcon(EditorSpriteSheets.EditorUI.Icons.Save);
+                createSoundGroupButton.OnClick += () =>
+                    database.Add(addSoundGroupTextField.value, false, true);
+
+                addSoundVisualElement
+                    .AddChild(addSoundGroupLabel)
+                    .AddChild(addSoundGroupTextField)
+                    .AddChild(addSoundGroupButton);
                 createSoundGroupVisualElement
                     .AddChild(addSoundLabel)
                     .AddChild(addSoundButton);
