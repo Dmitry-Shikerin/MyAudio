@@ -68,7 +68,10 @@ namespace Doozy.Runtime.Reactor.Ticker
             m_Targets.RemoveNulls();
             safeTargets.Clear();
             safeTargets.AddRange(m_Targets);
-            for (int i = 0; i < safeTargets.Count; i++) safeTargets[i].Tick();
+            
+            for (int i = 0; i < safeTargets.Count; i++)
+                safeTargets[i].Tick();
+            
             OnTick?.Invoke();
         }
     }

@@ -1,12 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using Doozy.Editor.EditorUI;
 using Doozy.Editor.EditorUI.Components;
 using Doozy.Editor.EditorUI.Utils;
+using Doozy.Editor.Reactor.Ticker;
 using Doozy.Editor.UIElements;
 using Doozy.Engine.Soundy;
 using Doozy.Runtime.UIElements.Extensions;
+using MyAudios.MyUiFramework.Scripts;
 using MyAudios.Soundy.DataBases.Domain.Data;
 using MyAudios.Soundy.Managers;
+using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -354,13 +358,24 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors
                         audioDataLabel.SetText("_");
 
                     FluidRangeSlider rangeSlider = new FluidRangeSlider();
-                    FluidProgressBar progressBar = 
-                        FluidProgressBar
-                            .Get()
-                            .SetStyleMinWidth(250);
-                    progressBar.reaction.SetFrom(0);
-                    // progressBar.reaction.SetProgressAt(audioData.AudioClip.length);
-                    progressBar.reaction.SetProgressAtOne();
+                    rangeSlider.slider.highValue = audioData.AudioClip.length;
+                    rangeSlider
+                        .RegisterCallback<ChangeEvent<float>>(value =>
+                        {
+                            // Debug.Log("Value changed");
+                            // FindObjectOfType<AudioSource>().time = rangeSlider.slider.value;
+                        });
+                    rangeSlider
+                        .slider
+                        .SetStyleBorderColor(EditorColors.EditorUI.Orange)
+                        .SetStyleColor(EditorColors.EditorUI.Orange);
+                    FluidRangeSlider rangeSlider2 = new FluidRangeSlider();
+                    rangeSlider2.slider.highValue = audioData.AudioClip.length;
+                    rangeSlider2
+                        .RegisterCallback<ChangeEvent<float>>(value =>
+                        {
+                            FindObjectOfType<AudioSource>().time = value.newValue;
+                        });
                     
                     FluidButton playSoundButton =
                         FluidButton
@@ -373,8 +388,11 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors
                                 soundGroup.PlaySoundPreview(
                                     FindObjectOfType<AudioSource>(),
                                     null, audioData.AudioClip);
-                                progressBar.reaction.SetTo(audioData.AudioClip.length);
-                                progressBar.Play();
+
+                                EditorApplication.update -= () 
+                                    => rangeSlider.slider.value = FindObjectOfType<AudioSource>().time;
+                                EditorApplication.update += () 
+                                    => rangeSlider.slider.value = FindObjectOfType<AudioSource>().time;
                             });
 
 
@@ -386,8 +404,8 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors
                             .SetIcon(EditorSpriteSheets.EditorUI.Icons.Stop)
                             .SetOnClick(() =>
                             {
-                                soundGroup.StopSoundPreview(FindObjectOfType<AudioSource>());
-                                progressBar.Stop();
+                                soundGroup.StopSoundPreview(
+                                    FindObjectOfType<AudioSource>());
                             });
 
 
@@ -399,8 +417,8 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors
                         .AddChild(stopSoundButton);
                     audioDataFoldout
                         .AddContent(audioDataVisualElement)
-                        .AddContent(progressBar)
-                        .AddContent(rangeSlider);
+                        .AddContent(rangeSlider)
+                        .AddContent(rangeSlider2);
                 }
 
 
@@ -424,6 +442,22 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors
                     ;
             }
         }
+        
+        private IEnumerator PlaySound(AudioClip audioClip, AudioSource audioSource, FluidRangeSlider rangeSlider)
+        {
+            while (audioSource.time + 0.1f < audioClip.length)
+            {
+                rangeSlider.slider.value = audioSource.time;
+                
+                Debug.Log(rangeSlider.slider.value);
+                Debug.Log(audioSource.time);
+                Debug.Log(audioClip.length);
+                
+                yield return null;
+            }
+            
+            Debug.Log($"end");
+        }   
 
         private AudioSource GetAudioSource()
         {

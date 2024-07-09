@@ -19,6 +19,7 @@ namespace Doozy.Editor.Reactor.Ticker
 
         [ClearOnReload]
         private static TickService s_service;
+        
         public static TickService service
         {
             get

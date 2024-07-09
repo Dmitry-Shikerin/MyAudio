@@ -180,7 +180,9 @@ namespace Doozy.Runtime.Reactor.Internal
         /// <summary> Reset the reaction </summary>
         public virtual void Reset()
         {
-            if (isActive) Stop(true);
+            if (isActive)
+                Stop(true);
+            
             ClearIds();
             this.ClearCallbacks();
             Settings ??= new ReactionSettings();
@@ -450,7 +452,9 @@ namespace Doozy.Runtime.Reactor.Internal
         {
             targetProgress = GetAdjustedProgress(targetProgress, settings.playMode);
 
-            if (isActive) Stop(true);
+            if (isActive) 
+                Stop(true);
+            
             ResetElapsedValues();
             RefreshSettings();
 
@@ -586,20 +590,29 @@ namespace Doozy.Runtime.Reactor.Internal
         /// <summary> Returns TRUE if the reaction is paused and updates the lastUpdateTime for the heartbeat </summary>
         private bool IsPaused()
         {
-            if (!isPaused) return false;
+            if (!isPaused)
+                return false;
+            
             heartbeat.lastUpdateTime = heartbeat.timeSinceStartup;
+            
             return true;
         }
 
         /// <summary> Returns TRUE if the reaction is in start delay and updates the start delay related variables </summary>
         private bool InStartDelay()
         {
-            if (!inStartDelay) return false;
+            if (!inStartDelay)
+                return false;
+            
             elapsedStartDelay += heartbeat.deltaTime;
             elapsedStartDelay = Clamp((float)elapsedStartDelay, 0, startDelay);
-            if (startDelay - elapsedStartDelay > 0) return true;
+            
+            if (startDelay - elapsedStartDelay > 0)
+                return true;
+            
             state = ReactionState.Playing;
             elapsedStartDelay = 0f;
+            
             return false;
         }
 
@@ -624,11 +637,19 @@ namespace Doozy.Runtime.Reactor.Internal
         /// <param name="recycle"> If TRUE, it will try recycle this reaction, by returning it to the pool </param>
         public virtual void Stop(bool silent = false, bool recycle = false)
         {
-            if (heartbeat.isActive) heartbeat.UnregisterFromTickService();
-            if (isPooled) return;
-            if (!silent) OnStopCallback?.Invoke();
+            if (heartbeat.isActive)
+                heartbeat.UnregisterFromTickService();
+            
+            if (isPooled)
+                return;
+            
+            if (!silent)
+                OnStopCallback?.Invoke();
+            
             state = ReactionState.Idle;
-            if (recycle) Recycle();
+            
+            if (recycle)
+                Recycle();
         }
 
         /// <summary> Finish the reaction by stopping it, calling callbacks (stop and then finish) and then (if reusable) returns it to the pool </summary>
