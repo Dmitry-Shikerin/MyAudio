@@ -1,9 +1,14 @@
-﻿using Doozy.Editor.EditorUI;
+﻿using System.Collections.Generic;
+using Doozy.Editor.EditorUI;
 using Doozy.Editor.EditorUI.Components;
 using Doozy.Editor.EditorUI.Utils;
+using Doozy.Editor.UIElements;
 using Doozy.Engine.Soundy;
 using Doozy.Runtime.UIElements.Extensions;
+using MyAudios.Soundy.DataBases.Domain.Data;
+using MyAudios.Soundy.Managers;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -13,6 +18,7 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors
     public class SoundyDataBaseEditor : UnityEditor.Editor
     {
         public SoundyDatabase Target;
+        public AudioClip PlugAudio;
 
         private SerializedProperty DatabaseNames { get; set; }
         private SerializedProperty SoundDatabases { get; set; }
@@ -24,6 +30,10 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors
         private FluidListView SoundDatabasesField { get; set; }
 
         private FluidButton DatabasesButton { get; set; }
+
+        private List<FluidFoldout> Foldouts { get; set; }
+
+        private List<GameObject> _audioSources = new List<GameObject>();
 
         public override VisualElement CreateInspectorGUI()
         {
@@ -57,10 +67,10 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors
 
         private void Compose()
         {
-            FluidFoldout dataBaseFoldout =
-                new FluidFoldout()
-                    .AddContent(SoundDatabasesField);
-
+            // FluidFoldout dataBaseFoldout =
+            //     new FluidFoldout()
+            //         .AddContent(SoundDatabasesField);
+            //
             FluidFoldout namesFoldout =
                 new FluidFoldout()
                     .AddContent(DatabaseNamesField);
@@ -192,13 +202,239 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors
                 .AddSpaceBlock(2)
                 .AddChild(namesFoldout)
                 .AddSpaceBlock()
-                .AddChild(dataBaseFoldout)
+                // .AddChild(dataBaseFoldout)
                 .AddSpaceBlock(2)
                 .AddChild(buttonsRow)
                 .AddChild(secondButtonsRow)
                 .AddChild(thirdButtonsRow)
                 .AddChild(newSoundDataBaseFoldout)
                 ;
+
+            Foldouts = new List<FluidFoldout>();
+
+            AddSoundDataBases();
+        }
+
+        private void AddSoundDataBases()
+        {
+            foreach (var database in Target.SoundDatabases)
+            {
+                FluidFoldout foldout = new FluidFoldout();
+                VisualElement row = DesignUtils.row;
+                Label label = new Label();
+                label
+                    .SetStyleMinWidth(20)
+                    .SetText("Renamed");
+                TextField textField = new TextField();
+                textField
+                    .SetStyleMinWidth(170);
+
+                FluidButton renameButton = new FluidButton();
+                renameButton
+                    .SetButtonStyle(ButtonStyle.Contained)
+                    .SetElementSize(ElementSize.Normal)
+                    .SetIcon(EditorSpriteSheets.EditorUI.Icons.Save);
+                // renameButton.OnClick -= () => Target.DeleteDatabase(database);
+                // renameButton.OnClick += () => Target.DeleteDatabase(database);
+
+                FluidButton deleteButton = new FluidButton();
+                deleteButton
+                    .SetButtonStyle(ButtonStyle.Contained)
+                    .SetElementSize(ElementSize.Normal)
+                    .SetIcon(EditorSpriteSheets.EditorUI.Icons.Close);
+                deleteButton.OnClick -= () => Target.DeleteDatabase(database);
+                deleteButton.OnClick += () => Target.DeleteDatabase(database);
+                row
+                    .AddChild(label)
+                    .AddChild(textField)
+                    .AddChild(renameButton)
+                    .AddChild(deleteButton);
+
+                Label createSoundGroupLabel = new Label();
+                createSoundGroupLabel.SetText("CreateSoundGroup");
+                TextField createSoundGroupTextField = new TextField();
+                createSoundGroupTextField.SetStyleMinWidth(170);
+                FluidButton createSoundGroupButton = new FluidButton();
+                createSoundGroupButton
+                    .SetButtonStyle(ButtonStyle.Contained)
+                    .SetElementSize(ElementSize.Normal)
+                    .SetIcon(EditorSpriteSheets.EditorUI.Icons.Save);
+                createSoundGroupButton.OnClick += () =>
+                    database.Add(createSoundGroupTextField.value, false, true);
+
+                VisualElement createSoundGroupVisualElement = DesignUtils.row;
+                createSoundGroupVisualElement
+                    .AddChild(createSoundGroupLabel)
+                    .AddChild(createSoundGroupTextField)
+                    .AddChild(createSoundGroupButton);
+
+                foldout.SetLabelText(database.DatabaseName);
+                foldout
+                    .AddContent(row)
+                    .AddContent(createSoundGroupVisualElement);
+
+                //Crete sound group data
+                AddSoundGroupData(
+                    database,
+                    createSoundGroupVisualElement,
+                    createSoundGroupLabel,
+                    createSoundGroupButton,
+                    foldout);
+
+                Foldouts.Add(foldout);
+                Root.AddChild(foldout);
+            }
+        }
+
+        private void AddSoundGroupData(
+            SoundDatabase database,
+            VisualElement createSoundGroupVisualElement,
+            Label createSoundGroupLabel,
+            FluidButton createSoundGroupButton,
+            FluidFoldout foldout)
+        {
+            foreach (SoundGroupData soundGroup in database.Database)
+            {
+                Label soundGroupLabel = new Label();
+                soundGroupLabel
+                    .SetText(soundGroup.SoundName)
+                    .SetStyleMinWidth(230);
+                FluidButton renameSoundGroupButton = new FluidButton();
+                renameSoundGroupButton
+                    .SetButtonStyle(ButtonStyle.Contained)
+                    .SetElementSize(ElementSize.Normal)
+                    .SetIcon(EditorSpriteSheets.EditorUI.Icons.Save);
+                // renameSoundGroupButton.OnClick += () => soundGroup.
+
+                FluidButton deleteSoundGroupButton = new FluidButton();
+                deleteSoundGroupButton
+                    .SetButtonStyle(ButtonStyle.Contained)
+                    .SetElementSize(ElementSize.Normal)
+                    .SetIcon(EditorSpriteSheets.EditorUI.Icons.Close);
+                deleteSoundGroupButton.OnClick += () =>
+                {
+                    database.Remove(soundGroup);
+                    database.RefreshDatabase(false, true);
+                };
+
+                VisualElement visualElement = DesignUtils.row;
+                visualElement
+                    .AddChild(soundGroupLabel)
+                    .AddChild(renameSoundGroupButton)
+                    .AddChild(deleteSoundGroupButton);
+                FluidFoldout audioDataFoldout = new FluidFoldout();
+                audioDataFoldout
+                    .SetLabelText(soundGroup.SoundName)
+                    .AddContent(visualElement);
+                
+                foreach (AudioData audioData in soundGroup.Sounds)
+                {
+                    VisualElement audioDataVisualElement = DesignUtils.row;
+                    Label audioDataLabel = new Label();
+                    audioDataLabel.SetStyleMinWidth(150);
+                    ObjectField propertyField = new ObjectField();
+                    
+                    SerializedObject audioDatSerializedObject =
+                        new SerializedObject(PlugAudio);
+                    
+                    propertyField.RegisterCallback<ChangeEvent<Object>>(
+                        (evt) =>
+                            audioData.AudioClip = evt.newValue != null
+                                ? evt.newValue as AudioClip
+                                : null);
+
+                    propertyField
+                        .SetObjectType(typeof(AudioClip))
+                        .BindProperty(audioDatSerializedObject);
+                    propertyField.SetValueWithoutNotify(audioData.AudioClip);
+
+                    if (audioData.AudioClip)
+                        audioDataLabel.SetText(audioData.AudioClip.name);
+                    else
+                        audioDataLabel.SetText("_");
+
+                    FluidRangeSlider rangeSlider = new FluidRangeSlider();
+                    FluidProgressBar progressBar = 
+                        FluidProgressBar
+                            .Get()
+                            .SetStyleMinWidth(250);
+                    progressBar.reaction.SetFrom(0);
+                    // progressBar.reaction.SetProgressAt(audioData.AudioClip.length);
+                    progressBar.reaction.SetProgressAtOne();
+                    
+                    FluidButton playSoundButton =
+                        FluidButton
+                            .Get()
+                            .SetButtonStyle(ButtonStyle.Contained)
+                            .SetElementSize(ElementSize.Normal)
+                            .SetIcon(EditorSpriteSheets.EditorUI.Icons.Play)
+                            .SetOnClick(() =>
+                            {
+                                soundGroup.PlaySoundPreview(
+                                    FindObjectOfType<AudioSource>(),
+                                    null, audioData.AudioClip);
+                                progressBar.reaction.SetTo(audioData.AudioClip.length);
+                                progressBar.Play();
+                            });
+
+
+                    FluidButton stopSoundButton =
+                        FluidButton
+                            .Get()
+                            .SetButtonStyle(ButtonStyle.Contained)
+                            .SetElementSize(ElementSize.Normal)
+                            .SetIcon(EditorSpriteSheets.EditorUI.Icons.Stop)
+                            .SetOnClick(() =>
+                            {
+                                soundGroup.StopSoundPreview(FindObjectOfType<AudioSource>());
+                                progressBar.Stop();
+                            });
+
+
+                    audioDataVisualElement
+                        .AddChild(audioDataLabel)
+                        .SetStyleMinHeight(20)
+                        .AddChild(propertyField)
+                        .AddChild(playSoundButton)
+                        .AddChild(stopSoundButton);
+                    audioDataFoldout
+                        .AddContent(audioDataVisualElement)
+                        .AddContent(progressBar)
+                        .AddContent(rangeSlider);
+                }
+
+
+                Label addSoundLabel = new Label();
+                createSoundGroupLabel.SetText(soundGroup.SoundName);
+                FluidButton addSoundButton = new FluidButton();
+                createSoundGroupButton
+                    .SetButtonStyle(ButtonStyle.Contained)
+                    .SetElementSize(ElementSize.Normal)
+                    .SetIcon(EditorSpriteSheets.EditorUI.Icons.Save);
+                // renameSoundGroupButton.OnClick += () => soundGroup.
+
+                VisualElement addSoundVisualElement = DesignUtils.row;
+                createSoundGroupVisualElement
+                    .AddChild(addSoundLabel)
+                    .AddChild(addSoundButton);
+                foldout
+                    .AddSpaceBlock(5)
+                    .AddContent(addSoundVisualElement)
+                    .AddContent(audioDataFoldout)
+                    ;
+            }
+        }
+
+        private AudioSource GetAudioSource()
+        {
+            foreach (GameObject audioSourceGameObject in _audioSources)
+                DestroyImmediate(audioSourceGameObject);
+            
+            GameObject gameObject = new GameObject();
+            AudioSource audioSource = gameObject.AddComponent<AudioSource>();
+            _audioSources.Add(gameObject);
+            
+            return audioSource;
         }
 
         private void InitializeNames()
@@ -209,25 +445,8 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors
 
         private void InitializeDataBases()
         {
-            SoundDatabasesField = DesignUtils.NewObjectListView(
-                SoundDatabases, "Sound Databases", "", typeof(SoundDatabase));
-            SoundDatabasesField.listView.bindItem += (item, i) =>
-            {
-                ((ObjectFluidListViewItem)item).OnRemoveButtonClick += 
-                    (property) => DeleteDatabase(((ObjectFluidListViewItem)item).itemIndex);
-            };
-            SoundDatabasesField.listView.unbindItem -= (item, i) =>
-            {
-                ((ObjectFluidListViewItem)item).OnRemoveButtonClick +=
-                    (property) => DeleteDatabase(((ObjectFluidListViewItem)item).itemIndex);
-            };
-        }
-
-        private void DeleteDatabase(int index)
-        {
-            Debug.Log(index);
-            Debug.Log(Target.SoundDatabases.Count);
-            Target.DeleteDatabase(Target.SoundDatabases[index]);
+            // SoundDatabasesField = DesignUtils.NewObjectListView(
+            //     SoundDatabases, "Sound Databases", "", typeof(SoundDatabase));
         }
 
         private void InitializeHeader()

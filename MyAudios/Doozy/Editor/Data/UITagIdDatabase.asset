@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: UITagIdDatabase
   m_EditorClassIdentifier: 
   Database:
-    Items: []
+    Items:
+    - Category: None
+      Name: None

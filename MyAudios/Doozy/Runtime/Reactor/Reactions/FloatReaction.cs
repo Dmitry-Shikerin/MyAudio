@@ -48,8 +48,13 @@ namespace Doozy.Runtime.Reactor.Reactions
         public override Reaction SetTo(float value, bool relative = false)
         {
             ToValue = value;
-            if (relative) ToValue += CurrentValue;
-            if (isActive) ComputePlayMode();
+            
+            if (relative)
+                ToValue += CurrentValue;
+            
+            if (isActive) 
+                ComputePlayMode();
+            
             return this;
         }
 

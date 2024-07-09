@@ -13,10 +13,8 @@ MonoBehaviour:
   m_Name: _SoundyDatabase
   m_EditorClassIdentifier: 
   DatabaseNames:
-  - Example Alerts
-  - Example Clicks
-  - Example Music
+  - ascascasc
+  - scacasc
   SoundDatabases:
-  - {fileID: 11400000, guid: 8eba2c230cbe4f84e8ba00ed7ba55028, type: 2}
-  - {fileID: 11400000, guid: 6752d2ca1725cf840b858b622a96bb77, type: 2}
-  - {fileID: 11400000, guid: d6efd9700ef4c504f997ee462880e61e, type: 2}
+  - {fileID: 11400000, guid: 3b3152dc22aed9940803ab1483e08935, type: 2}
+  - {fileID: 11400000, guid: a26934cc03252f54f873d1ec0c3dc475, type: 2}

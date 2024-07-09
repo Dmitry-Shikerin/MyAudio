@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Doozy.Engine.Utils;
 using MyAudios.MyUiFramework.Utils;
 using MyAudios.Soundy.Managers;
 using UnityEngine;
@@ -18,6 +17,7 @@ namespace Doozy.Engine.Soundy
     ///     NamesDatabaseType of database that contains references to SoundDatabase assets, used by Soundy to keep track and retrieve all the registered sounds
     /// </summary>
     [Serializable]
+    [CreateAssetMenu(fileName = "SoundyDatabase", menuName = "Soundy/SoundyDatabase", order = 51)]
     public class SoundyDatabase : ScriptableObject
     {
         #region Static Properties
@@ -51,6 +51,7 @@ namespace Doozy.Engine.Soundy
                 SoundDatabases = new List<SoundDatabase>();
             
             SoundDatabases.Add(database);
+            // SoundDatabasesReferences.Add(database);
             UpdateDatabaseNames(false);
             SetDirty(saveAssets);
             
@@ -165,11 +166,13 @@ namespace Doozy.Engine.Soundy
             //     return false;
 
             SoundDatabases.Remove(database);
+            // SoundDatabasesReferences.Remove(database);
             AssetDatabase.MoveAssetToTrash(AssetDatabase.GetAssetPath(database));
             UpdateDatabaseNames(true);
 #endif
             return true;
-        }
+        }    
+        
 
         /// <summary>
         ///     Returns a SoundGroupData reference from the database with the given database name and that has the given sound name.
@@ -183,6 +186,15 @@ namespace Doozy.Engine.Soundy
         /// <param name="databaseName"> The database name to search for </param>
         public SoundDatabase GetSoundDatabase(string databaseName)
         {
+            // if (SoundDatabases == null)
+            // {
+            //     SoundDatabases = new List<SoundDatabase>();
+            //     return null;
+            // }
+            //
+            // foreach (SoundDatabase database in SoundDatabases)
+            //     if (database.DatabaseName.Equals(databaseName))
+            //         return database;            
             if (SoundDatabases == null)
             {
                 SoundDatabases = new List<SoundDatabase>();
@@ -201,11 +213,14 @@ namespace Doozy.Engine.Soundy
         {
             RemoveNullDatabases();
 
-            if (Contains(SoundyManager.GENERAL)) return;
+            if (Contains(SoundyManager.GENERAL))
+                return;
 
 #if UNITY_EDITOR
             SearchForUnregisteredDatabases(false);
-            if (Contains(SoundyManager.GENERAL)) return;
+            
+            if (Contains(SoundyManager.GENERAL))
+                return;
 
             SoundDatabase soundDatabase = AssetUtils.CreateAsset<SoundDatabase>(DoozyPath.GetDataPath(DoozyPath.ComponentName.Soundy), SoundyManager.GetSoundDatabaseFilename(SoundyManager.GENERAL));
 #else
