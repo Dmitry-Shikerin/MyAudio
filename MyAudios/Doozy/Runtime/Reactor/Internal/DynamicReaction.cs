@@ -1,8 +1,4 @@
-﻿// Copyright (c) 2015 - 2023 Doozy Entertainment. All Rights Reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement
-// A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-
-using System;
+﻿using System;
 using UnityEngine;
 
 namespace Doozy.Runtime.Reactor.Internal
@@ -77,7 +73,9 @@ namespace Doozy.Runtime.Reactor.Internal
         /// <param name="value"> Current value</param>
         public virtual Reaction SetValue(T2 value)
         {
-            if (isActive) Stop();
+            if (isActive)
+                Stop();
+            
             CurrentValue = value;
             // SetProgressAt(GetProgressAtValue(value));
             return this;
@@ -90,7 +88,9 @@ namespace Doozy.Runtime.Reactor.Internal
         /// <param name="relative"> If TRUE, ToValue = CurrentValue + value </param>
         public virtual Reaction PlayToValue(T2 value, bool relative = false)
         {
-            if (isActive) Stop();
+            if (isActive)
+                Stop();
+            
             SetFrom(CurrentValue);
             SetTo(value, relative);
             Play();

@@ -2,6 +2,7 @@
 // This code can only be used under the standard Unity Asset Store End User License Agreement
 // A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
 
+using System;
 using System.Collections.Generic;
 using Doozy.Runtime.Common.Extensions;
 using Doozy.Runtime.Reactor.ScriptableObjects;
@@ -22,6 +23,7 @@ namespace Doozy.Runtime.Reactor.Ticker
 
         private readonly List<IUseTickService> m_Targets = new List<IUseTickService>();
         private List<IUseTickService> safeTargets { get; }
+        private List<Action> _action = new List<Action>();
         public UnityAction OnTick;
         
         public TickService(int fps)
@@ -46,6 +48,20 @@ namespace Doozy.Runtime.Reactor.Ticker
 
         public bool hasRegisteredTargets =>
             registeredTargetsCount > 0;
+
+        private void UpdateActions()
+        {
+            for (int i = _action.Count; i > 0; i--)
+            {
+                _action[i].Invoke();
+            }
+        }
+        
+        public void Remove(Action action) =>
+            _action.Remove(action);
+
+        public void Register(Action action) =>
+            _action.Add(action);
 
         public void Register(IUseTickService target)
         {
@@ -81,6 +97,7 @@ namespace Doozy.Runtime.Reactor.Ticker
                 safeTargets[i].Tick();
             
             OnTick?.Invoke();
+            UpdateActions();
         }
     }
 }

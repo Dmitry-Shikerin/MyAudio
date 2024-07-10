@@ -604,7 +604,12 @@ namespace Doozy.Editor.EditorUI.Utils
         /// <param name="listDescription"> Descriptions displayed below the title </param>
         /// <param name="objectType"> Type of object this ListView handles </param>
         /// <param name="allowDragAndDrop"> Drag and Drop functionality is added automatically if TRUE. Set FALSE if you want to no Drag and Drop or intend to implement a custom one </param>
-        public static FluidListView NewObjectListView(SerializedProperty arrayProperty, string listTitle, string listDescription, Type objectType, bool allowDragAndDrop = true)
+        public static FluidListView NewObjectListView(
+            SerializedProperty arrayProperty, 
+            string listTitle, 
+            string listDescription, 
+            Type objectType, 
+            bool allowDragAndDrop = true)
         {
             var flv = new FluidListView();
             var itemsSource = new List<SerializedProperty>();
@@ -626,7 +631,9 @@ namespace Doozy.Editor.EditorUI.Utils
                     {
                         if (itemProperty.propertyPath != arrayProperty.GetArrayElementAtIndex(j).propertyPath)
                             continue;
+                        
                         propertyIndex = j;
+                        
                         break;
                     }
 
@@ -722,7 +729,9 @@ namespace Doozy.Editor.EditorUI.Utils
                             }
                         }
                     }
-                    if (!isValid) return;
+                    if (!isValid)
+                        return;
+                    
                     DragAndDrop.visualMode = DragAndDropVisualMode.Generic;
                 }
 
@@ -747,9 +756,12 @@ namespace Doozy.Editor.EditorUI.Utils
                                 canAddItem = false;
                                 break;
                             }
-                            if (!canAddItem) continue;
+                            if (!canAddItem)
+                                continue;
+                            
                             arrayProperty.InsertArrayElementAtIndex(arrayProperty.arraySize);
                             arrayProperty.GetArrayElementAtIndex(arrayProperty.arraySize - 1).objectReferenceValue = item;
+                            
                             continue;
                         }
 
@@ -757,16 +769,25 @@ namespace Doozy.Editor.EditorUI.Utils
                         if (item is GameObject go)
                         {
                             Component component = go.GetComponent(objectType);
-                            if (component == null) continue;
+                            
+                            if (component == null)
+                                continue;
+                            
                             bool canAddComponent = true;
+                            
                             for (int i = 0; i < arrayProperty.arraySize; i++)
                             {
                                 if (arrayProperty.GetArrayElementAtIndex(i).objectReferenceValue != component)
                                     continue;
+                                
                                 canAddComponent = false;
+                                
                                 break;
                             }
-                            if (!canAddComponent) continue;
+                            
+                            if (!canAddComponent)
+                                continue;
+                            
                             arrayProperty.InsertArrayElementAtIndex(arrayProperty.arraySize);
                             arrayProperty.GetArrayElementAtIndex(arrayProperty.arraySize - 1).objectReferenceValue = go.GetComponent(objectType);
                         }

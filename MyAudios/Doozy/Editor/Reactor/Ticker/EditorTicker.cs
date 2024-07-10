@@ -20,7 +20,9 @@ namespace Doozy.Editor.Reactor.Ticker
         {
             get
             {
-                if (!initialized) Initialize();
+                if (initialized == false)
+                    Initialize();
+                
                 return s_service ?? (s_service = new TickService(ReactorSettings.editorFPS));
             }
         }
@@ -39,7 +41,9 @@ namespace Doozy.Editor.Reactor.Ticker
 
         private static void Initialize()
         {
-            if (initialized) return;
+            if (initialized)
+                return;
+            
             initialized = true;
             ResetTime();
             EditorApplication.update -= Update;
@@ -63,8 +67,10 @@ namespace Doozy.Editor.Reactor.Ticker
 
             s_elapsedTime += timeSinceStartup - s_lastTickTime;
             s_lastTickTime = timeSinceStartup;
+            
             if (tickInterval < TickService.maxFPS && s_elapsedTime < tickInterval)
                 return;
+            
             s_elapsedTime = 0;
             service.Tick();
 

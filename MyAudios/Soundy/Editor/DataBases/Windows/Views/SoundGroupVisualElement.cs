@@ -69,6 +69,10 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
                 .slider
                 .SetStyleBorderColor(EditorColors.EditorUI.Orange)
                 .SetStyleColor(EditorColors.EditorUI.Orange);
+            TopSlider.RegisterCallback<MouseDownEvent>(value =>
+            {
+                Debug.Log($"down");
+            });
             
             BotomSlider = new FluidRangeSlider().SetStyleMaxHeight(18);
             BotomSlider.slider.highValue = SoundGroupData?.Sounds.FirstOrDefault() != null 
@@ -116,15 +120,12 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
         private void UpdateSliderValue()
         {
             TopSlider.slider.value = Object.FindObjectOfType<AudioSource>().time;
-            Debug.Log($"UpdateSliderValue: {TopSlider.slider.value}");
         }
 
         public void PlaySound()
         {
-            // EditorApplication.update -= UpdateSliderValue;
-            EditorApplication.update += UpdateSliderValue;
-            Debug.Log($"Listen");
             Parent.StopAllSounds();
+            EditorApplication.update += UpdateSliderValue;
             IsPlaying = true;
             PlayButton.SetIcon(EditorSpriteSheets.EditorUI.Icons.Stop);
             SoundGroupData.PlaySoundPreview(
@@ -139,6 +140,7 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
             PlayButton.SetIcon(EditorSpriteSheets.EditorUI.Icons.Play);
             SoundGroupData.StopSoundPreview(
                 Object.FindObjectOfType<AudioSource>());
+            TopSlider.slider.value = 0;
         }
         
         public SoundGroupVisualElement SetLabelText(string labelText)

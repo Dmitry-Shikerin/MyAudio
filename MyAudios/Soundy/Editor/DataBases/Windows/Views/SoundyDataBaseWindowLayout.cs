@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using Doozy.Editor.Common.Layouts;
 using Doozy.Editor.EditorUI;
 using Doozy.Editor.EditorUI.Components;
 using Doozy.Editor.EditorUI.Components.Internal;
 using Doozy.Editor.EditorUI.ScriptableObjects.Colors;
 using Doozy.Editor.EditorUI.Utils;
 using Doozy.Editor.UIElements;
-using Doozy.Editor.UIManager.UIMenu;
 using Doozy.Engine.Soundy;
 using Doozy.Runtime.UIElements.Extensions;
 using MyAudios.Soundy.DataBases.Domain.Data;
@@ -33,6 +31,8 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
         private FluidFoldout CurrentFoldout { get; set; }
         private VisualElement CurrentVisualElement { get; set; }
         public List<SoundGroupVisualElement> CurrentSoundGroupVisualElements { get; private set; }
+        public NewSoundGroupVisualElement NewSoundGroupVisualElement { get; private set; }
+        public SoundDataBaseHeaderVisualElement HeaderVisualElement { get; private set; }
 
         public SoundyDataBaseWindowLayout()
         {
@@ -42,6 +42,13 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
                 .IsCollapsable(false);
             
             CurrentSoundGroupVisualElements = new List<SoundGroupVisualElement>();
+            NewSoundGroupVisualElement = 
+                new NewSoundGroupVisualElement()
+                .Initialize();
+
+            HeaderVisualElement = new SoundDataBaseHeaderVisualElement()
+                .SetParent(this)
+                .Initialize();
         }
 
         public SoundyDataBaseWindowLayout AfterInitialize()
@@ -60,6 +67,12 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
         private void UpdateDataBase(SoundDatabase soundDatabase)
         {
             content.Clear();
+
+            content
+                .AddChild(HeaderVisualElement)
+                .AddSpaceBlock(4)
+                .AddChild(NewSoundGroupVisualElement);
+            HeaderVisualElement.SetLabelText(soundDatabase.DatabaseName);
 
             foreach (SoundGroupData soundGroup in soundDatabase.Database)
             {

@@ -28,7 +28,8 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows
             SoundyDataBaseEditor editor = 
                 (SoundyDataBaseEditor)UnityEditor.Editor.CreateEditor(Database);
             VisualElement editorRoot = editor.CreateInspectorGUI();
-            editorRoot.Bind(editor.serializedObject);
+            editorRoot
+                .Bind(editor.serializedObject);
             
             windowLayout = 
                 new SoundyDataBaseWindowLayout()
