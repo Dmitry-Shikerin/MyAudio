@@ -1,8 +1,4 @@
-﻿// Copyright (c) 2015 - 2023 Doozy Entertainment. All Rights Reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement
-// A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Doozy.Editor.EditorUI.Components;
@@ -20,8 +16,10 @@ namespace Doozy.Editor.EditorUI.Windows.Internal
         protected override void CreateGUI()
         {
             windowLayout = GetFluidWindowLayout($"{GetType().Name}");
+            
             if (windowLayout == null)
                 return;
+            
             windowLayout.SetStyleFlexGrow(1);
             root
                 .RecycleAndClear() 
@@ -36,10 +34,15 @@ namespace Doozy.Editor.EditorUI.Windows.Internal
 
         private static VisualElement GetFluidWindowLayout(string layoutName)
         {
-            if (layoutName.IsNullOrEmpty()) return null;
+            if (layoutName.IsNullOrEmpty())
+                return null;
+            
             IEnumerable<Type> results = ReflectionUtils.GetTypesThatImplementInterface<IEditorUIDatabaseWindowLayout>();
-            var layoutTypes = results.Where(result => result.Name.Contains(layoutName)).ToList();
-            if (!layoutTypes.Any()) return null;
+            List<Type> layoutTypes = results.Where(result => result.Name.Contains(layoutName)).ToList();
+            
+            if (layoutTypes.Any() == false)
+                return null;
+            
             return (VisualElement)Activator.CreateInstance(layoutTypes[0]);
         }
     }

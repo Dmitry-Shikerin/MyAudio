@@ -263,7 +263,9 @@ namespace Doozy.Editor.Dashboard.Windows
                 //show the appropriate window layout when the value of the side menu button changes
                 sideMenuButton.OnValueChanged += evt =>
                 {
-                    if (!evt.newValue) return;
+                    if (!evt.newValue)
+                        return;
+                    
                     contentContainer.Clear();
                     contentContainer.Add(customWindowLayout);
                     EditorPrefs.SetString(selectedTabKey, l.layoutName);

@@ -1,8 +1,4 @@
-﻿// Copyright (c) 2015 - 2023 Doozy Entertainment. All Rights Reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement
-// A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-
-using Doozy.Editor.UIElements;
+﻿using Doozy.Editor.UIElements;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -31,10 +27,16 @@ namespace Doozy.Editor.EditorUI.Windows.Internal
         {
             get
             {
-                if (s_instance != null) return s_instance;
+                if (s_instance != null)
+                    return s_instance;
+                
                 s_instance = window;
-                if (s_instance != null) return s_instance;
+                
+                if (s_instance != null)
+                    return s_instance;
+                
                 s_instance = GetWindow<T>(false);
+                
                 return s_instance;
             }
         }
@@ -48,6 +50,7 @@ namespace Doozy.Editor.EditorUI.Windows.Internal
             get
             {
                 T[] windows = Resources.FindObjectsOfTypeAll<T>();
+                
                 return windows.Length > 0 ? windows[0] : null;
             }
         }
