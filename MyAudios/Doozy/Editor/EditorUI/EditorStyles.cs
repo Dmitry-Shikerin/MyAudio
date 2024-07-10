@@ -1,7 +1,3 @@
-// Copyright (c) 2015 - 2023 Doozy Entertainment. All Rights Reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement
-// A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-
 //.........................
 //.....Generated Class.....
 //.........................
@@ -44,7 +40,6 @@ namespace Doozy.Editor.EditorUI
             public static StyleSheet PrefabLinkDatabaseItemRow => s_PrefabLinkDatabaseItemRow ? s_PrefabLinkDatabaseItemRow : s_PrefabLinkDatabaseItemRow = GetStyleSheet(StyleName.PrefabLinkDatabaseItemRow);            
         }
 
-
         public static class Dashboard
         {
             private static EditorDataStyleGroup s_styleGroup;
@@ -64,7 +59,6 @@ namespace Doozy.Editor.EditorUI
             private static StyleSheet s_DashboardWindow;
             public static StyleSheet DashboardWindow => s_DashboardWindow ? s_DashboardWindow : s_DashboardWindow = GetStyleSheet(StyleName.DashboardWindow);            
         }
-
 
         public static class EditorUI
         {
@@ -203,7 +197,6 @@ namespace Doozy.Editor.EditorUI
             public static StyleSheet ModyStateIndicator => s_ModyStateIndicator ? s_ModyStateIndicator : s_ModyStateIndicator = GetStyleSheet(StyleName.ModyStateIndicator);            
         }
 
-
         public static class Nody
         {
             private static EditorDataStyleGroup s_styleGroup;
@@ -235,7 +228,6 @@ namespace Doozy.Editor.EditorUI
             private static StyleSheet s_PivotNode;
             public static StyleSheet PivotNode => s_PivotNode ? s_PivotNode : s_PivotNode = GetStyleSheet(StyleName.PivotNode);            
         }
-
 
         public static class Reactor
         {
@@ -269,7 +261,6 @@ namespace Doozy.Editor.EditorUI
             public static StyleSheet TickerVisualizer => s_TickerVisualizer ? s_TickerVisualizer : s_TickerVisualizer = GetStyleSheet(StyleName.TickerVisualizer);            
         }
 
-
         public static class Signals
         {
             private static EditorDataStyleGroup s_styleGroup;
@@ -299,7 +290,6 @@ namespace Doozy.Editor.EditorUI
             public static StyleSheet StreamsConsoleRow => s_StreamsConsoleRow ? s_StreamsConsoleRow : s_StreamsConsoleRow = GetStyleSheet(StyleName.StreamsConsoleRow);            
         }
 
-
         public static class UIManager
         {
             private static EditorDataStyleGroup s_styleGroup;
@@ -325,7 +315,6 @@ namespace Doozy.Editor.EditorUI
             private static StyleSheet s_UIMenuWindow;
             public static StyleSheet UIMenuWindow => s_UIMenuWindow ? s_UIMenuWindow : s_UIMenuWindow = GetStyleSheet(StyleName.UIMenuWindow);            
         }
-
     }
 }
 

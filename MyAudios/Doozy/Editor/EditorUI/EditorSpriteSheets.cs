@@ -1,7 +1,3 @@
-// Copyright (c) 2015 - 2023 Doozy Entertainment. All Rights Reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement
-// A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-
 //.........................
 //.....Generated Class.....
 //.........................
@@ -51,7 +47,6 @@ namespace Doozy.Editor.EditorUI
                     TimeBased,
                     Transformer
                 }
-                
 
                 public static List<Texture2D> Bidirectional => GetTextures(SpriteSheetName.Bidirectional);
                 public static List<Texture2D> Bind => GetTextures(SpriteSheetName.Bind);
@@ -65,12 +60,8 @@ namespace Doozy.Editor.EditorUI
                 public static List<Texture2D> Sender => GetTextures(SpriteSheetName.Sender);
                 public static List<Texture2D> TimeBased => GetTextures(SpriteSheetName.TimeBased);
                 public static List<Texture2D> Transformer => GetTextures(SpriteSheetName.Transformer);
-                
             }
-
-
         }
-
 
         public static class EditorUI
         {
@@ -96,7 +87,6 @@ namespace Doozy.Editor.EditorUI
                     ChevronRight,
                     ChevronUp
                 }
-                
 
                 public static List<Texture2D> ArrowDown => GetTextures(SpriteSheetName.ArrowDown);
                 public static List<Texture2D> ArrowLeft => GetTextures(SpriteSheetName.ArrowLeft);
@@ -106,7 +96,6 @@ namespace Doozy.Editor.EditorUI
                 public static List<Texture2D> ChevronLeft => GetTextures(SpriteSheetName.ChevronLeft);
                 public static List<Texture2D> ChevronRight => GetTextures(SpriteSheetName.ChevronRight);
                 public static List<Texture2D> ChevronUp => GetTextures(SpriteSheetName.ChevronUp);
-                
             }
 
             public static class Components
@@ -149,7 +138,6 @@ namespace Doozy.Editor.EditorUI
                 public static List<Texture2D> LineMixedValues => GetTextures(SpriteSheetName.LineMixedValues);
                 public static List<Texture2D> RadioCircle => GetTextures(SpriteSheetName.RadioCircle);
                 public static List<Texture2D> Switch => GetTextures(SpriteSheetName.Switch);
-                
             }
 
             public static class Icons
@@ -316,7 +304,6 @@ namespace Doozy.Editor.EditorUI
                     Youtube,
                     Zoom
                 }
-                
 
                 public static List<Texture2D> Animator => GetTextures(SpriteSheetName.Animator);
                 public static List<Texture2D> API => GetTextures(SpriteSheetName.API);
@@ -468,7 +455,6 @@ namespace Doozy.Editor.EditorUI
                 public static List<Texture2D> Windows => GetTextures(SpriteSheetName.Windows);
                 public static List<Texture2D> Youtube => GetTextures(SpriteSheetName.Youtube);
                 public static List<Texture2D> Zoom => GetTextures(SpriteSheetName.Zoom);
-                
             }
 
             public static class Placeholders
@@ -494,7 +480,6 @@ namespace Doozy.Editor.EditorUI
                     EmptySmall,
                     UnderConstruction
                 }
-                
 
                 public static List<Texture2D> ComingSoon => GetTextures(SpriteSheetName.ComingSoon);
                 public static List<Texture2D> Empty => GetTextures(SpriteSheetName.Empty);

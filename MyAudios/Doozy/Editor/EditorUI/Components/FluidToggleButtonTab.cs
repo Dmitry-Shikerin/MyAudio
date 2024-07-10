@@ -1,8 +1,4 @@
-﻿// Copyright (c) 2015 - 2023 Doozy Entertainment. All Rights Reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement
-// A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Doozy.Editor.EditorUI.Components.Internal;
 using Doozy.Editor.EditorUI.ScriptableObjects.Colors;
@@ -141,6 +137,7 @@ namespace Doozy.Editor.EditorUI.Components
         #region IconAnimationTrigger
 
         private IconAnimationTrigger animationTrigger { get; set; }
+        
         public FluidToggleButtonTab SetAnimationTrigger(IconAnimationTrigger trigger)
         {
             // Debug.Log($"{nameof(SetAnimationTrigger)} - from: {animationTrigger} to: {trigger}");
@@ -362,6 +359,7 @@ namespace Doozy.Editor.EditorUI.Components
         {
             ContainerColorOff = value;
             fluidElement.StateChanged();
+            
             return this;
         }
 
@@ -413,14 +411,19 @@ namespace Doozy.Editor.EditorUI.Components
         protected override void ExecuteOnClick(EventBase clickEvent)
         {
             base.ExecuteOnClick(clickEvent);
-            if (selectionState == SelectionState.Disabled) return;
+            
+            if (selectionState == SelectionState.Disabled)
+                return;
+            
             if (animationTrigger == IconAnimationTrigger.OnClick)
                 iconReaction?.Play();
         }
 
         private void ExecuteOnPointerEnter(PointerEnterEvent enterEvent)
         {
-            if (selectionState == SelectionState.Disabled) return;
+            if (selectionState == SelectionState.Disabled)
+                return;
+            
             if (animationTrigger == IconAnimationTrigger.OnPointerEnter)
                 iconReaction?.Play();
         }

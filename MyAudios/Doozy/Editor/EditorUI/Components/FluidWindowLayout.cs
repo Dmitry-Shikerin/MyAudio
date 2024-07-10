@@ -1,8 +1,4 @@
-﻿// Copyright (c) 2015 - 2023 Doozy Entertainment. All Rights Reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement
-// A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Doozy.Editor.EditorUI.Components.Internal;
 using Doozy.Editor.EditorUI.ScriptableObjects.Colors;
@@ -12,8 +8,7 @@ using Doozy.Runtime.UIElements.Extensions;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-// ReSharper disable MemberCanBeProtected.Global
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Doozy.Editor.EditorUI.Components
 {
@@ -116,7 +111,10 @@ namespace Doozy.Editor.EditorUI.Components
 
             //COLLAPSABLE
             bool sideMenuIsCollapsed = EditorPrefs.GetBool(sideMenuIsCollapsedKey, false);  //get the side menu collapsed state from EditorPrefs
-            if (sideMenu.isCollapsable) sideMenu.ToggleMenu(sideMenuIsCollapsed, false);    //set the side menu collapsed state
+            
+            if (sideMenu.isCollapsable)
+                sideMenu.ToggleMenu(sideMenuIsCollapsed, false);    //set the side menu collapsed state
+            
             sideMenu.OnCollapse += () => EditorPrefs.SetBool(sideMenuIsCollapsedKey, true); //save the side menu collapsed state to EditorPrefs
             sideMenu.OnExpand += () => EditorPrefs.SetBool(sideMenuIsCollapsedKey, false);  //save the side menu collapsed state to EditorPrefs
 
@@ -167,7 +165,6 @@ namespace Doozy.Editor.EditorUI.Components
             fluidWindowHeader = FluidWindowHeader.Get(titleText, subtitleText, iconTexture);
             header.Add(fluidWindowHeader);
         }
-
 
         public virtual void OnEnable() {}
         public virtual void OnDisable() {}

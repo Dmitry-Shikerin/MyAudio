@@ -49,16 +49,24 @@ namespace Doozy.Runtime.Reactor.Ticker
 
         public void Register(IUseTickService target)
         {
-            if (target == null) return;
-            if (m_Targets.Contains(target)) return;
+            if (target == null)
+                return;
+            
+            if (m_Targets.Contains(target))
+                return;
+            
             m_Targets.RemoveNulls();
             m_Targets.Add(target);
         }
 
         public void Unregister(IUseTickService target)
         {
-            if (target == null) return;
-            if (!m_Targets.Contains(target)) return;
+            if (target == null)
+                return;
+            
+            if (!m_Targets.Contains(target))
+                return;
+            
             m_Targets.RemoveNulls();
             m_Targets.Remove(target);
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Doozy.Editor.Common.Layouts;
 using Doozy.Editor.EditorUI;
 using Doozy.Editor.EditorUI.Components;
 using Doozy.Editor.EditorUI.Components.Internal;
@@ -16,10 +17,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 
-
-namespace Doozy.Editor.Common.Layouts
+namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
 {
-    public abstract class CategoryNameGroupWindowLayout : FluidWindowLayout
+    public class SoundyDataBaseCategoryNameGroupWindowLayout : FluidWindowLayout
     {
         protected virtual UnityEngine.Object targetObject => null;
         protected virtual UnityAction onUpdateCallback => null;
@@ -75,13 +75,13 @@ namespace Doozy.Editor.Common.Layouts
 
             if (buttonImportExport.isOn)
                 return;
-
+            
             if (sideMenu.searchBox.isSearching)
                 return;
-
-            if (!database.ContainsCategory(currentCategoryName))
+            
+            if (database.ContainsCategory(currentCategoryName) == false)
                 return;
-
+            
             categoryButtons[currentCategoryName].SetIsOn(true);
         }
 
@@ -119,11 +119,11 @@ namespace Doozy.Editor.Common.Layouts
                     .SetSaveHandler(ItemSaveHandler)
                     .SetRemoveHandler(ItemRemoveHandler);
 
-#if UNITY_2021_2_OR_NEWER
+                #if UNITY_2021_2_OR_NEWER
                 fluidListView.listView.fixedItemHeight = 30;
-#else
+                #else
                 fluidListView.listView.itemHeight = 30;
-#endif
+                #endif
 
                 fluidListView
                     .SetItemsSource(m_Items)
@@ -152,8 +152,7 @@ namespace Doozy.Editor.Common.Layouts
                         .SetName("Empty Database - Placeholder Container")
                         .SetStyleFlexGrow(1)
                         .SetStyleJustifyContent(Justify.Center)
-                        .AddChild(FluidPlaceholder.Get("Empty Database",
-                            EditorSpriteSheets.EditorUI.Placeholders.EmptyDatabase).Play())
+                        .AddChild(FluidPlaceholder.Get("Empty Database", EditorSpriteSheets.EditorUI.Placeholders.EmptyDatabase).Play())
                 );
 
             UpdateCreateNewIdContainer();
@@ -163,8 +162,6 @@ namespace Doozy.Editor.Common.Layouts
 
         private void UpdateDatabase()
         {
-            // Debug.Log($"{nameof(UpdateDatabase)}");
-
             database.CleanDatabase();
             onUpdateCallback?.Invoke();
 
@@ -189,11 +186,10 @@ namespace Doozy.Editor.Common.Layouts
                 {
                     if (evt.newValue == false)
                         return;
-
+                    
                     selectedCategoryName = category;
                     content.Clear();
                     m_Items.Clear();
-                    
                     foreach (CategoryNameItem item in database.items.Where(item => item.category.Equals(category)))
                         m_Items.Add(item);
                     
@@ -246,8 +242,7 @@ namespace Doozy.Editor.Common.Layouts
 
         private static EditorSelectableColorInfo selectableActionColor => EditorSelectableColors.Default.Action;
 
-        private static FluidButton NewButtonImportExport(string labelText, string tooltipText,
-            IEnumerable<Texture2D> textures) =>
+        private static FluidButton NewButtonImportExport(string labelText, string tooltipText, IEnumerable<Texture2D> textures) =>
             FluidButton.Get()
                 .SetLabelText(labelText)
                 .SetTooltip(tooltipText)
@@ -298,27 +293,27 @@ namespace Doozy.Editor.Common.Layouts
                         content.Add(importExportContainer);
                         UpdateExport();
                         UpdateImport();
-
+                        
                         return;
                     }
 
                     if (databaseIsEmpty)
                     {
                         UpdateDatabase();
-
+                        
                         return;
                     }
 
                     string currentCategoryName = selectedCategoryName;
                     sideMenu.searchBox.ClearSearch();
-
+                    
                     if (categoryButtons.ContainsKey(currentCategoryName))
                     {
                         categoryButtons[currentCategoryName].SetIsOn(true);
-
+                        
                         return;
                     }
-
+                    
                     UpdateDatabase();
                 });
 
@@ -328,39 +323,37 @@ namespace Doozy.Editor.Common.Layouts
                     {
                         if (exportToggles == null || exportToggles.Values.Count == 0)
                         {
-                            EditorUtility.DisplayDialog("Export",
-                                "There is nothing to export, the database is empty...", "Ok");
+                            EditorUtility.DisplayDialog("Export", "There is nothing to export, the database is empty...", "Ok");
                             return;
                         }
 
                         _ = exportDatabaseHandler ?? throw new NullReferenceException(nameof(exportDatabaseHandler));
 
-                        var categoriesForExport =
-                            exportToggles.Keys.Where(category => exportToggles[category].isOn).ToList();
-                        bool success =
-                            exportDatabaseHandler.Invoke(exportDatabaseNameTextField.value, categoriesForExport);
-                        if (!success) return;
+                        var categoriesForExport = exportToggles.Keys.Where(category => exportToggles[category].isOn).ToList();
+                        bool success = exportDatabaseHandler.Invoke(exportDatabaseNameTextField.value, categoriesForExport);
+                        
+                        if (!success)
+                            return;
+                        
                         foreach (FluidToggleCheckbox toggle in exportToggles.Values)
                             toggle.SetIsOn(false);
+                        
                         exportDatabaseNameTextField.value = string.Empty;
                         UpdateImport();
                     });
 
-            buttonImport = NewButtonImportExport("Import", "Import selected roaming databases",
-                    EditorSpriteSheets.EditorUI.Icons.Import)
+            buttonImport = NewButtonImportExport("Import", "Import selected roaming databases", EditorSpriteSheets.EditorUI.Icons.Import)
                 .SetOnClick(() =>
                 {
                     if (importToggles == null || importToggles.Values.Count == 0)
                     {
-                        EditorUtility.DisplayDialog("Import",
-                            "There is nothing to import.\n\nNo roaming databases were found in this project...", "Ok");
+                        EditorUtility.DisplayDialog("Import", "There is nothing to import.\n\nNo roaming databases were found in this project...", "Ok");
                         return;
                     }
 
                     _ = importDatabaseHandler ?? throw new NullReferenceException(nameof(importDatabaseHandler));
 
-                    var databasesForImport = importToggles.Keys
-                        .Where(roamingDatabase => importToggles[roamingDatabase].isOn).ToList();
+                    var databasesForImport = importToggles.Keys.Where(roamingDatabase => importToggles[roamingDatabase].isOn).ToList();
                     bool success = importDatabaseHandler.Invoke(databasesForImport);
                     if (!success) return;
                     foreach (FluidToggleCheckbox toggle in importToggles.Values)
@@ -383,10 +376,8 @@ namespace Doozy.Editor.Common.Layouts
             exportDatabaseNameTextField = new TextField().ResetLayout();
             exportField = FluidField.Get("Database Name").AddFieldContent(exportDatabaseNameTextField);
 
-            exportToggleGroup = new FluidToggleGroup().SetLabelText("Select All")
-                .SetControlMode(FluidToggleGroup.ControlMode.Passive);
-            importToggleGroup = new FluidToggleGroup().SetLabelText("Select All")
-                .SetControlMode(FluidToggleGroup.ControlMode.Passive).SetStyleDisplay(DisplayStyle.None);
+            exportToggleGroup = new FluidToggleGroup().SetLabelText("Select All").SetControlMode(FluidToggleGroup.ControlMode.Passive);
+            importToggleGroup = new FluidToggleGroup().SetLabelText("Select All").SetControlMode(FluidToggleGroup.ControlMode.Passive).SetStyleDisplay(DisplayStyle.None);
 
             exportScrollableContent = new ScrollView();
             importScrollableContent = new ScrollView();
@@ -418,8 +409,7 @@ namespace Doozy.Editor.Common.Layouts
                 .AddChild(placeholderExportEmptyDatabase);
 
 
-            exportDatabaseNameTextField.RegisterValueChangedCallback(evt =>
-                OnExportTextFieldValueChanges(evt.newValue));
+            exportDatabaseNameTextField.RegisterValueChangedCallback(evt => OnExportTextFieldValueChanges(evt.newValue));
             OnExportTextFieldValueChanges(exportDatabaseNameTextField.value);
 
             void OnExportTextFieldValueChanges(string newValue)
@@ -468,7 +458,7 @@ namespace Doozy.Editor.Common.Layouts
             bool isEmpty = exportToggles.Values.Count == 0;
             exportToggleGroup.SetStyleDisplay(isEmpty ? DisplayStyle.None : DisplayStyle.Flex);
             placeholderExportEmptyDatabase.Toggle(isEmpty);
-
+            
             if (isEmpty)
                 placeholderExportEmptyDatabase.Play();
         }
@@ -509,13 +499,13 @@ namespace Doozy.Editor.Common.Layouts
                 FluidButton deleteAssetButton = NewDeleteAssetButton().SetOnClick(() =>
                 {
                     if (EditorUtility.DisplayDialog(
-                            "Delete Asset", $"Are you sure you want to delete the '{assetPrettyName}' database?",
+                            "Delete Asset", $"Are you sure you want to delete the '{assetPrettyName}' database?", 
                             "Yes", "Cancel") == false)
                         return;
-
+                    
                     AssetDatabase.MoveAssetToTrash(assetPath);
                     Debug.Log($"Asset '{assetPrettyName}' database moved to trash! ({assetPath})");
-
+                    
                     UpdateImport();
                 });
 
@@ -536,7 +526,7 @@ namespace Doozy.Editor.Common.Layouts
             }
 
             placeholderNoRoamingDatabaseFound.Toggle(isEmpty);
-
+            
             if (isEmpty)
                 placeholderNoRoamingDatabaseFound.Play();
         }
@@ -560,14 +550,13 @@ namespace Doozy.Editor.Common.Layouts
                 );
                 return false;
             }
-
             if (EditorUtility.DisplayDialog(
                     "Rename Category",
                     $"Are you sure you want to rename the '{targetCategory}' category to '{newCategoryName}'?",
                     "Yes",
                     "Cancel") == false)
                 return false;
-
+            
             if (EditorUtility.DisplayDialog(
                     "Confirm Rename",
                     $"This operation cannot be undone and does not (and cannot) automatically update the places where the '{targetCategory}' category name was used to the new '{newCategoryName}' category name." +
@@ -575,26 +564,25 @@ namespace Doozy.Editor.Common.Layouts
                     "Continue",
                     "Cancel Rename") == false)
                 return false;
-
+            
             database.RenameCategory(targetCategory, newCategoryName);
             EditorUtility.SetDirty(targetObject);
             AssetDatabase.SaveAssetIfDirty(targetObject);
             UpdateDatabase();
             schedule.Execute(() =>
             {
-                FluidToggleButtonTab button =
-                    sideMenu.buttons.FirstOrDefault(b => b.buttonLabel.text.Equals(newCategoryName));
-
+                FluidToggleButtonTab button = sideMenu.buttons.FirstOrDefault(b => b.buttonLabel.text.Equals(newCategoryName));
+                
                 if (button == null)
                 {
                     sideMenu.buttons.First()?.SetIsOn(true);
-
+                    
                     return;
                 }
-
+                
                 button.SetIsOn(true);
             });
-
+            
             return true;
         }
 
@@ -603,19 +591,19 @@ namespace Doozy.Editor.Common.Layouts
             bool canRemoveCategory;
             string message;
             (canRemoveCategory, message) = database.CanRemoveCategory(targetCategory);
-
+            
             if (canRemoveCategory == false)
             {
                 EditorUtility.DisplayDialog("Attention Required", message, "Ok");
-
+                
                 return;
             }
-
+            
             if (EditorUtility.DisplayDialog(
                     "Confirmation",
                     $"Are you sure you want to remove the '{targetCategory}' category",
                     "Yes",
-                    "Cancel") == false)
+                    "Cancel") == false) 
                 return;
 
             regenerateEnumOnDisable = true;
@@ -634,14 +622,14 @@ namespace Doozy.Editor.Common.Layouts
             string message;
             string targetCategory = targetItem.category;
             (canRemoveName, message) = database.CanRemoveName(targetCategory, targetItem.name);
-
+            
             if (canRemoveName == false)
             {
                 EditorUtility.DisplayDialog("Attention Required", message, "Ok");
-
+                
                 return;
             }
-
+            
             if (EditorUtility.DisplayDialog(
                     "Confirmation",
                     $"Are you sure you want to remove the '{targetItem.name}' from the '{targetItem.category}' category",
@@ -656,18 +644,18 @@ namespace Doozy.Editor.Common.Layouts
             AssetDatabase.SaveAssetIfDirty(targetObject);
             // AssetDatabase.SaveAssets();
             onUpdateCallback?.Invoke();
-
+            
             if (sideMenu.searchBox.isSearching)
             {
                 UpdateSearchResults();
-
+                
                 return;
             }
 
             if (database.ContainsCategory(targetCategory))
             {
                 categoryButtons[targetCategory].SetIsOn(true);
-
+                
                 return;
             }
 
@@ -681,11 +669,11 @@ namespace Doozy.Editor.Common.Layouts
             string message;
             string targetCategory = targetItem.category;
             (canAddName, message) = database.CanAddName(targetCategory, newName);
-
+            
             if (canAddName == false)
             {
                 EditorUtility.DisplayDialog("Attention Required", message, "Ok");
-
+                
                 return false;
             }
 
@@ -696,17 +684,17 @@ namespace Doozy.Editor.Common.Layouts
             EditorUtility.SetDirty(targetObject);
             AssetDatabase.SaveAssetIfDirty(targetObject);
             // AssetDatabase.SaveAssets();
-
+            
             if (sideMenu.searchBox.isSearching)
             {
                 UpdateSearchResults();
-
+                
                 return true;
             }
 
             UpdateDatabase();
             categoryButtons[targetCategory].SetIsOn(true);
-
+            
             return true;
         }
 
@@ -736,9 +724,7 @@ namespace Doozy.Editor.Common.Layouts
 
             newIdNameTextField.RegisterCallback<KeyUpEvent>(keyUpEvent =>
             {
-                if (newIdNameTextField.IsFocused() == false)
-                    return;
-                
+                if (!newIdNameTextField.IsFocused()) return;
                 switch (keyUpEvent.keyCode)
                 {
                     case KeyCode.Return:
@@ -780,8 +766,7 @@ namespace Doozy.Editor.Common.Layouts
 
 
             buttonCreateNewId =
-                FluidButton.Get().SetButtonStyle(ButtonStyle.Contained).SetElementSize(ElementSize.Small)
-                    .SetStyleAlignSelf(Align.Center)
+                FluidButton.Get().SetButtonStyle(ButtonStyle.Contained).SetElementSize(ElementSize.Small).SetStyleAlignSelf(Align.Center)
                     .SetIcon(EditorSpriteSheets.EditorUI.Icons.Plus)
                     .SetAccentColor(selectableAddColor)
                     .SetTooltip($"Create a new {groupTypeName} Id")
@@ -789,13 +774,12 @@ namespace Doozy.Editor.Common.Layouts
                     {
                         bool canAddNewStreamId;
                         string message;
-                        (canAddNewStreamId, message) =
-                            database.CanAddName(newIdCategoryTextField.value, newIdNameTextField.value);
+                        (canAddNewStreamId, message) = database.CanAddName(newIdCategoryTextField.value, newIdNameTextField.value);
 
                         if (!canAddNewStreamId)
                         {
                             EditorUtility.DisplayDialog($"New {groupTypeName} Id", message, "Ok");
-
+                            
                             return;
                         }
 
@@ -804,10 +788,7 @@ namespace Doozy.Editor.Common.Layouts
                         string categoryName = newIdCategoryTextField.value;
                         bool createdNewCategory = !database.ContainsCategory(categoryName);
                         bool result = database.AddName(categoryName, newIdNameTextField.value);
-                        
-                        if (result == false)
-                            return;
-                        
+                        if (!result) return;
                         newIdNameTextField.value = string.Empty;
                         EditorUtility.SetDirty(targetObject);
                         AssetDatabase.SaveAssetIfDirty(targetObject);
@@ -820,9 +801,7 @@ namespace Doozy.Editor.Common.Layouts
             createNewIdContainer = new VisualElement().SetStyleMargins(2, 0, 2, 0);
 
             createNewIdContainer.RegisterCallback<GeometryChangedEvent>(evt =>
-                createNewIdContainer.SetStyleFlexDirection(createNewIdContainer.resolvedStyle.width > 400
-                    ? FlexDirection.Row
-                    : FlexDirection.Column));
+                createNewIdContainer.SetStyleFlexDirection(createNewIdContainer.resolvedStyle.width > 400 ? FlexDirection.Row : FlexDirection.Column));
 
             createNewIdContainer
                 .AddChild(newIdCategoryField.SetStyleMargins(DesignUtils.k_Spacing / 2f))
@@ -832,8 +811,7 @@ namespace Doozy.Editor.Common.Layouts
 
             newIdCategoryTextField.RegisterValueChangedCallback(evt =>
             {
-                bool categoryIsValid = !buttonNewIdEditCategoryName.isOn ||
-                                       buttonNewIdEditCategoryName.isOn & !evt.newValue.Trim().IsNullOrEmpty();
+                bool categoryIsValid = !buttonNewIdEditCategoryName.isOn || buttonNewIdEditCategoryName.isOn & !evt.newValue.Trim().IsNullOrEmpty();
                 bool nameIsValid = !newIdNameTextField.value.Trim().IsNullOrEmpty();
                 newIdNameTextField.SetEnabled(categoryIsValid | nameIsValid);
                 buttonCreateNewId.SetEnabled(categoryIsValid & nameIsValid);
@@ -841,8 +819,7 @@ namespace Doozy.Editor.Common.Layouts
 
             newIdNameTextField.RegisterValueChangedCallback(evt =>
             {
-                bool categoryIsValid = !buttonNewIdEditCategoryName.isOn ||
-                                       !newIdCategoryTextField.value.Trim().IsNullOrEmpty();
+                bool categoryIsValid = !buttonNewIdEditCategoryName.isOn || !newIdCategoryTextField.value.Trim().IsNullOrEmpty();
                 bool nameIsValid = !evt.newValue.Trim().IsNullOrEmpty();
                 buttonCreateNewId.SetEnabled(categoryIsValid & nameIsValid);
             });
@@ -854,24 +831,21 @@ namespace Doozy.Editor.Common.Layouts
 
             buttonNewIdEditCategoryName.SetOnValueChanged(change =>
             {
-                newIdCategoryPopupField.SetStyleDisplay(databaseIsEmpty || change.newValue
-                    ? DisplayStyle.None
-                    : DisplayStyle.Flex);
-                newIdCategoryTextField.SetStyleDisplay(databaseIsEmpty || change.newValue
-                    ? DisplayStyle.Flex
-                    : DisplayStyle.None);
-                newIdCategoryField.SetLabelText(
-                    $"{(databaseIsEmpty | change.newValue ? "New " : "")}{groupTypeName} Category");
+                newIdCategoryPopupField.SetStyleDisplay(databaseIsEmpty || change.newValue ? DisplayStyle.None : DisplayStyle.Flex);
+                newIdCategoryTextField.SetStyleDisplay(databaseIsEmpty || change.newValue ? DisplayStyle.Flex : DisplayStyle.None);
+                newIdCategoryField.SetLabelText($"{(databaseIsEmpty | change.newValue ? "New " : "")}{groupTypeName} Category");
 
-                if (!change.newValue & databaseIsEmpty)
+                if (change.newValue == false & databaseIsEmpty)
                 {
                     buttonNewIdEditCategoryName.isOn = true;
                     newIdCategoryTextField.value = string.Empty;
+                    
                     return;
                 }
 
                 if (change.newValue && databaseIsEmpty)
                     newIdCategoryTextField.Focus();
+
             });
         }
 
@@ -879,9 +853,9 @@ namespace Doozy.Editor.Common.Layouts
         {
             categoriesList.Clear();
             
-            if (databaseIsEmpty)
+            if (databaseIsEmpty) 
                 categoriesList.Add(string.Empty);
-            else
+            else 
                 categoriesList.AddRange(database.GetCategories());
 
             newIdCategoryPopupField.value = databaseIsEmpty ? string.Empty : selectedCategoryName;
@@ -900,7 +874,7 @@ namespace Doozy.Editor.Common.Layouts
 
         protected override void UpdateSearchResults()
         {
-            if (!sideMenu.searchBox.isSearching)
+            if (sideMenu.searchBox.isSearching == false)
                 return;
 
             //CLEAR << CONTENT container
@@ -919,8 +893,7 @@ namespace Doozy.Editor.Common.Layouts
                 //CALCULATE how many characters does the user need to add to the search box to the search to start
                 int numberOfCharactersNeeded = minimumSearchLength - searchPatternLength;
                 //SHOW SEARCH VISUAL <<< with the info text for the user
-                content.Add(sideMenu.searchBox.EmptySearchPlaceholderElement(
-                    $"Add {numberOfCharactersNeeded} more character{(numberOfCharactersNeeded != 1 ? "s" : "")}..."));
+                content.Add(sideMenu.searchBox.EmptySearchPlaceholderElement($"Add {numberOfCharactersNeeded} more character{(numberOfCharactersNeeded != 1 ? "s" : "")}..."));
                 //STOP
                 return;
             }
@@ -928,10 +901,10 @@ namespace Doozy.Editor.Common.Layouts
             //FLAG for SEARCH RESULTS (for this single pass)
 
             m_SearchResultsItems.Clear();
+            
             foreach (CategoryNameItem item in database.items)
             {
-                if (!Regex.IsMatch(item.name, $"{sideMenu.searchBox.searchPattern}",
-                        RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace))
+                if (!Regex.IsMatch(item.name, $"{sideMenu.searchBox.searchPattern}", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace))
                     continue;
                 m_SearchResultsItems.Add(item);
             }
@@ -939,7 +912,7 @@ namespace Doozy.Editor.Common.Layouts
             bool hasSearchResults = m_SearchResultsItems.Count > 0;
 
             //CHECK FLAG for SEARCH RESULTS
-            if (hasSearchResults == false)
+            if (!hasSearchResults)
             {
                 //NO SEARCH RESULTS <<< show search visual
                 content.Add(sideMenu.searchBox.EmptySearchPlaceholderElement());
@@ -954,13 +927,12 @@ namespace Doozy.Editor.Common.Layouts
                     .ToList();
 
             string category = string.Empty;
+            
             foreach (CategoryNameItem resultsItem in m_SearchResultsItems)
             {
-                if (category.Equals(resultsItem.category) == false)
+                if (!category.Equals(resultsItem.category))
                 {
-                    if (!category.IsNullOrEmpty())
-                        searchResults.AddSpace(0, DesignUtils.k_Spacing * 4);
-                    
+                    if (!category.IsNullOrEmpty()) searchResults.AddSpace(0, DesignUtils.k_Spacing * 4);
                     category = resultsItem.category;
                     CategoryNameItemCategoryRow categoryRow =
                         new CategoryNameItemCategoryRow()
@@ -978,6 +950,6 @@ namespace Doozy.Editor.Common.Layouts
             content.Add(searchResults);
         }
 
-        #endregion
+        #endregion  
     }
 }

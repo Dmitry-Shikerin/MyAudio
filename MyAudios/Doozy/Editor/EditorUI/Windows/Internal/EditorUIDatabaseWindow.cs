@@ -10,7 +10,7 @@ using UnityEditor;
 using UnityEngine.UIElements;
 
 namespace Doozy.Editor.EditorUI.Windows.Internal
-{
+{ 
     public class EditorUIDatabaseWindow<T> : FluidWindow<T> where T : EditorWindow
     {
         protected override void CreateGUI()

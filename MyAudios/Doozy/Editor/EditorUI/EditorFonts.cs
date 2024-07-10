@@ -1,7 +1,3 @@
-// Copyright (c) 2015 - 2023 Doozy Entertainment. All Rights Reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement
-// A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-
 //.........................
 //.....Generated Class.....
 //.........................
@@ -132,8 +128,6 @@ namespace Doozy.Editor.EditorUI
             public static Font Medium => s_Medium ? s_Medium : s_Medium = GetFont(FontWeight.Medium);
             private static Font s_Bold;
             public static Font Bold => s_Bold ? s_Bold : s_Bold = GetFont(FontWeight.Bold);
-            
         }
-
     }
 }

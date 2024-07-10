@@ -1,8 +1,4 @@
-﻿// Copyright (c) 2015 - 2023 Doozy Entertainment. All Rights Reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement
-// A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-
-using System;
+﻿using System;
 using Doozy.Editor.EditorUI;
 using Doozy.Editor.EditorUI.Components;
 using Doozy.Editor.EditorUI.Components.Internal;
@@ -11,8 +7,7 @@ using Doozy.Runtime.UIElements.Extensions;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedMember.Local
+
 
 namespace Doozy.Editor.Common.Layouts
 {
@@ -154,19 +149,22 @@ namespace Doozy.Editor.Common.Layouts
             target = categoryNameItem;
             nameLabel.text = target.name;
             nameTextField.value = target.name;
-            SetEnabled(!categoryNameItem.category.Equals(CategoryNameItem.k_DefaultName));
+            SetEnabled(categoryNameItem.category.Equals(CategoryNameItem.k_DefaultName) == false);
+            
             return this;
         }
 
         public CategoryNameItemNameRow SetSaveHandler(Func<CategoryNameItem, string, bool> saveCallback)
         {
             saveHandler = saveCallback;
+            
             return this;
         }
 
         public CategoryNameItemNameRow SetRemoveHandler(UnityAction<CategoryNameItem> removeCallback)
         {
             removeHandler = removeCallback;
+            
             return this;
         }
 

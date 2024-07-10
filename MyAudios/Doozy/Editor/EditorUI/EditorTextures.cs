@@ -1,7 +1,3 @@
-// Copyright (c) 2015 - 2023 Doozy Entertainment. All Rights Reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement
-// A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-
 //.........................
 //.....Generated Class.....
 //.........................
@@ -50,7 +46,6 @@ namespace Doozy.Editor.EditorUI
                     TimeBased,
                     Transformer
                 }
-                
 
                 private static Texture2D s_Bidirectional;
                 public static Texture2D Bidirectional => s_Bidirectional ? s_Bidirectional : s_Bidirectional = GetTexture2D(TextureName.Bidirectional);
@@ -76,10 +71,7 @@ namespace Doozy.Editor.EditorUI
                 public static Texture2D TimeBased => s_TimeBased ? s_TimeBased : s_TimeBased = GetTexture2D(TextureName.TimeBased);
                 private static Texture2D s_Transformer;
                 public static Texture2D Transformer => s_Transformer ? s_Transformer : s_Transformer = GetTexture2D(TextureName.Transformer);
-                
             }
-
-
         }
 
 
@@ -100,14 +92,10 @@ namespace Doozy.Editor.EditorUI
                 {
                     DashboardBackground
                 }
-                
 
                 private static Texture2D s_DashboardBackground;
                 public static Texture2D DashboardBackground => s_DashboardBackground ? s_DashboardBackground : s_DashboardBackground = GetTexture2D(TextureName.DashboardBackground);
-                
             }
-
-
         }
 
 
@@ -144,7 +132,6 @@ namespace Doozy.Editor.EditorUI
                 public static Texture2D ArrowsUpDown => s_ArrowsUpDown ? s_ArrowsUpDown : s_ArrowsUpDown = GetTexture2D(TextureName.ArrowsUpDown);
                 private static Texture2D s_ArrowsUpDownLeftRight;
                 public static Texture2D ArrowsUpDownLeftRight => s_ArrowsUpDownLeftRight ? s_ArrowsUpDownLeftRight : s_ArrowsUpDownLeftRight = GetTexture2D(TextureName.ArrowsUpDownLeftRight);
-                
             }
 
             public static class Icons

@@ -13,14 +13,15 @@ namespace Doozy.Editor.UIManager.ScriptableObjects
     public class UIButtonIdRoamingDatabase : ScriptableObject
     {
         [SerializeField] private string Name;
+        [SerializeField] private UIButtonIdDataGroup Database;
+
+        public UIButtonIdDataGroup database => Database ??= new UIButtonIdDataGroup();
+
         public string databaseName
         {
             get => Name;
             internal set => Name = value.RemoveWhitespaces().RemoveAllSpecialCharacters();
         }
-
-        [SerializeField] private UIButtonIdDataGroup Database;
-        public UIButtonIdDataGroup database => Database ??= new UIButtonIdDataGroup();
 
         public void Validate()
         {

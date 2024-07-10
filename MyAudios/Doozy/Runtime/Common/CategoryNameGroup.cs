@@ -1,8 +1,4 @@
-﻿// Copyright (c) 2015 - 2023 Doozy Entertainment. All Rights Reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement
-// A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Doozy.Runtime.Common.Extensions;
@@ -36,8 +32,10 @@ namespace Doozy.Runtime.Common
             {
                 if (ContainsCategory(defaultCategory))
                     return items.Count < 2;
+                
                 items.Add((T)new CategoryNameItem(defaultCategory, defaultName));
                 CleanDatabase();
+                
                 return items.Count < 2;
             }
         }
@@ -71,9 +69,13 @@ namespace Doozy.Runtime.Common
         {
             bool canAddCategory;
             (canAddCategory, _) = CanAddCategory(category);
-            if (!canAddCategory) return false;
+            
+            if (canAddCategory == false)
+                return false;
+            
             items.Add((T)new CategoryNameItem(category));
             CleanDatabase();
+            
             return true;
         }
 
@@ -194,9 +196,13 @@ namespace Doozy.Runtime.Common
         {
             bool canAddName;
             (canAddName, _) = CanAddName(category, name);
-            if (!canAddName) return false;
+            
+            if (canAddName == false)
+                return false;
+            
             items.Add((T)new CategoryNameItem(category, name));
             CleanDatabase();
+            
             return true;
         }
 
@@ -253,6 +259,7 @@ namespace Doozy.Runtime.Common
             //set.Add(defaultName); //add default name
             foreach (T data in items.Where(data => data.category.Equals(category)))
                 set.Add(data.name);
+            
             return set;
         }
 

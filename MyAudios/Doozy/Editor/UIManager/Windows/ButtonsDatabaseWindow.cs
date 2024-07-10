@@ -36,7 +36,9 @@ namespace Doozy.Editor.UIManager.Windows
         {
             base.OnDestroy();
             var layout = (FluidWindowLayout)windowLayout;
-            if (layout == null) return;
+            
+            if (layout == null)
+                return;
             layout?.OnDestroy();
             layout?.Dispose();
         }

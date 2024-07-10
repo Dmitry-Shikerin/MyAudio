@@ -712,8 +712,10 @@ namespace Doozy.Editor.EditorUI.Components
         public FluidToggleButtonTab AddButton(string buttonText, EditorSelectableColorInfo accentColor, bool connectToMenu = true)
         {
             FluidToggleButtonTab tabButton = GetNewSideMenuTabButton(buttonText, accentColor);
+            
             if (connectToMenu)
                 tabButton.AddToToggleGroup(toggleGroup);
+            
             tabButton.OnClick += () => searchBox?.ClearSearch();
             buttons.Add(tabButton);
             buttonsScrollViewContainer.Add(tabButton);
