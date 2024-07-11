@@ -433,8 +433,11 @@ namespace Doozy.Editor.EditorUI.Components.Internal
 
         public static T SetOnClick<T>(this T target, UnityAction callback) where T : FluidToggle<T>, new()
         {
-            if (callback == null) return target;
+            if (callback == null)
+                return target;
+            
             target.OnClick = callback;
+            
             return target;
         }
 

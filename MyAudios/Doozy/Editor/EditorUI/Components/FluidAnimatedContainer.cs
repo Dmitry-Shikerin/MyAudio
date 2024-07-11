@@ -1,8 +1,4 @@
-﻿// Copyright (c) 2015 - 2023 Doozy Entertainment. All Rights Reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement
-// A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-
-using System;
+﻿using System;
 using Doozy.Editor.Reactor.Internal;
 using Doozy.Editor.UIElements;
 using Doozy.Runtime.Reactor;
@@ -12,7 +8,6 @@ using Doozy.Runtime.Reactor.Reactions;
 using Doozy.Runtime.UIElements.Extensions;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
-// ReSharper disable MemberCanBePrivate.Global
 
 namespace Doozy.Editor.EditorUI.Components
 {
@@ -431,7 +426,10 @@ namespace Doozy.Editor.EditorUI.Components
         public FluidAnimatedContainer ClearContent(bool resetLayout = false)
         {
             fluidContainer.RecycleAndClear();
-            if (resetLayout) fluidContainer.ResetLayout();
+            
+            if (resetLayout)
+                fluidContainer.ResetLayout();
+            
             return this;
         }
 
