@@ -252,7 +252,8 @@ namespace Doozy.Engine.Soundy
         /// <param name="saveAssets"> Write all unsaved asset changes to disk? </param>
         public void RemoveEntriesWithNoAudioClipsReferenced(bool performUndo, bool saveAssets = false)
         {
-            if (performUndo) UndoRecord(UILabels.RemovedEntry);
+            if (performUndo)
+                UndoRecord(UILabels.RemovedEntry);
 
             for (int i = Database.Count - 1; i >= 0; i--)
             {
@@ -450,6 +451,7 @@ namespace Doozy.Engine.Soundy
                 Database = new List<SoundGroupData>(); //sanity check
 
             bool save = false;
+            
             //mark true if any sub asset was destroyed
             foreach (SoundGroupData data in foundAudioData)
             {

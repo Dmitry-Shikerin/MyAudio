@@ -2,51 +2,66 @@
 using Doozy.Editor.EditorUI;
 using Doozy.Editor.EditorUI.Components;
 using Doozy.Editor.EditorUI.Utils;
+using Doozy.Editor.UIElements;
 using Doozy.Engine.Soundy;
 using Doozy.Runtime.UIElements.Extensions;
+using MyAudios.Soundy.DataBases.Domain.Data;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
-using Slider = UnityEngine.UI.Slider;
 
 namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
 {
-    public class SoundGroupVisualElement : VisualElement
+    public class AudioDataVisualElement : VisualElement
     {
         public VisualElement Container { get; private set; }
         public VisualElement SlidersContainer { get; private set; }
         public FluidButton PlayButton { get; private set; }
-        public FluidButton SoundsDataButton { get; private set; }
         public FluidButton DeleteButton { get; private set; }
         public string Label { get; set; }
         public FluidRangeSlider TopSlider { get; private set; }
-        public FluidRangeSlider BotomSlider { get; private set; }
-        public SoundGroupData SoundGroupData { get; set; }
+        public AudioData AudioData { get; set; }
         public bool IsPlaying { get; private set; }
-        public SoundyDataBaseWindowLayout Parent { get; private set; }
+        public SoundGroupData ParentDatabase { get; private set; }
+        public VisualElement TopLine { get; private set; }
+        public VisualElement BotLine { get; set; }
+        public ObjectField ObjectField { get; private set; }
+        public Label LabelField { get; private set; }
 
-        public SoundGroupVisualElement()
+        public AudioDataVisualElement()
         {
         }
 
-        public SoundGroupVisualElement Initialize()
+        public AudioDataVisualElement Initialize()
         {
             Container =
-                DesignUtils.row
+                DesignUtils.column
                     .ResetLayout()
                     .SetStyleColor(EditorColors.Default.Background)
                     .SetStyleAlignContent(Align.Center);
+
+            TopLine = DesignUtils.row;
+            BotLine = DesignUtils.row;
             
-            SoundsDataButton =
-                FluidButton
-                    .Get()
-                    .ResetLayout()
-                    .SetButtonStyle(ButtonStyle.Contained)
-                    .SetIcon(EditorSpriteSheets.EditorUI.Icons.Sound)
-                    .SetStyleMinWidth(130)
-                    .SetStyleMaxWidth(130)
-                    .SetLabelText(Label);
+            LabelField = DesignUtils
+                .NewLabel()
+                .SetText("AudioClip");
+            LabelField.SetStyleColor(EditorColors.Default.WindowHeaderTitle);
+            
+            ObjectField = new ObjectField();
+            SerializedObject audioDatSerializedObject =
+                new SerializedObject(AudioData.AudioClip);
+            ObjectField.RegisterCallback<ChangeEvent<Object>>(
+                (evt) =>
+                    AudioData.AudioClip = evt.newValue != null
+                        ? evt.newValue as AudioClip
+                        : null);
+            ObjectField
+                .SetObjectType(typeof(AudioClip))
+                .BindProperty(audioDatSerializedObject);
+            ObjectField.SetValueWithoutNotify(AudioData.AudioClip);
             
             PlayButton =
                 FluidButton
@@ -62,35 +77,17 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
             SlidersContainer = DesignUtils.column;
             
             TopSlider = new FluidRangeSlider().SetStyleMaxHeight(18);
-            TopSlider.slider.highValue = SoundGroupData?.Sounds.FirstOrDefault() != null 
-                ? SoundGroupData.Sounds.First().AudioClip.length 
+            TopSlider.slider.highValue = AudioData.AudioClip != null 
+                ? AudioData.AudioClip.length 
                 : default;
             
             TopSlider
                 .slider
                 .SetStyleBorderColor(EditorColors.EditorUI.Orange)
                 .SetStyleColor(EditorColors.EditorUI.Orange);
-            // TopSlider.slider.RegisterCallback<Slider.SliderEvent>(value =>
-            // {
-            //     Debug.Log($"Mouse position {value.mousePosition}");
-            //     // StopSound();
-            //     // TopSlider.slider.HandleEvent(value);
-            // });
             
-            BotomSlider = new FluidRangeSlider().SetStyleMaxHeight(18);
-            BotomSlider.slider.highValue = SoundGroupData?.Sounds.FirstOrDefault() != null 
-                ? SoundGroupData.Sounds.First().AudioClip.length 
-                : default;
-            BotomSlider
-                .RegisterCallback<ChangeEvent<float>>(value =>
-                {
-                    Object.FindObjectOfType<AudioSource>().time = value.newValue;
-                });
-
             SlidersContainer
-                .AddChild(TopSlider)
-                // .AddChild(BotomSlider)
-                ;
+                .AddChild(TopSlider);
             
             DeleteButton =
                 FluidButton
@@ -100,12 +97,21 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
                     .SetIcon(EditorSpriteSheets.EditorUI.Icons.Minus)
                 ;
             
-            Container
-                .AddChild(SoundsDataButton)
+            TopLine
                 .AddChild(PlayButton)
                 .AddChild(SlidersContainer)
+                ;
+
+            BotLine
+                .AddChild(LabelField)
+                .AddChild(ObjectField)
                 .AddChild(DeleteButton)
                 ;
+
+            Container
+                .AddChild(TopLine)
+                .AddSpaceBlock()
+                .AddChild(BotLine);
 
             Add(Container);
 
@@ -127,13 +133,13 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
 
         public void PlaySound()
         {
-            Parent.StopAllSounds();
+            // Parent.StopAllSounds();
             EditorApplication.update += UpdateSliderValue;
             IsPlaying = true;
             PlayButton.SetIcon(EditorSpriteSheets.EditorUI.Icons.Stop);
-            SoundGroupData.PlaySoundPreview(
+            ParentDatabase.PlaySoundPreview(
                 Object.FindObjectOfType<AudioSource>(),
-                null, SoundGroupData.Sounds.First().AudioClip);
+                null, AudioData.AudioClip);
         }
 
         public void StopSound()
@@ -141,34 +147,33 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
             EditorApplication.update -= UpdateSliderValue;
             IsPlaying = false;
             PlayButton.SetIcon(EditorSpriteSheets.EditorUI.Icons.Play);
-            SoundGroupData.StopSoundPreview(
+            ParentDatabase.StopSoundPreview(
                 Object.FindObjectOfType<AudioSource>());
             TopSlider.slider.value = 0;
         }
         
-        public SoundGroupVisualElement SetLabelText(string labelText)
+        public AudioDataVisualElement SetLabelText(string labelText)
         {
             Label = labelText;
-            SoundsDataButton.SetLabelText(labelText);
-            
-            return this;
-        }
-        
-        public SoundGroupVisualElement SetParent(SoundyDataBaseWindowLayout parentWindow)
-        {
-            Parent = parentWindow;
             
             return this;
         }
 
-        public SoundGroupVisualElement SetSoundGroup(SoundGroupData soundGroupData)
+        public AudioDataVisualElement SetSoundGroupData(SoundGroupData parentData)
         {
-            SoundGroupData = soundGroupData;
+            ParentDatabase = parentData;
+            
+            return this;
+        }
+
+        public AudioDataVisualElement SetAudioData(AudioData audioData)
+        {
+            AudioData = audioData;
             
             return this;
         }
         
-        public SoundGroupVisualElement SetPlayOnClick(UnityAction callback)
+        public AudioDataVisualElement SetPlayOnClick(UnityAction callback)
         {
             PlayButton.SetOnClick(callback);
             
