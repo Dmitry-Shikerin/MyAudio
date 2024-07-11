@@ -133,8 +133,7 @@ namespace Doozy.Editor.EditorUI.Components
 
             sliderDragger.RegisterCallback<PointerEnterEvent>(evt => sliderDraggerBorderReaction?.Play());
             sliderDragger.RegisterCallback<PointerLeaveEvent>(evt => sliderDraggerBorderReaction?.Play(PlayDirection.Reverse));
-
-
+            
             resetToValueReaction =
                 Reaction
                     .Get<FloatReaction>()
@@ -153,19 +152,25 @@ namespace Doozy.Editor.EditorUI.Components
 
             slider.RegisterValueChangedCallback(evt =>
             {
-                if (evt?.newValue == null) return;
+                if (evt?.newValue == null)
+                    return;
+                
                 float value = evt.newValue;
 
                 bool snappedToValue = false;
+                
                 if (snapToValues)
                 {
                     foreach (float snapValue in snapValues)
+                    {
                         if (Math.Abs(snapValue - value) <= snapValuesInterval)
                         {
                             value = snapValue;
                             snappedToValue = true;
+                            
                             break;
                         }
+                    }
                 }
 
                 if (!snappedToValue && snapToInterval)
@@ -261,8 +266,13 @@ namespace Doozy.Editor.EditorUI.Components
         internal void UpdateSnapValuesIndicators()
         {
             snapValuesIndicatorsContainer.Clear();
-            if (!snapToValues) return;
-            if (float.IsNaN(sliderTrackerWidth)) return;
+            
+            if (!snapToValues)
+                return;
+            
+            if (float.IsNaN(sliderTrackerWidth))
+                return;
+            
             foreach (float snapValue in CleanValues(snapValues))
             {
                 float normalizedValue = (snapValue - slider.lowValue) / length;
@@ -384,6 +394,7 @@ namespace Doozy.Editor.EditorUI.Components
             target.snapValuesInterval = snapValuesInterval;
             target.snapToValues = true;
             target.UpdateSnapValuesIndicators();
+            
             return target;
         }
 
@@ -393,6 +404,7 @@ namespace Doozy.Editor.EditorUI.Components
         public static T SetAutoResetToValue<T>(this T target, bool value) where T : FluidRangeSlider
         {
             target.autoResetToValue = value;
+            
             return target;
         }
 
@@ -403,6 +415,7 @@ namespace Doozy.Editor.EditorUI.Components
         {
             target.autoResetValue = value;
             target.autoResetToValue = true;
+            
             return target;
         }
 
@@ -413,6 +426,7 @@ namespace Doozy.Editor.EditorUI.Components
         {
             fluidRangeSlider.slider.lowValue = lowValue;
             fluidRangeSlider.lowValueLabel.text = lowValue.ToString(CultureInfo.InvariantCulture);
+            
             return fluidRangeSlider;
         }
 
@@ -454,6 +468,7 @@ namespace Doozy.Editor.EditorUI.Components
         public static T SetSliderDirection<T>(this T fluidRangeSlider, SliderDirection direction) where T : FluidRangeSlider
         {
             fluidRangeSlider.slider.direction = direction;
+            
             return fluidRangeSlider;
         }
     }

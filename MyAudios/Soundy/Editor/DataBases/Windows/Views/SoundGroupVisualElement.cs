@@ -36,7 +36,8 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
                 DesignUtils.row
                     .ResetLayout()
                     .SetStyleColor(EditorColors.Default.Background)
-                    .SetStyleAlignContent(Align.Center);
+                    .SetStyleAlignContent(Align.Center)
+                    .SetStyleBackgroundColor(EditorColors.Default.Background);
             
             SoundsDataButton =
                 FluidButton
@@ -46,7 +47,8 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
                     .SetIcon(EditorSpriteSheets.EditorUI.Icons.Sound)
                     .SetStyleMinWidth(130)
                     .SetStyleMaxWidth(130)
-                    .SetLabelText(Label);
+                    .SetLabelText(Label)
+                    .SetOnClick(() => SoundGroupEditorWindow.Open(SoundGroupData));
             
             PlayButton =
                 FluidButton

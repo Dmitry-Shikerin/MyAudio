@@ -58,9 +58,9 @@ MonoBehaviour:
   ResetSequenceAfterInactiveTime: 0
   SequenceResetTime: 5
   Sounds:
-  - AudioClip: {fileID: 8300000, guid: 6dda42685485b164aaf2161781239876, type: 3}
+  - AudioClip: {fileID: 8300000, guid: d7b48b5e162adc74cb423ea0fdfd12be, type: 3}
     Weight: 0
-  - AudioClip: {fileID: 8300000, guid: fb01bdc71df5ea44999328697e124c1c, type: 3}
+  - AudioClip: {fileID: 8300000, guid: 8ab8a6d8aa0a5294fa88e752b71fddf5, type: 3}
     Weight: 0
 --- !u!114 &11400000
 MonoBehaviour:

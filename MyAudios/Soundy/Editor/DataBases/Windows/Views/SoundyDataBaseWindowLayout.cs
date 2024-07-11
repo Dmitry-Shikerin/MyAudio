@@ -55,7 +55,8 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
         {
             foreach (SoundDatabase soundDatabase in Database.SoundDatabases)
             {
-                FluidToggleButtonTab button = sideMenu
+                FluidToggleButtonTab button = 
+                    sideMenu
                     .AddButton(soundDatabase.DatabaseName, EditorSelectableColors.EditorUI.Orange);
                     button
                     .AddOnClick(() => UpdateDataBase(soundDatabase));

@@ -40,7 +40,8 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
                 DesignUtils.column
                     .ResetLayout()
                     .SetStyleColor(EditorColors.Default.Background)
-                    .SetStyleAlignContent(Align.Center);
+                    .SetStyleAlignContent(Align.Center)
+                    .SetStyleBackgroundColor(EditorColors.Default.Background);
 
             TopLine = DesignUtils.row;
             BotLine = DesignUtils.row;
@@ -48,9 +49,12 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
             LabelField = DesignUtils
                 .NewLabel()
                 .SetText("AudioClip");
-            LabelField.SetStyleColor(EditorColors.Default.WindowHeaderTitle);
+            LabelField
+                .SetStyleColor(EditorColors.Default.WindowHeaderTitle)
+                .SetStyleMinWidth(70);
             
             ObjectField = new ObjectField();
+            ObjectField.SetStyleFlexGrow(1);
             SerializedObject audioDatSerializedObject =
                 new SerializedObject(AudioData.AudioClip);
             ObjectField.RegisterCallback<ChangeEvent<Object>>(
@@ -105,6 +109,7 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
             BotLine
                 .AddChild(LabelField)
                 .AddChild(ObjectField)
+                .AddChild(new VisualElement().SetStyleMinWidth(7))
                 .AddChild(DeleteButton)
                 ;
 
