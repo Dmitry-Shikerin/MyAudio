@@ -4,6 +4,7 @@ using Doozy.Editor.EditorUI.Components;
 using Doozy.Editor.EditorUI.Utils;
 using Doozy.Engine.Soundy;
 using Doozy.Runtime.UIElements.Extensions;
+using MyAudios.Soundy.Sources.DataBases.Domain.Data;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
@@ -64,34 +65,33 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
             SlidersContainer = DesignUtils.column;
             
             TopSlider = new FluidRangeSlider().SetStyleMaxHeight(18);
-            TopSlider.slider.highValue = SoundGroupData?.Sounds.FirstOrDefault() != null 
-                ? SoundGroupData.Sounds.First().AudioClip.length 
-                : default;
+            // AudioClip audioClip = AudioData.AudioClip ?? 
+            //                       Resources.Load<AudioClip>("MyAudios/Soundy/Resources/Soundy/Plugs/Christmas Villain Loop");;
+
+            float sliderValue = 0;
+
+            if (SoundGroupData.Sounds.FirstOrDefault() != null)
+            {
+                if (SoundGroupData.Sounds.FirstOrDefault().AudioClip != null)
+                {
+                    sliderValue = SoundGroupData.Sounds.First().AudioClip.length;
+                }
+            }
+
+            TopSlider.slider.highValue = sliderValue;
+            
+            TopSlider.highValueLabel.text = $"{TopSlider.slider.highValue:F2}";
             
             TopSlider
                 .slider
                 .SetStyleBorderColor(EditorColors.EditorUI.Orange)
                 .SetStyleColor(EditorColors.EditorUI.Orange);
-            // TopSlider.slider.RegisterCallback<Slider.SliderEvent>(value =>
-            // {
-            //     Debug.Log($"Mouse position {value.mousePosition}");
-            //     // StopSound();
-            //     // TopSlider.slider.HandleEvent(value);
-            // });
+            TopSlider.slider.RegisterCallback<ChangeEvent<float>>(value =>
+            {
+            });
             
-            BotomSlider = new FluidRangeSlider().SetStyleMaxHeight(18);
-            BotomSlider.slider.highValue = SoundGroupData?.Sounds.FirstOrDefault() != null 
-                ? SoundGroupData.Sounds.First().AudioClip.length 
-                : default;
-            BotomSlider
-                .RegisterCallback<ChangeEvent<float>>(value =>
-                {
-                    Object.FindObjectOfType<AudioSource>().time = value.newValue;
-                });
-
             SlidersContainer
                 .AddChild(TopSlider)
-                // .AddChild(BotomSlider)
                 ;
             
             DeleteButton =
@@ -104,8 +104,11 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
             
             Container
                 .AddChild(SoundsDataButton)
+                .AddSpace(4)
                 .AddChild(PlayButton)
+                .AddSpace(4)
                 .AddChild(SlidersContainer)
+                .AddSpace(4)
                 .AddChild(DeleteButton)
                 ;
 
@@ -173,6 +176,13 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
         public SoundGroupVisualElement SetPlayOnClick(UnityAction callback)
         {
             PlayButton.SetOnClick(callback);
+            
+            return this;
+        }
+        
+        public SoundGroupVisualElement SetDeleteOnClick(UnityAction callback)
+        {
+            DeleteButton.SetOnClick(callback);
             
             return this;
         }

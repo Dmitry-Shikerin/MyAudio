@@ -1,5 +1,4 @@
 using MyAudios.MyUiFramework.Extensions;
-using MyAudios.MyUiFramework.Settings;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -180,7 +179,7 @@ namespace MyAudios.MyUiFramework.Utils
         public static void SaveAssets()
         {
 #if UNITY_EDITOR
-            DoozySettings.Instance.AssetDatabaseSaveAssetsNeeded = false;
+            // DoozySettings.Instance.AssetDatabaseSaveAssetsNeeded = false;
             UnityEditor.AssetDatabase.SaveAssets();
 #endif
         }
@@ -194,7 +193,7 @@ namespace MyAudios.MyUiFramework.Utils
             
 #if UNITY_EDITOR
             UnityEditor.EditorUtility.SetDirty(target);
-            DoozySettings.Instance.AssetDatabaseSaveAssetsNeeded = true;
+            // DoozySettings.Instance.AssetDatabaseSaveAssetsNeeded = true;
 #endif
         }
 
@@ -210,8 +209,8 @@ namespace MyAudios.MyUiFramework.Utils
             
             if (saveAssets)
                 SaveAssets();
-            
-            else DoozySettings.Instance.AssetDatabaseSaveAssetsNeeded = true;
+            //
+            // else DoozySettings.Instance.AssetDatabaseSaveAssetsNeeded = true;
         }
 
         /// <summary> [Editor Only] Records any changes done on the object after the RecordObject function </summary>

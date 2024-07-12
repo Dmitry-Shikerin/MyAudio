@@ -37,7 +37,8 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows
                 new SoundyDataBaseWindowLayout()
                     .SetDatabase(_database)
                     .SetPlugAudio(_plugAudio)
-                    .AfterInitialize();
+                    .AfterInitialize()
+                    .ShowDataBase();
             
             root
                 .Add(windowLayout);

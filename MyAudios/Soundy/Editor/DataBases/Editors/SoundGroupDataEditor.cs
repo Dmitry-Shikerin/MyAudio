@@ -33,8 +33,10 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors
         public SerializedProperty SequenceResetTime { get; set; }
 
         public VisualElement Root { get; private set; }
+        public ScrollView AudioDataContent { get; set; }
         private FluidComponentHeader Header { get; set; }
-        
+
+
         public override VisualElement CreateInspectorGUI()
         {
             FindProperties();
@@ -326,23 +328,6 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors
             spatialBlendButtonTab.AddToToggleGroup(slidersToggleGroup);
             slidersToggleGroup.RegisterToggle(spatialBlendButtonTab);
 
-                
-            Action changeSlider = SoundGroupData.Mode switch
-            {
-                SoundGroupData.PlayMode.Random => () =>
-                {
-                    
-                },
-                SoundGroupData.PlayMode.Sequence => () =>
-                {
-                    slidersContainer.ClearContent();
-                    slidersContainer.AddContent(pitchRow);
-                },
-                _ => throw new ArgumentOutOfRangeException()
-            };
-
-            changeSlider?.Invoke();
-
 
             VisualElement slidersToggleGroupRow = DesignUtils
                 .row
@@ -353,34 +338,64 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors
                 .AddSpaceBlock()
                 .AddChild(slidersToggleGroupRow)
                 .AddChild(slidersContainer);
-            
-            Root
-                .AddChild(Header)
-                .AddChild(labelRow)
-                .AddSpaceBlock(2)
-                .AddChild(playModeRow)
-                .AddSpaceBlock(2)
-                .AddChild(loopRow)
-                .AddSpaceBlock(2)
-                .AddChild(slidersToggleGroup)
-                .AddSpaceBlock(2)
-                // .AddChild(volumeRow)
-                // .AddSpaceBlock(2)
-                // .AddChild(pitchRow)
-                // .AddSpaceBlock(2)
-                // .AddChild(spatialBlendRow)
-                // .AddSpaceBlock(2)
+
+            NewSoundContentVisualElement newSoundContentVisualElement = 
+                new NewSoundContentVisualElement()
+                    .SetOnClick(() =>
+                    {
+                        SoundGroupData.AddAudioData();
+                        RefreshAudioData();
+                    });
+            AudioDataContent = 
+                new ScrollView()
+                    .ResetLayout()
+                    .SetStyleFlexGrow(1)
+                    .SetStyleFlexShrink(1);
+
+            VisualElement topContent = 
+                DesignUtils
+                    .column
+                    .SetStyleMinHeight(300)
+                    .AddChild(Header)
+                    .AddChild(labelRow)
+                    .AddSpaceBlock(2)
+                    .AddChild(playModeRow)
+                    .AddSpaceBlock(2)
+                    .AddChild(loopRow)
+                    .AddSpaceBlock(2)
+                    .AddChild(slidersToggleGroup)
+                    .AddSpaceBlock(2)
+                    .AddChild(newSoundContentVisualElement)
+                    .AddSpaceBlock(2)
                 ;
 
+            Root
+                .AddChild(topContent)
+                .AddSpaceBlock(2)
+                .AddChild(AudioDataContent)
+                ;
+
+                RefreshAudioData();
+        }
+
+        public void RefreshAudioData()
+        {
+            AudioDataContent.Clear();
+            
             foreach (AudioData audioData in SoundGroupData.Sounds)
             {
                 AudioDataVisualElement audioDataVisualElement =
                     new AudioDataVisualElement()
                         .SetAudioData(audioData)
                         .SetSoundGroupData(SoundGroupData)
-                        .Initialize();
+                        .Initialize()
+                        .SetDeleteOnClick(() =>
+                        {
+                            SoundGroupData.RemoveAudioData(audioData);
+                            RefreshAudioData();
+                        });
                 
-                Root
+                AudioDataContent
                     .AddChild(audioDataVisualElement)
                     .AddSpaceBlock();
             }

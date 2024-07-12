@@ -194,6 +194,15 @@ namespace Doozy.Engine.Soundy
             return false;
         }
 
+        public void AddAudioData(AudioClip audioClip = null)
+        {
+            Sounds.Add(new AudioData(audioClip));
+        }
+
+        public void RemoveAudioData(AudioData audioData)
+        {
+            Sounds.Remove(audioData);
+        }
 
         /// <summary> Plays one of the sounds from the AudioClip list, with the set randomized values, and also tells the controller that it has a target transform it needs to follow while playing </summary>
         /// <param name="followTarget"> The target transform that the sound will follow while playing </param>

@@ -2,18 +2,24 @@
 using Doozy.Editor.EditorUI.Components;
 using Doozy.Editor.EditorUI.Utils;
 using Doozy.Runtime.UIElements.Extensions;
+using UnityEngine.Events;
 using UnityEngine.UIElements;
 
 namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
 {
-    public class NewSoundGroupVisualElement : VisualElement
+    public class NewSoundContentVisualElement : VisualElement
     {
         public VisualElement Container { get; private set; }
         public TextField SoundGroupTextField { get; private set; }
         public SoundyDataBaseWindowLayout Parent { get; private set; }
         public FluidButton CreateButton { get; private set; }
 
-        public NewSoundGroupVisualElement Initialize()
+        public NewSoundContentVisualElement()
+        {
+            Initialize();
+        }
+        
+        public NewSoundContentVisualElement Initialize()
         {
             Container =
                 DesignUtils
@@ -24,8 +30,7 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
             SoundGroupTextField = new TextField();
             //Потом включить
             SoundGroupTextField
-                .SetStyleFlexGrow(1)
-                .SetEnabled(false);
+                .SetStyleFlexGrow(1);
             CreateButton = new FluidButton();
             CreateButton
                 .SetButtonStyle(ButtonStyle.Contained)
@@ -42,10 +47,17 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
             return this;
         }
 
-        public NewSoundGroupVisualElement SetParent(SoundyDataBaseWindowLayout parentWindow)
+        public NewSoundContentVisualElement SetParent(SoundyDataBaseWindowLayout parentWindow)
         {
             Parent = parentWindow;
 
+            return this;
+        }
+        
+        public NewSoundContentVisualElement SetOnClick(UnityAction callback)
+        {
+            CreateButton.SetOnClick(callback);
+            
             return this;
         }
     }

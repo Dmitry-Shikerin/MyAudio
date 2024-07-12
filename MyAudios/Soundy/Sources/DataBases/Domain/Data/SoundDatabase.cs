@@ -156,24 +156,6 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         public void Initialize(bool saveAssets) =>
             RefreshDatabase(false, saveAssets);
 
-        /// <summary> Refreshes the entire database by removing empty, duplicate and unnamed entries, sorting the database and updating the sound names list </summary>
-        /// <param name="performUndo"> Record changes? </param>
-        /// <param name="saveAssets"> Write all unsaved asset changes to disk? </param>
-        public void RefreshDatabase(bool performUndo, bool saveAssets)
-        {
-            if (performUndo)
-                UndoRecord(SoundDataBaseConst.RefreshDatabaseConst);
-            
-            bool addedTheNoSoundSoundGroup = AddNoSound();
-            RemoveUnreferencedData();
-            RemoveUnnamedEntries(false);
-            RemoveDuplicateEntries(false);
-            bool foundDataWithWrongDatabaseName = CheckAllDataForCorrectDatabaseName(false);
-            Sort(false);
-            UpdateSoundNames(false);
-            SetDirty(saveAssets && (addedTheNoSoundSoundGroup || foundDataWithWrongDatabaseName));
-        }
-
         /// <summary> Iterates through the database to look for the data. If found, removes the entry and returns TRUE </summary>
         /// <param name="data"> SoundGroupData to search for </param>
         /// <param name="showDialog"> Should a display dialog be shown before executing the action </param>
@@ -186,14 +168,15 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
             if (Contains(data) == false)
                 return false;
 
-            AssetDatabase.RemoveObjectFromAsset(data);
-
             for (int i = Database.Count - 1; i >= 0; i--)
             {
                 if (Database[i] == data)
                 {
                     if (data != null)
+                    {
+                        AssetDatabase.RemoveObjectFromAsset(data);
                         DestroyImmediate(data, true);
+                    }
 
                     Database.RemoveAt(i);
 
@@ -205,6 +188,24 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
             SetDirty(saveAssets);
 
             return true;
+        }
+
+        /// <summary> Refreshes the entire database by removing empty, duplicate and unnamed entries, sorting the database and updating the sound names list </summary>
+        /// <param name="performUndo"> Record changes? </param>
+        /// <param name="saveAssets"> Write all unsaved asset changes to disk? </param>
+        public void RefreshDatabase(bool performUndo, bool saveAssets)
+        {
+            if (performUndo)
+                UndoRecord(SoundDataBaseConst.RefreshDatabaseConst);
+
+            bool addedTheNoSoundSoundGroup = AddNoSound();
+            RemoveUnreferencedData();
+            RemoveUnnamedEntries(false);
+            RemoveDuplicateEntries(false);
+            bool foundDataWithWrongDatabaseName = CheckAllDataForCorrectDatabaseName(false);
+            Sort(false);
+            UpdateSoundNames(false);
+            SetDirty(saveAssets && (addedTheNoSoundSoundGroup || foundDataWithWrongDatabaseName));
         }
 
         /// <summary> Removes any entries that have no AudioClip referenced </summary>
@@ -225,7 +226,7 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
                 if (data.Sounds == null)
                 {
                     Database.RemoveAt(i);
-                    
+
                     continue;
                 }
 
@@ -249,7 +250,7 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         {
             if (performUndo)
                 UndoRecord(SoundDataBaseConst.RemovedDuplicateEntriesConst);
-            
+
             Database = Database.GroupBy(data => data.SoundName)
                 .Select(n => n.First())
                 .ToList();
@@ -264,7 +265,7 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         {
             if (performUndo)
                 UndoRecord(SoundDataBaseConst.RemoveEmptyEntriesConst);
-            
+
             Database = Database.Where(data => !string.IsNullOrEmpty(data.SoundName.Trim())).ToList();
             SetDirty(saveAssets);
         }
@@ -281,7 +282,7 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         {
             if (performUndo)
                 UndoRecord(SoundDataBaseConst.SortDatabaseConst);
-            
+
             Database = Database.OrderBy(data => data.SoundName).ToList();
 
             //remove the 'No Sound' entry wherever it is
@@ -325,6 +326,7 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
 #endif
             SoundNames.Clear();
             SoundNames.Add(SoundyManagerConstant.NoSound);
+
             var list = new List<string>();
 
             foreach (SoundGroupData data in Database)
@@ -405,7 +407,7 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
 
             if (objects == null)
                 return;
-            
+
             //make sure they are not null
             List<SoundGroupData>
                 foundAudioData =
@@ -415,7 +417,7 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
                 Database = new List<SoundGroupData>(); //sanity check
 
             bool save = false;
-            
+
             //mark true if any sub asset was destroyed
             foreach (SoundGroupData data in foundAudioData)
             {

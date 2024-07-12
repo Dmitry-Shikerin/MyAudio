@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Doozy.Editor.EditorUI;
 using Doozy.Editor.EditorUI.Components;
 using Doozy.Editor.EditorUI.Utils;
@@ -11,6 +12,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
+using Object = UnityEngine.Object;
 
 namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
 {
@@ -55,17 +57,18 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
             
             ObjectField = new ObjectField();
             ObjectField.SetStyleFlexGrow(1);
-            SerializedObject audioDatSerializedObject =
-                new SerializedObject(AudioData.AudioClip);
+            Object audioClip = AudioData.AudioClip ?? 
+                                  null;
+            // SerializedObject audioDatSerializedObject =
+            //     new SerializedObject(audioClip);
             ObjectField.RegisterCallback<ChangeEvent<Object>>(
                 (evt) =>
-                    AudioData.AudioClip = evt.newValue != null
-                        ? evt.newValue as AudioClip
-                        : null);
+                    AudioData.AudioClip = evt.newValue as AudioClip);
             ObjectField
                 .SetObjectType(typeof(AudioClip))
-                .BindProperty(audioDatSerializedObject);
-            ObjectField.SetValueWithoutNotify(AudioData.AudioClip);
+                // .BindProperty(audioDatSerializedObject);
+                ;
+            ObjectField.SetValueWithoutNotify(audioClip);
             
             PlayButton =
                 FluidButton
@@ -181,6 +184,13 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
         public AudioDataVisualElement SetPlayOnClick(UnityAction callback)
         {
             PlayButton.SetOnClick(callback);
+            
+            return this;
+        }
+        
+        public AudioDataVisualElement SetDeleteOnClick(UnityAction callback)
+        {
+            DeleteButton.SetOnClick(callback);
             
             return this;
         }

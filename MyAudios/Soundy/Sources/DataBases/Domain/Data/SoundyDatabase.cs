@@ -98,7 +98,7 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         /// <param name="showDialog"> Should a display dialog be shown before executing the action </param>
         /// <param name="saveAssets"> Write all unsaved asset changes to disk? </param>
         public bool CreateSoundDatabase(string databaseName, bool showDialog = false, bool saveAssets = false) =>
-            CreateSoundDatabase(DoozyPath.GetDataPath(DoozyPath.ComponentName.Soundy), databaseName, showDialog, saveAssets);
+            CreateSoundDatabase(SoundDataBaseConst.ResourcesPath, databaseName, showDialog, saveAssets);
 
         /// <summary> Creates a new SoundDatabase asset, at the given relative path, with the given database name and adds a reference to it to the database </summary>
         /// <param name="relativePath"> Path where to create the theme asset </param>
