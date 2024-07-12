@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Doozy.Engine;
 using MyAudios.MyUiFramework.Enums;
+using MyAudios.MyUiFramework.Scripts;
 using UnityEngine;
 
 namespace MyAudios.Scripts

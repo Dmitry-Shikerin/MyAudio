@@ -1,4 +1,3 @@
-using Doozy.Engine.Utils;
 using MyAudios.MyUiFramework.Events;
 using MyAudios.MyUiFramework.Settings;
 using MyAudios.MyUiFramework.Utils;
@@ -14,7 +13,7 @@ namespace MyAudios.MyUiFramework.Scripts
     ///     When triggered it executes a set of callbacks.
     /// </summary>
     [AddComponentMenu(MenuUtils.GameEventListener_AddComponentMenu_MenuName, MenuUtils.GameEventListener_AddComponentMenu_Order)]
-    [DefaultExecutionOrder(DoozyExecutionOrder.GAME_EVENT_LISTENER)]
+    [DefaultExecutionOrder(SoundyExecutionOrder.GameEventListener)]
     public class GameEventListener : MonoBehaviour
     {
         #region UNITY_EDITOR

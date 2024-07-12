@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Doozy.Engine.Attributes;
-using Doozy.Engine.Utils;
+using MyAudios.MyUiFramework.Attributes;
 using MyAudios.MyUiFramework.Utils;
 using MyAudios.Scripts;
 using MyAudios.Soundy.Managers;

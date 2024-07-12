@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Doozy.Engine.Soundy;
-using Doozy.Engine.Utils;
-using MyAudios.MyUiFramework.Settings;
+using MyAudios.MyUiFramework.Utils;
 using MyAudios.Soundy.Sources.AudioPoolers.Controllers;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -14,7 +12,7 @@ namespace MyAudios.Soundy.Sources.AudioControllers.Controllers
     ///     This is an audio controller used by the Soundy system to play sounds. Each sound has its own controller that handles it.
     ///     Every SoundyController is also added to the SoundyPooler to work seamlessly with the dynamic sound pooling system.
     /// </summary>
-    [DefaultExecutionOrder(DoozyExecutionOrder.SOUNDY_CONTROLLER)]
+    [DefaultExecutionOrder(SoundyExecutionOrder.SoundyController)]
     public class SoundyController : MonoBehaviour
     {
         #region Static Properties
@@ -24,7 +22,10 @@ namespace MyAudios.Soundy.Sources.AudioControllers.Controllers
 
         /// <summary> Global variable that keeps track if all controllers are paused or not </summary>
         private static bool s_pauseAllControllers;
-        
+
+        /// <summary> Global variable that keeps track if all controllers are muted or not </summary>
+        private static bool s_muteAllControllers;
+
         /// <summary> Global toggle to pause / unpause all controllers </summary>
         public static bool PauseAllControllers
         {
@@ -43,9 +44,6 @@ namespace MyAudios.Soundy.Sources.AudioControllers.Controllers
             }
         }
 
-        /// <summary> Global variable that keeps track if all controllers are muted or not </summary>
-        private static bool s_muteAllControllers;
-        
         /// <summary> Global toggle to mute / unmute all controllers </summary>
         public static bool MuteAllControllers
         {
@@ -65,92 +63,93 @@ namespace MyAudios.Soundy.Sources.AudioControllers.Controllers
         }
 
         #endregion
+        
+        #region Private Variables
 
+        /// <summary> Internal variable that keeps a reference to the self Transform </summary>
+        private Transform _transform;
+
+        /// <summary> Internal variable that keeps a reference to the current follow target </summary>
+        private Transform _followTarget;
+
+        /// <summary> Internal variable that keeps a reference to the target AudioSource </summary>
+        private AudioSource _audioSource;
+
+        /// <summary> Internal variable that keeps track if this controller is in use or idle </summary>
+        private bool _inUse;
+
+        /// <summary> Internal variable that keeps track of the currently playing AudioClip play progress </summary>
+        private float _playProgress;
+
+        /// <summary> Internal variable that keeps track if this controller is paused or not </summary>
+        private bool _isPaused;
+
+        /// <summary> Internal variable that keeps track if this controller is muted or not </summary>
+        private bool _isMuted;
+
+        /// <summary> Internal variable that keeps track of when was the last time this controller was used </summary>
+        private float _lastPlayedTime;
+
+        /// <summary> Internal variable that keeps track if the Play() method has been called on this controller. It's set to FALSE when the Stop() method is called. </summary>
+        private bool _isPlaying;
+
+        /// <summary> Internal variable used to detect then Unity Pauses this controller's AudioSource (this happens on app switch for example and Unity does not give any info about this happening) </summary>
+        private bool _autoPaused;
+
+        private bool _muted;
+        private bool _paused;
+
+        #endregion
+        
         #region Properties
 
         /// <summary> Target AudioSource component </summary>
         public AudioSource AudioSource
         {
-            get => m_audioSource;
-            private set => m_audioSource = value;
+            get => _audioSource;
+            private set => _audioSource = value;
         }
 
         /// <summary> Keeps track if this controller is in use or idle </summary>
         public bool InUse
         {
-            get => m_inUse;
-            private set => m_inUse = value;
+            get => _inUse;
+            private set => _inUse = value;
         }
 
         /// <summary> Keeps track of the currently playing AudioClip play progress </summary>
         public float PlayProgress
         {
-            get => m_playProgress;
-            private set => m_playProgress = value;
+            get => _playProgress;
+            private set => _playProgress = value;
         }
 
         /// <summary> Keeps track if this controller is paused or not </summary>
         public bool IsPaused
         {
-            get => m_isPaused || s_pauseAllControllers;
-            private set => m_isPaused = value;
+            get => _isPaused || s_pauseAllControllers;
+            private set => _isPaused = value;
         }
 
         /// <summary> Keeps track if this controller is muted or not </summary>
         public bool IsMuted
         {
-            get => m_isMuted || MuteAllControllers;
-            private set => m_isMuted = value;
+            get => _isMuted || MuteAllControllers;
+            private set => _isMuted = value;
         }
 
         /// <summary> Keeps track of when was the last time this controller was used (info needed for the dynamic pooling system) </summary>
         public float LastPlayedTime
         {
-            get => m_lastPlayedTime;
-            private set => m_lastPlayedTime = value;
+            get => _lastPlayedTime;
+            private set => _lastPlayedTime = value;
         }
 
         /// <summary> Returns the duration since this controller has been used last </summary>
         public float IdleDuration => Time.realtimeSinceStartup - LastPlayedTime;
 
         #endregion
-
-        #region Private Variables
-
-        /// <summary> Internal variable that keeps a reference to the self Transform </summary>
-        private Transform m_transform;
-
-        /// <summary> Internal variable that keeps a reference to the current follow target </summary>
-        private Transform m_followTarget;
-
-        /// <summary> Internal variable that keeps a reference to the target AudioSource </summary>
-        private AudioSource m_audioSource;
-
-        /// <summary> Internal variable that keeps track if this controller is in use or idle </summary>
-        private bool m_inUse;
-
-        /// <summary> Internal variable that keeps track of the currently playing AudioClip play progress </summary>
-        private float m_playProgress;
-
-        /// <summary> Internal variable that keeps track if this controller is paused or not </summary>
-        private bool m_isPaused;
-
-        /// <summary> Internal variable that keeps track if this controller is muted or not </summary>
-        private bool m_isMuted;
-
-        /// <summary> Internal variable that keeps track of when was the last time this controller was used </summary>
-        private float m_lastPlayedTime;
-
-        /// <summary> Internal variable that keeps track if the Play() method has been called on this controller. It's set to FALSE when the Stop() method is called. </summary>
-        private bool m_isPlaying;
-
-        /// <summary> Internal variable used to detect then Unity Pauses this controller's AudioSource (this happens on app switch for example and Unity does not give any info about this happening) </summary>
-        private bool m_autoPaused;
-
-        private bool m_muted, m_paused;
-
-        #endregion
-
+        
         #region Unity Methods
 
         private void Reset() =>
@@ -159,7 +158,7 @@ namespace MyAudios.Soundy.Sources.AudioControllers.Controllers
         private void Awake()
         {
             s_database.Add(this);
-            m_transform = transform;
+            _transform = transform;
             AudioSource = gameObject.GetComponent<AudioSource>() ?? gameObject.AddComponent<AudioSource>();
             ResetController();
         }
@@ -172,13 +171,13 @@ namespace MyAudios.Soundy.Sources.AudioControllers.Controllers
             if (IsMuted || IsPaused || AudioSource.isPlaying)
                 UpdateLastPlayedTime();
             
-            if (IsMuted != m_muted)
+            if (IsMuted != _muted)
             {
                 AudioSource.mute = IsMuted;
-                m_muted = IsMuted;
+                _muted = IsMuted;
             }
 
-            if (IsPaused != m_paused)
+            if (IsPaused != _paused)
             {
                 if (IsPaused && AudioSource.isPlaying)
                     AudioSource.Pause();
@@ -186,7 +185,7 @@ namespace MyAudios.Soundy.Sources.AudioControllers.Controllers
                 if (!IsPaused) 
                     AudioSource.UnPause();
                 
-                m_paused = IsPaused;
+                _paused = IsPaused;
             }
 
             UpdatePlayProgress();
@@ -199,9 +198,9 @@ namespace MyAudios.Soundy.Sources.AudioControllers.Controllers
                 return;
             }
 
-            m_autoPaused = InUse && m_isPlaying && !AudioSource.isPlaying && PlayProgress > 0;
+            _autoPaused = InUse && _isPlaying && !AudioSource.isPlaying && PlayProgress > 0;
 
-            if (InUse && !m_autoPaused && !AudioSource.isPlaying && !IsPaused && !IsMuted) //second check if the sound finished playing
+            if (InUse && !_autoPaused && !AudioSource.isPlaying && !IsPaused && !IsMuted) //second check if the sound finished playing
             {
                 Stop();
                 
@@ -239,14 +238,14 @@ namespace MyAudios.Soundy.Sources.AudioControllers.Controllers
         {
             InUse = true;
             IsPaused = false;
-            m_isPlaying = true;
+            _isPlaying = true;
             AudioSource.Play();
         }
 
         /// <summary> Set a follow target Transform that this controller needs to follow while playing </summary>
         /// <param name="followTarget"> The target Transform </param>
         public void SetFollowTarget(Transform followTarget) =>
-            m_followTarget = followTarget;
+            _followTarget = followTarget;
 
         /// <summary> Set an output AudioMixerGroup to the target AudioSource of this controller </summary>
         /// <param name="outputAudioMixerGroup"> Target output AudioMixerGroup </param>
@@ -261,7 +260,7 @@ namespace MyAudios.Soundy.Sources.AudioControllers.Controllers
         /// <summary> Set the position in world space from where this controller will be playing from </summary>
         /// <param name="position"> The new position </param>
         public void SetPosition(Vector3 position) =>
-            m_transform.position = position;
+            _transform.position = position;
 
         /// <summary> Set the given settings to the target AudioSource </summary>
         /// <param name="clip"> The AudioClip to play </param>
@@ -290,7 +289,7 @@ namespace MyAudios.Soundy.Sources.AudioControllers.Controllers
             Unpause();
             Unmute();
             AudioSource.Stop();
-            m_isPlaying = false;
+            _isPlaying = false;
             ResetController();
             SoundyPooler.PutControllerInPool(this);
         }
@@ -313,17 +312,17 @@ namespace MyAudios.Soundy.Sources.AudioControllers.Controllers
 
         private void FollowTarget()
         {
-            if (m_followTarget == null) 
+            if (_followTarget == null) 
                 return;
             
-            m_transform.position = m_followTarget.position;
+            _transform.position = _followTarget.position;
         }
 
         private void ResetController()
         {
             InUse = false;
             IsPaused = false;
-            m_followTarget = null;
+            _followTarget = null;
             UpdateLastPlayedTime();
         }
 

@@ -1,13 +1,12 @@
 using System;
-using Doozy.Engine;
-using Doozy.Engine.Utils;
 using MyAudios.MyUiFramework.Enums;
 using MyAudios.MyUiFramework.Settings;
 using MyAudios.MyUiFramework.Utils;
+using MyAudios.Scripts;
 using UnityEditor;
 using UnityEngine;
 
-namespace MyAudios.Scripts
+namespace MyAudios.MyUiFramework.Scripts
 {
     /// <inheritdoc />
     /// <summary>
@@ -19,7 +18,7 @@ namespace MyAudios.Scripts
     /// </summary>
     [AddComponentMenu(MenuUtils.GameEventManager_AddComponentMenu_MenuName, MenuUtils.GameEventManager_AddComponentMenu_Order)]
     [DisallowMultipleComponent]
-    [DefaultExecutionOrder(DoozyExecutionOrder.GAME_EVENT_MANAGER)]
+    [DefaultExecutionOrder(SoundyExecutionOrder.GameEventManager)]
     public class GameEventManager : MonoBehaviour
     {
         #region UNITY_EDITOR

@@ -1,5 +1,4 @@
 ﻿using Doozy.Engine.Soundy;
-using Doozy.Engine.Utils;
 using MyAudios.MyUiFramework.Settings;
 using MyAudios.MyUiFramework.Utils;
 using MyAudios.Soundy.Sources.AudioControllers.Controllers;
@@ -20,7 +19,7 @@ namespace MyAudios.Soundy.Managers
     /// </summary>
     [AddComponentMenu(MenuUtils.SoundyManager_AddComponentMenu_MenuName, MenuUtils.SoundyManager_AddComponentMenu_Order)]
     [DisallowMultipleComponent]
-    [DefaultExecutionOrder(DoozyExecutionOrder.SOUNDY_MANAGER)]
+    [DefaultExecutionOrder(SoundyExecutionOrder.SoundyManager)]
     public class SoundyManager : MonoBehaviour
     {
         #region UNITY_EDITOR

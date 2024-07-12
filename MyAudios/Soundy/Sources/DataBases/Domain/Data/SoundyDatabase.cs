@@ -231,17 +231,21 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         /// <summary> Removes any null references and initializes all the referenced SoundDatabase found in the database </summary>
         public void InitializeSoundDatabases()
         {
-            if (SoundDatabases == null) return;
+            if (SoundDatabases == null)
+                return;
 
             //remove any null sound database reference
             bool foundNullReference = false;
+            
             for (int i = SoundDatabases.Count - 1; i >= 0; i--)
             {
                 SoundDatabase soundDatabase = SoundDatabases[i];
+                
                 if (soundDatabase == null)
                 {
                     SoundDatabases.RemoveAt(i);
                     foundNullReference = true;
+                    
                     continue;
                 }
 
@@ -252,12 +256,14 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
             if (SoundDatabases.Count == 0)
             {
                 Initialize();
+                
                 return;
             }
 
 
             //database is not empty, but at least one null sound database reference was removed -> mark the database as dirty
-            if (foundNullReference) SetDirty(false);
+            if (foundNullReference)
+                SetDirty(false);
         }
 
         /// <summary> Initializes the database and performs a refresh on all the referenced SoundDatabase assets </summary>

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Doozy.Engine.Utils;
+using MyAudios.MyUiFramework.Utils;
 using MyAudios.Soundy.Managers;
 using MyAudios.Soundy.Sources.AudioControllers.Controllers;
 using MyAudios.Soundy.Sources.Settings.Domain.Configs;
@@ -13,7 +13,7 @@ namespace MyAudios.Soundy.Sources.AudioPoolers.Controllers
     /// <summary>
     ///     Dynamic sound pool manager for SoundyControllers
     /// </summary>
-    [DefaultExecutionOrder(DoozyExecutionOrder.SOUNDY_POOLER)]
+    [DefaultExecutionOrder(SoundyExecutionOrder.SoundyPooler)]
     public class SoundyPooler : MonoBehaviour
     {
         #region Static Properties
@@ -139,7 +139,7 @@ namespace MyAudios.Soundy.Sources.AudioPoolers.Controllers
             if (controller == null) 
                 return;
             
-            if (!Pool.Contains(controller)) 
+            if (Pool.Contains(controller) == false) 
                 Pool.Add(controller);
             
             controller.gameObject.SetActive(false);
@@ -190,8 +190,10 @@ namespace MyAudios.Soundy.Sources.AudioPoolers.Controllers
                 for (int i = Pool.Count - 1; i >= minimumNumberOfControllers; i--) //go through the pool
                 {
                     _tempController = Pool[i];
+                    
                     if (_tempController.gameObject.activeSelf) 
                         continue;                     //controller is active do not kill it
+                    
                     if (_tempController.IdleDuration < controllerIdleKillDuration) 
                         continue; //controller is not killable as it has not been idle for long enough
                     

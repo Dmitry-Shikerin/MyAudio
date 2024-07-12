@@ -1,6 +1,6 @@
 using System;
 
-namespace Doozy.Engine.Attributes
+namespace MyAudios.MyUiFramework.Attributes
 {
     public class MinMaxRangeAttribute : Attribute
     {
