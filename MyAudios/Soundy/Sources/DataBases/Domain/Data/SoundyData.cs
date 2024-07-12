@@ -1,8 +1,8 @@
 ﻿using System;
 using Doozy.Engine.Soundy;
 using MyAudios.Soundy.Managers;
-using MyAudios.Soundy.Settings;
-using MyAudios.Soundy.SounSources.Enums;
+using MyAudios.Soundy.Sources.Settings.Domain.Configs;
+using MyAudios.Soundy.Sources.SoundSources.Enums;
 using UnityEngine;
 using UnityEngine.Audio;
 

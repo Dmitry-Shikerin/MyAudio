@@ -22,8 +22,6 @@ namespace MyAudios.Soundy.Sources.AudioControllers.Controllers
         /// <summary> Internal list of all the available controllers </summary>
         private static List<SoundyController> s_database = new List<SoundyController>();
 
-        private static bool DebugComponent => DoozySettings.Instance.DebugSoundyController;
-
         /// <summary> Global variable that keeps track if all controllers are paused or not </summary>
         private static bool s_pauseAllControllers;
         

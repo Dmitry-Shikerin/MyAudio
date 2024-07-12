@@ -3,11 +3,11 @@ using Doozy.Engine.Utils;
 using MyAudios.MyUiFramework.Settings;
 using MyAudios.MyUiFramework.Utils;
 using MyAudios.Soundy.DataBases.Domain.Data;
-using MyAudios.Soundy.Settings;
-using MyAudios.Soundy.SounSources.Enums;
 using MyAudios.Soundy.Sources.AudioControllers.Controllers;
 using MyAudios.Soundy.Sources.AudioPoolers.Controllers;
 using MyAudios.Soundy.Sources.DataBases.Domain.Data;
+using MyAudios.Soundy.Sources.Settings.Domain.Configs;
+using MyAudios.Soundy.Sources.SoundSources.Enums;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -106,12 +106,6 @@ namespace MyAudios.Soundy.Managers
 
         /// <summary> Direct reference to the SoundyDatabase asset </summary>
         public static SoundyDatabase Database => SoundySettings.Database;
-
-        #endregion
-
-        #region Properties
-
-        private bool DebugComponent => DoozySettings.Instance.DebugSoundyManager;
 
         #endregion
 

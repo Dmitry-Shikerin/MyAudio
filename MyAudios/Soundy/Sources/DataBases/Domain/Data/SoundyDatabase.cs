@@ -1,17 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Doozy.Engine.Soundy;
 using MyAudios.MyUiFramework.Utils;
 using MyAudios.Soundy.Managers;
-using MyAudios.Soundy.Sources.DataBases.Domain.Data;
+using UnityEditor;
 using UnityEngine;
 
-#if UNITY_EDITOR
-using UnityEditor;
-
-#endif
-
-namespace Doozy.Engine.Soundy
+namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
 {
     /// <inheritdoc />
     /// <summary>
@@ -223,7 +219,8 @@ namespace Doozy.Engine.Soundy
             if (Contains(SoundyManager.GENERAL))
                 return;
 
-            SoundDatabase soundDatabase = AssetUtils.CreateAsset<SoundDatabase>(DoozyPath.GetDataPath(DoozyPath.ComponentName.Soundy), SoundyManager.GetSoundDatabaseFilename(SoundyManager.GENERAL));
+            SoundDatabase soundDatabase = AssetUtils.CreateAsset<SoundDatabase>(
+                "Assets/MyAudios/Soundy/Resources/Soundy/DataBases", "SoundDataBase_General");
 #else
             SoundDatabase soundDatabase = ScriptableObject.CreateInstance<SoundDatabase>();
 #endif

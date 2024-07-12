@@ -10,7 +10,7 @@ namespace MyAudios.MyUiFramework.Settings
     {
         public const string FILE_NAME = "DoozySettings";
         // private static string ResourcesPath => DoozyPath.ENGINE_RESOURCES_PATH;
-        private static string ResourcesPath => "Assets/MyAudios/Resources/Soundy";
+        private static string ResourcesPath => "Assets/MyAudios/Soundy/Resources/Soundy";
 
         private static DoozySettings s_instance;
 

@@ -45,12 +45,7 @@ namespace MyAudios.MyUiFramework.Utils
         private const string STATE = "State";
 
         public const string SOUNDY_DATABASE = SOUNDY + DATABASE;
-        public const string THEMES_DATABASE = THEMES + DATABASE;
-        public const string UIBUTTON_DATABASE = UIBUTTON + DATABASE;
-        public const string UICANVAS_DATABASE = UICANVAS + DATABASE;
-        public const string UIDRAWER_DATABASE = UIDRAWER + DATABASE;
-        public const string UIPOPUP_DATABASE = UIPOPUP + DATABASE;
-        public const string UIVIEW_DATABASE = UIVIEW + DATABASE;
+
 
         public static string DOOZY_PATH = BasePath;                          // -- Doozy/
         public static string EDITOR_PATH = Path.Combine(DOOZY_PATH, EDITOR); // -- Doozy/Editor/

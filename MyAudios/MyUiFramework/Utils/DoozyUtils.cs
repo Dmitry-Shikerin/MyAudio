@@ -179,7 +179,6 @@ namespace MyAudios.MyUiFramework.Utils
         /// <summary> [Editor Only] Writes all unsaved asset changes to disk </summary>
         public static void SaveAssets()
         {
-//            DDebug.Log("SaveAssets");
 #if UNITY_EDITOR
             DoozySettings.Instance.AssetDatabaseSaveAssetsNeeded = false;
             UnityEditor.AssetDatabase.SaveAssets();

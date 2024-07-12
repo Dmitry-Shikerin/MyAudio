@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Doozy.Engine.Utils;
 using MyAudios.Soundy.Managers;
-using MyAudios.Soundy.Settings;
 using MyAudios.Soundy.Sources.AudioControllers.Controllers;
+using MyAudios.Soundy.Sources.Settings.Domain.Configs;
 using UnityEngine;
 
 namespace MyAudios.Soundy.Sources.AudioPoolers.Controllers

@@ -19,10 +19,15 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
     [CreateAssetMenu(fileName = "SoundDatabase", menuName = "Soundy/Sound Database", order = 51)]
     public class SoundDatabase : ScriptableObject
     {
+        public const string RefreshDatabaseConst = "Refresh Database";
+        public const string RemovedEntryConst = "Removed Entry";
+        public const string RemovedDuplicateEntriesConst = "Removed duplicate entries";
+        public const string RemoveEmptyEntriesConst = "Remove Empty Entries";        
+        public const string SortDatabaseConst = "Sort Database";
+        public const string AddItemConst = "Add Items";
+        
         #region Static Properties
-
-        /// <summary> Direct reference to the active language pack </summary>
-        private static UILanguagePack UILabels => UILanguagePack.Instance;
+        
 
         #endregion
 
@@ -94,8 +99,8 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
                 newName = soundName + " (" + counter + ")";
             }
 
-            // if (performUndo)
-            //     UndoRecord(UILabels.AddItem);
+            if (performUndo)
+                UndoRecord(AddItemConst);
 
             SoundGroupData data = CreateInstance<SoundGroupData>();
             data.DatabaseName = DatabaseName;
@@ -167,8 +172,8 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         public void RefreshDatabase(bool performUndo, bool saveAssets)
         {
             if (performUndo)
-                UndoRecord(UILabels.RefreshDatabase);
-
+                UndoRecord(RefreshDatabaseConst);
+            
             bool addedTheNoSoundSoundGroup = AddNoSound();
             RemoveUnreferencedData();
             RemoveUnnamedEntries(false);
@@ -218,7 +223,7 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         public void RemoveEntriesWithNoAudioClipsReferenced(bool performUndo, bool saveAssets = false)
         {
             if (performUndo)
-                UndoRecord(UILabels.RemovedEntry);
+                UndoRecord(RemovedEntryConst);
 
             for (int i = Database.Count - 1; i >= 0; i--)
             {
@@ -253,8 +258,8 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         public void RemoveDuplicateEntries(bool performUndo, bool saveAssets = false)
         {
             if (performUndo)
-                UndoRecord(UILabels.RemovedDuplicateEntries);
-
+                UndoRecord(RemovedDuplicateEntriesConst);
+            
             Database = Database.GroupBy(data => data.SoundName)
                 .Select(n => n.First())
                 .ToList();
@@ -268,8 +273,8 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         public void RemoveUnnamedEntries(bool performUndo, bool saveAssets = false)
         {
             if (performUndo)
-                UndoRecord(UILabels.RemoveEmptyEntries);
-
+                UndoRecord(RemoveEmptyEntriesConst);
+            
             Database = Database.Where(data => !string.IsNullOrEmpty(data.SoundName.Trim())).ToList();
             SetDirty(saveAssets);
         }
@@ -284,9 +289,9 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         /// <param name="saveAssets"> Write all unsaved asset changes to disk? </param>
         public void Sort(bool performUndo, bool saveAssets = false)
         {
-            // if (performUndo)
-            //     UndoRecord(UILabels.SortDatabase);
-            //
+            if (performUndo)
+                UndoRecord(SortDatabaseConst);
+            
             Database = Database.OrderBy(data => data.SoundName).ToList();
 
             //remove the 'No Sound' entry wherever it is
@@ -410,6 +415,7 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
 
             if (objects == null)
                 return;
+            
             //make sure they are not null
             List<SoundGroupData>
                 foundAudioData =

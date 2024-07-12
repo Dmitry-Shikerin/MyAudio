@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
 using Doozy.Editor.EditorUI.Windows.Internal;
-using Doozy.Editor.UIElements;
 using Doozy.Engine.Soundy;
-using Doozy.Runtime.UIElements.Extensions;
 using MyAudios.Soundy.Editor.DataBases.Editors;
 using MyAudios.Soundy.Editor.DataBases.Windows.Views;
+using MyAudios.Soundy.Sources.DataBases.Domain.Data;
+using MyAudios.Soundy.Sources.Settings.Domain.Configs;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -14,8 +14,8 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows
 {
     public class SoundyDataBaseEditorWindow : FluidWindow<SoundyDataBaseEditorWindow>
     {
-        public SoundyDatabase Database;
-        public AudioClip PlugAudio;
+        private SoundyDatabase _database;
+        private AudioClip _plugAudio;
 
         [MenuItem("Window/SoundyDataBase")]
         public static void ShowWindow() =>
@@ -25,16 +25,18 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows
         {
             root.Clear();
 
+            _database = SoundySettings.Database;
+            _plugAudio = Resources.Load<AudioClip>("MyAudios/Soundy/Resources/Soundy/Plugs/Christmas Villain Loop");
             SoundyDataBaseEditor editor = 
-                (SoundyDataBaseEditor)UnityEditor.Editor.CreateEditor(Database);
+                (SoundyDataBaseEditor)UnityEditor.Editor.CreateEditor(_database);
             VisualElement editorRoot = editor.CreateInspectorGUI();
             editorRoot
                 .Bind(editor.serializedObject);
             
             windowLayout = 
                 new SoundyDataBaseWindowLayout()
-                    .SetDatabase(Database)
-                    .SetPlugAudio(PlugAudio)
+                    .SetDatabase(_database)
+                    .SetPlugAudio(_plugAudio)
                     .AfterInitialize();
             
             root

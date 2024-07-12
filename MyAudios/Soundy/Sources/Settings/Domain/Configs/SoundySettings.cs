@@ -2,16 +2,17 @@
 using Doozy.Engine.Soundy;
 using MyAudios.MyUiFramework.Utils;
 using MyAudios.Soundy.Sources.AudioPoolers.Controllers;
+using MyAudios.Soundy.Sources.DataBases.Domain.Data;
 using UnityEngine;
 
-namespace MyAudios.Soundy.Settings
+namespace MyAudios.Soundy.Sources.Settings.Domain.Configs
 {
     [Serializable]
     public class SoundySettings : ScriptableObject
     {
         public const string FILE_NAME = "SoundySettings";
         // private static string ResourcesPath => DoozyPath.ENGINE_SOUNDY_RESOURCES_PATH;
-        private static string ResourcesPath = "MyAudios/Resources/Soundy/Settings";
+        private static string ResourcesPath = "Assets/MyAudios/Soundy/Resources/Soundy/Settings";
 
         private static SoundySettings s_instance;
 
@@ -49,7 +50,7 @@ namespace MyAudios.Soundy.Settings
             // Instance.database = AssetUtils.GetScriptableObject<SoundyDatabase>(
             //     "_" + DoozyPath.SOUNDY_DATABASE, DoozyPath.GetDataPath(DoozyPath.ComponentName.Soundy), false, false);
             Instance.database = AssetUtils.GetScriptableObject<SoundyDatabase>(
-                "_" + DoozyPath.SOUNDY_DATABASE, "MyAudios/Resources/Soundy/DataBases", false, false);
+                "_" + DoozyPath.SOUNDY_DATABASE, "Assets/MyAudios/Soundy/Resources/Soundy/DataBases", false, false);
 #if UNITY_EDITOR
             if (Instance.database == null)
                 return;

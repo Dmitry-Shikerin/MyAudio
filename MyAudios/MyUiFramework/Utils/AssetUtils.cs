@@ -22,11 +22,17 @@ namespace MyAudios.MyUiFramework.Utils
             string fileName, string resourcesPath, bool saveAssetDatabase, bool refreshAssetDatabase)
             where T : ScriptableObject
         {
-            if (string.IsNullOrEmpty(resourcesPath)) return null;
-            if (string.IsNullOrEmpty(fileName)) return null;
+            if (string.IsNullOrEmpty(resourcesPath))
+                return null;
+            
+            if (string.IsNullOrEmpty(fileName))
+                return null;
+            
             // ReSharper disable once SuspiciousTypeConversion.Global
-//            if (!resourcesPath[resourcesPath.Length - 1].Equals(@"\")) resourcesPath += @"\";
-//            resourcesPath = resourcesPath.Replace(@"\", "/");
+            if (resourcesPath[resourcesPath.Length - 1].Equals(@"\") == false)
+                resourcesPath += @"\";
+            
+            resourcesPath = resourcesPath.Replace(@"\", "/");
             resourcesPath = CleanPath(resourcesPath);
 
             T obj = (T) Resources.Load(fileName, typeof(T));
@@ -42,7 +48,9 @@ namespace MyAudios.MyUiFramework.Utils
             }
 
 #if UNITY_EDITOR
-            if (obj != null) return obj;
+            if (obj != null)
+                return obj;
+            
             obj = CreateAsset<T>(resourcesPath, fileName, ".asset", saveAssetDatabase, refreshAssetDatabase);
 #endif
             return obj;
