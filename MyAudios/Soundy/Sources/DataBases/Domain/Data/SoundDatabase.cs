@@ -4,6 +4,7 @@ using System.Linq;
 using Doozy.Engine.Soundy;
 using MyAudios.MyUiFramework.Utils;
 using MyAudios.Soundy.Managers;
+using MyAudios.Soundy.Sources.DataBases.Domain.Constants;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -19,18 +20,6 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
     [CreateAssetMenu(fileName = "SoundDatabase", menuName = "Soundy/Sound Database", order = 51)]
     public class SoundDatabase : ScriptableObject
     {
-        public const string RefreshDatabaseConst = "Refresh Database";
-        public const string RemovedEntryConst = "Removed Entry";
-        public const string RemovedDuplicateEntriesConst = "Removed duplicate entries";
-        public const string RemoveEmptyEntriesConst = "Remove Empty Entries";        
-        public const string SortDatabaseConst = "Sort Database";
-        public const string AddItemConst = "Add Items";
-        
-        #region Static Properties
-        
-
-        #endregion
-
         #region Public Variables
 
         /// <summary> The database name </summary>
@@ -100,7 +89,7 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
             }
 
             if (performUndo)
-                UndoRecord(AddItemConst);
+                UndoRecord(SoundDataBaseConst.AddItemConst);
 
             SoundGroupData data = CreateInstance<SoundGroupData>();
             data.DatabaseName = DatabaseName;
@@ -172,7 +161,7 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         public void RefreshDatabase(bool performUndo, bool saveAssets)
         {
             if (performUndo)
-                UndoRecord(RefreshDatabaseConst);
+                UndoRecord(SoundDataBaseConst.RefreshDatabaseConst);
             
             bool addedTheNoSoundSoundGroup = AddNoSound();
             RemoveUnreferencedData();
@@ -223,13 +212,13 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         public void RemoveEntriesWithNoAudioClipsReferenced(bool performUndo, bool saveAssets = false)
         {
             if (performUndo)
-                UndoRecord(RemovedEntryConst);
+                UndoRecord(SoundDataBaseConst.RemovedEntryConst);
 
             for (int i = Database.Count - 1; i >= 0; i--)
             {
                 SoundGroupData data = Database[i];
 
-                if (data.SoundName.Equals(SoundyManager.NO_SOUND))
+                if (data.SoundName.Equals(SoundyManager.NoSound))
                     continue;
 
                 if (data.Sounds == null)
@@ -258,7 +247,7 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         public void RemoveDuplicateEntries(bool performUndo, bool saveAssets = false)
         {
             if (performUndo)
-                UndoRecord(RemovedDuplicateEntriesConst);
+                UndoRecord(SoundDataBaseConst.RemovedDuplicateEntriesConst);
             
             Database = Database.GroupBy(data => data.SoundName)
                 .Select(n => n.First())
@@ -273,7 +262,7 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         public void RemoveUnnamedEntries(bool performUndo, bool saveAssets = false)
         {
             if (performUndo)
-                UndoRecord(RemoveEmptyEntriesConst);
+                UndoRecord(SoundDataBaseConst.RemoveEmptyEntriesConst);
             
             Database = Database.Where(data => !string.IsNullOrEmpty(data.SoundName.Trim())).ToList();
             SetDirty(saveAssets);
@@ -290,7 +279,7 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         public void Sort(bool performUndo, bool saveAssets = false)
         {
             if (performUndo)
-                UndoRecord(SortDatabaseConst);
+                UndoRecord(SoundDataBaseConst.SortDatabaseConst);
             
             Database = Database.OrderBy(data => data.SoundName).ToList();
 
@@ -299,7 +288,7 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
 
             foreach (SoundGroupData audioData in Database)
             {
-                if (!audioData.SoundName.Equals(SoundyManager.NO_SOUND))
+                if (!audioData.SoundName.Equals(SoundyManager.NoSound))
                     continue;
 
                 noSoundSoundGroupData = audioData;
@@ -334,7 +323,7 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
             AddNoSound();
 #endif
             SoundNames.Clear();
-            SoundNames.Add(SoundyManager.NO_SOUND);
+            SoundNames.Add(SoundyManager.NoSound);
             var list = new List<string>();
 
             foreach (SoundGroupData data in Database)
@@ -353,16 +342,16 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         /// <param name="saveAssets"> Write all unsaved asset changes to disk? </param>
         private bool AddNoSound(bool saveAssets = false)
         {
-            if (Contains(SoundyManager.NO_SOUND))
+            if (Contains(SoundyManager.NoSound))
                 return false;
 
             if (SoundNames == null)
                 SoundNames = new List<string>();
 
-            SoundNames.Add(SoundyManager.NO_SOUND);
+            SoundNames.Add(SoundyManager.NoSound);
             SoundGroupData data = CreateInstance<SoundGroupData>();
             data.DatabaseName = DatabaseName;
-            data.SoundName = SoundyManager.NO_SOUND;
+            data.SoundName = SoundyManager.NoSound;
             data.name = data.SoundName;
             data.SetDirty(false);
 

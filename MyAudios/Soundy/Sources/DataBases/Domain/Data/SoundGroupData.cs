@@ -4,10 +4,10 @@ using Doozy.Engine.Attributes;
 using Doozy.Engine.Utils;
 using MyAudios.MyUiFramework.Utils;
 using MyAudios.Scripts;
-using MyAudios.Soundy.DataBases.Domain.Data;
 using MyAudios.Soundy.Managers;
 using MyAudios.Soundy.Sources.AudioControllers.Controllers;
 using MyAudios.Soundy.Sources.AudioPoolers.Controllers;
+using MyAudios.Soundy.Sources.DataBases.Domain.Constants;
 using MyAudios.Soundy.Sources.DataBases.Domain.Data;
 using MyAudios.Soundy.Utils;
 using UnityEngine;
@@ -37,26 +37,6 @@ namespace Doozy.Engine.Soundy
 
         #endregion
 
-        #region Constants
-
-        public const bool DEFAULT_IGNORE_LISTENER_PAUSE = true;
-        public const bool DEFAULT_LOOP = false;
-        public const bool DEFAULT_RESET_SEQUENCE_AFTER_INACTIVE_TIME = false;
-        public const float DEFAULT_PITCH = 0;
-        public const float DEFAULT_SEQUENCE_RESET_TIME = 5f;
-        public const float DEFAULT_SPATIAL_BLEND = 0;
-        public const float DEFAULT_VOLUME = 0;
-        public const float MAX_PITCH = 24;
-        public const float MAX_SPATIAL_BLEND = 1;
-        public const float MAX_VOLUME = 0;
-        public const float MIN_PITCH = -24;
-        public const float MIN_SPATIAL_BLEND = 0;
-        public const float MIN_VOLUME = -80;
-        public const PlayMode DEFAULT_PLAY_MODE = PlayMode.Random;
-        public const string DEFAULT_SOUND_NAME = SoundyManager.NO_SOUND;
-
-        #endregion
-
         #region Properties
 
         /// <summary> Returns TRUE if this SoundGroupData is either empty or has at least one null (or missing) AudioClip reference. If set to 'No Sound', returns FALSE </summary>
@@ -64,7 +44,7 @@ namespace Doozy.Engine.Soundy
         {
             get
             {
-                if (SoundName.Equals(SoundyManager.NO_SOUND))
+                if (SoundName.Equals(SoundyManager.NoSound))
                     return false;
                 
                 if (Sounds == null || Sounds.Count == 0)
@@ -85,7 +65,7 @@ namespace Doozy.Engine.Soundy
         {
             get
             {
-                if (SoundName.Equals(SoundyManager.NO_SOUND))
+                if (SoundName.Equals(SoundyManager.NoSound))
                     return false; //if SoundName is set to No Sound -> has no sound
                 
                 if (Sounds == null || Sounds.Count == 0)
@@ -121,7 +101,7 @@ namespace Doozy.Engine.Soundy
         ///     <para />
         ///     Every time a clip is played, a random value from the 0f - 1f interval will get set to the AudioSource.
         /// </summary>
-        [MinMaxRange(MIN_VOLUME, MAX_VOLUME)]
+        [MinMaxRange(SoundGroupDataConst.MinVolume, SoundGroupDataConst.MaxVolume)]
         public RangedFloat Volume;
 
         /// <summary>
@@ -129,11 +109,11 @@ namespace Doozy.Engine.Soundy
         ///     <para />
         ///     Every time a clip is played, a random value from the 0f - 4f interval will get set to the AudioSource.
         /// </summary>
-        [MinMaxRange(MIN_PITCH, MAX_PITCH)]
+        [MinMaxRange(SoundGroupDataConst.MinPitch, SoundGroupDataConst.MaxPitch)]
         public RangedFloat Pitch;
         
         /// <summary> Sets how much this AudioSource is affected by 3D space calculations (attenuation, doppler etc). 0.0 makes the sound full 2D, 1.0 makes it full 3D </summary>
-        [Range(MIN_SPATIAL_BLEND, MAX_SPATIAL_BLEND)]
+        [Range(SoundGroupDataConst.MinSpatialBlend, SoundGroupDataConst.MaxSpatialBlend)]
         public float SpatialBlend;
 
         /// <summary> Play in a loop? </summary>
@@ -176,22 +156,22 @@ namespace Doozy.Engine.Soundy
 
         private void Reset()
         {
-            SoundName = DEFAULT_SOUND_NAME;
-            IgnoreListenerPause = DEFAULT_IGNORE_LISTENER_PAUSE;
-            Loop = DEFAULT_LOOP;
+            SoundName = SoundGroupDataConst.DefaultSoundName;
+            IgnoreListenerPause = SoundGroupDataConst.DefaultIgnoreListenerPause;
+            Loop = SoundGroupDataConst.DefaultLoop;
             Volume = new RangedFloat
             {
-                MinValue = DEFAULT_VOLUME, MaxValue = DEFAULT_VOLUME
+                MinValue = SoundGroupDataConst.DefaultVolume, MaxValue = SoundGroupDataConst.DefaultVolume
             };
             Pitch = new RangedFloat
             {
-                MinValue = DEFAULT_PITCH, MaxValue = DEFAULT_PITCH
+                MinValue = SoundGroupDataConst.DefaultPitch, MaxValue = SoundGroupDataConst.DefaultPitch
             };
             
-            SpatialBlend = DEFAULT_SPATIAL_BLEND;
-            Mode = DEFAULT_PLAY_MODE;
-            ResetSequenceAfterInactiveTime = DEFAULT_RESET_SEQUENCE_AFTER_INACTIVE_TIME;
-            SequenceResetTime = DEFAULT_SEQUENCE_RESET_TIME;
+            SpatialBlend = SoundGroupDataConst.DefaultSpatialBlend;
+            Mode = SoundGroupDataConst.DefaultPlayMode;
+            ResetSequenceAfterInactiveTime = SoundGroupDataConst.DefaultResetSequenceAfterInactiveTime;
+            SequenceResetTime = SoundGroupDataConst.DefaultSequenceResetTime;
         }
 
         #endregion
@@ -237,6 +217,7 @@ namespace Doozy.Engine.Soundy
                 m_lastPlayedAudioData.AudioClip, RandomVolume, RandomPitch, Loop, SpatialBlend);
             controller.SetOutputAudioMixerGroup(outputAudioMixerGroup);
             controller.SetPosition(position);
+            
             if (m_lastPlayedAudioData == null)
                 return controller;
             
@@ -277,7 +258,6 @@ namespace Doozy.Engine.Soundy
             Camera main = Camera.main;
             audioSource.transform.position = main == null ? Vector3.zero : main.transform.position;
             audioSource.Play();
-//            DDebug.Log( "Preview Sound: " + audioSource.clip.name, this);
         }
 
         /// <summary> [Editor Only] Plays a sound preview in the Editor </summary>
@@ -309,18 +289,6 @@ namespace Doozy.Engine.Soundy
         /// <param name="playMode">The play mode.</param>
         private AudioData GetAudioData(PlayMode playMode)
         {
-            // if (Sounds == null || Sounds.Count == 0)
-            // {
-            //     DDebug.Log("No sounds have been referenced to this AudioData file. Cannot continue.", this);
-            //     return null; //this should not happen unless the developer forgot to reference the AudioClips
-            // }
-            //
-            // if (HasMissingAudioClips)
-            // {
-            //     DDebug.Log("Sound Group Data with the '" + SoundName + "' sound name has one or more null AudioClip references. Soundy will not play any sound from this group until the issue is resolved. Cannot continue.", this);
-            //     return null; //this should not happen unless the developer forgot to reference the AudioClips
-            // }
-
             switch (playMode)
             {
                 case PlayMode.Random:

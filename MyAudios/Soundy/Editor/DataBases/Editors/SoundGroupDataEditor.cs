@@ -4,11 +4,12 @@ using Doozy.Editor.EditorUI.Components;
 using Doozy.Editor.EditorUI.Components.Internal;
 using Doozy.Editor.EditorUI.Events;
 using Doozy.Editor.EditorUI.Utils;
+using Doozy.Editor.UIManager.UIMenu;
 using Doozy.Engine.Soundy;
 using Doozy.Runtime.UIElements.Extensions;
-using MyAudios.Soundy.DataBases.Domain.Data;
 using MyAudios.Soundy.Editor.DataBases.Editors.UXMLs;
 using MyAudios.Soundy.Editor.DataBases.Windows.Views;
+using MyAudios.Soundy.Sources.DataBases.Domain.Constants;
 using MyAudios.Soundy.Sources.DataBases.Domain.Data;
 using UnityEditor;
 using UnityEngine;
@@ -175,8 +176,8 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors
             volumeMinMaxSlider.RegisterCallback<DragUpdatedEvent>((even) => {});
             volumeMinMaxSlider.slider.value = new Vector2(
                 SoundGroupData.Volume.MinValue, SoundGroupData.Volume.MaxValue);
-            volumeMinMaxSlider.slider.lowLimit = SoundGroupData.MIN_VOLUME;
-            volumeMinMaxSlider.slider.highLimit = SoundGroupData.MAX_VOLUME;
+            volumeMinMaxSlider.slider.lowLimit = SoundGroupDataConst.MinVolume;
+            volumeMinMaxSlider.slider.highLimit = SoundGroupDataConst.MaxVolume;
             volumeMinMaxSlider.slider.RegisterValueChangedCallback((value) =>
             {
                 SoundGroupData.Volume.MinValue = value.newValue.x;
@@ -191,7 +192,7 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors
                 .AddOnClick(() =>
                 {
                     volumeMinMaxSlider.slider.value = new Vector2(
-                        SoundGroupData.DEFAULT_VOLUME, SoundGroupData.DEFAULT_VOLUME);
+                        SoundGroupDataConst.DefaultVolume, SoundGroupDataConst.DefaultVolume);
                 });
             
             VisualElement volumeRow = DesignUtils
@@ -207,8 +208,8 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors
             FluidMinMaxSlider pitchMinMaxSlider = new FluidMinMaxSlider();
             pitchMinMaxSlider.RegisterCallback<DragUpdatedEvent>((even) => {});
             pitchMinMaxSlider.slider.value = new Vector2(SoundGroupData.Pitch.MinValue, SoundGroupData.Pitch.MaxValue);
-            pitchMinMaxSlider.slider.lowLimit = SoundGroupData.MIN_PITCH;
-            pitchMinMaxSlider.slider.highLimit = SoundGroupData.MAX_PITCH;
+            pitchMinMaxSlider.slider.lowLimit = SoundGroupDataConst.MinPitch;
+            pitchMinMaxSlider.slider.highLimit = SoundGroupDataConst.MaxPitch;
             pitchMinMaxSlider.slider.RegisterValueChangedCallback((value) =>
             {
                 SoundGroupData.Pitch.MinValue = value.newValue.x;
@@ -223,7 +224,7 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors
                 .AddOnClick(() =>
                 {
                     pitchMinMaxSlider.slider.value = new Vector2(
-                        SoundGroupData.DEFAULT_PITCH, SoundGroupData.DEFAULT_PITCH);
+                        SoundGroupDataConst.DefaultPitch, SoundGroupDataConst.DefaultPitch);
                 });
             
             VisualElement pitchRow = DesignUtils

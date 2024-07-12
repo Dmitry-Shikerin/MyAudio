@@ -6,7 +6,7 @@ using MyAudios.Soundy.Sources.SoundSources.Enums;
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace MyAudios.Soundy.DataBases.Domain.Data
+namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
 {
     /// <summary>
     ///     Data settings container used by the Actions class in order to trigger the playing of a sound via Soundy, a direct AudioClip reference or a MasterAudio sound name.
@@ -57,7 +57,7 @@ namespace MyAudios.Soundy.DataBases.Domain.Data
         {
             SoundSource = SoundSource.Soundy;
             DatabaseName = SoundyManager.GENERAL;
-            SoundName = SoundyManager.NO_SOUND;
+            SoundName = SoundyManager.NoSound;
             AudioClip = null;
         }
 

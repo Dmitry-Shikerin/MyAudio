@@ -1,4 +1,5 @@
 using System;
+using MyAudios.Soundy.Sources.DataBases.Domain.Constants;
 using UnityEngine;
 
 namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
@@ -7,16 +8,12 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
     [Serializable]
     public class AudioData
     {
-        public const float DefaultWeight = 1f;
-        public const float MaxWeight = 1f;
-        public const float MinWeight = 0f;
-
         /// <summary> Direct reference to an AudioClip </summary>
         public AudioClip AudioClip;
 
         /// <summary> (Not Implemented) Weight of this AudioClip in the SoundGroupData </summary>
-        [Range(MinWeight, MaxWeight)]
-        public float Weight = DefaultWeight;
+        [Range(AudioDataConst.MinWeight, AudioDataConst.MaxWeight)]
+        public float Weight = AudioDataConst.DefaultWeight;
         
         /// <summary> Creates a new instance for this class </summary>
         public AudioData() =>

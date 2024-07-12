@@ -4,6 +4,7 @@ using System.Linq;
 using Doozy.Engine.Soundy;
 using MyAudios.MyUiFramework.Utils;
 using MyAudios.Soundy.Managers;
+using MyAudios.Soundy.Sources.DataBases.Domain.Constants;
 using UnityEditor;
 using UnityEngine;
 
@@ -17,13 +18,6 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
     [CreateAssetMenu(fileName = "SoundyDatabase", menuName = "Soundy/SoundyDatabase", order = 51)]
     public class SoundyDatabase : ScriptableObject
     {
-        #region Static Properties
-
-        /// <summary> Direct reference to the active language pack </summary>
-        private static UILanguagePack UILabels { get { return UILanguagePack.Instance; } }
-
-        #endregion
-
         #region Public Variables
 
         /// <summary> List of all the SoundDatabase names found in this database </summary>
@@ -116,19 +110,19 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
 
             if (string.IsNullOrEmpty(databaseName))
             {
-#if UNITY_EDITOR
-                if (showDialog)
-                    EditorUtility.DisplayDialog(UILabels.NewSoundDatabase, UILabels.EnterDatabaseName, UILabels.Ok);
-#endif
+// #if UNITY_EDITOR
+//                 if (showDialog)
+//                     EditorUtility.DisplayDialog(UILabels.NewSoundDatabase, UILabels.EnterDatabaseName, UILabels.Ok);
+// #endif
                 return false;
             }
 
             if (Contains(databaseName))
             {
-#if UNITY_EDITOR
-                if (showDialog)
-                    EditorUtility.DisplayDialog(UILabels.NewSoundDatabase, UILabels.DatabaseAlreadyExists, UILabels.Ok);
-#endif
+// #if UNITY_EDITOR
+//                 if (showDialog)
+//                     EditorUtility.DisplayDialog(UILabels.NewSoundDatabase, UILabels.DatabaseAlreadyExists, UILabels.Ok);
+// #endif
                 return false;
             }
 
@@ -154,16 +148,15 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
             if (database == null) return false;
 
 #if UNITY_EDITOR
-            // if (!EditorUtility.DisplayDialog(UILabels.DeleteDatabase + " '" + database.DatabaseName + "'",
-            //                                  UILabels.AreYouSureYouWantToDeleteDatabase +
-            //                                  "\n\n" +
-            //                                  UILabels.OperationCannotBeUndone,
-            //                                  UILabels.Yes,
-            //                                  UILabels.No))
-            //     return false;
+            if (!EditorUtility.DisplayDialog(SoundyDataBaseConst.DeleteDatabase + " '" + database.DatabaseName + "'",
+                    SoundyDataBaseConst.AreYouSureYouWantToDeleteDatabase +
+                                             "\n\n" +
+                                             SoundyDataBaseConst.OperationCannotBeUndone,
+                                             SoundyDataBaseConst.Yes,
+                                             SoundyDataBaseConst.No))
+                return false;
 
             SoundDatabases.Remove(database);
-            // SoundDatabasesReferences.Remove(database);
             AssetDatabase.MoveAssetToTrash(AssetDatabase.GetAssetPath(database));
             UpdateDatabaseNames(true);
 #endif
@@ -183,15 +176,6 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         /// <param name="databaseName"> The database name to search for </param>
         public SoundDatabase GetSoundDatabase(string databaseName)
         {
-            // if (SoundDatabases == null)
-            // {
-            //     SoundDatabases = new List<SoundDatabase>();
-            //     return null;
-            // }
-            //
-            // foreach (SoundDatabase database in SoundDatabases)
-            //     if (database.DatabaseName.Equals(databaseName))
-            //         return database;            
             if (SoundDatabases == null)
             {
                 SoundDatabases = new List<SoundDatabase>();
@@ -199,8 +183,22 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
             }
 
             foreach (SoundDatabase database in SoundDatabases)
+            {
                 if (database.DatabaseName.Equals(databaseName))
                     return database;
+            }
+            
+            if (SoundDatabases == null)
+            {
+                SoundDatabases = new List<SoundDatabase>();
+                return null;
+            }
+
+            foreach (SoundDatabase database in SoundDatabases)
+            {
+                if (database.DatabaseName.Equals(databaseName))
+                    return database;
+            }
 
             return null;
         }
@@ -220,7 +218,7 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
                 return;
 
             SoundDatabase soundDatabase = AssetUtils.CreateAsset<SoundDatabase>(
-                "Assets/MyAudios/Soundy/Resources/Soundy/DataBases", "SoundDataBase_General");
+                SoundDataBaseConst.ResourcesPath, SoundDataBaseConst.GeneralName);
 #else
             SoundDatabase soundDatabase = ScriptableObject.CreateInstance<SoundDatabase>();
 #endif
@@ -268,7 +266,7 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         public void RefreshDatabase(bool performUndo = true, bool saveAssets = false)
         {
             if (performUndo)
-                UndoRecord(UILabels.RefreshDatabase);
+                UndoRecord(SoundyDataBaseConst.RefreshDatabase);
 
             Initialize();
             
@@ -295,7 +293,9 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
             
             for (int i = SoundDatabases.Count - 1; i >= 0; i--)
             {
-                if (SoundDatabases[i] != null) continue;
+                if (SoundDatabases[i] != null)
+                    continue;
+                
                 SoundDatabases.RemoveAt(i);
                 removedDatabase = true;
             }
@@ -320,9 +320,9 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
             if (string.IsNullOrEmpty(newDatabaseName))
             {
                 EditorUtility.DisplayDialog(
-                    UILabels.RenameSoundDatabase + " '" + soundDatabase.DatabaseName + "'",
-                    UILabels.EnterDatabaseName,
-                    UILabels.Ok);
+                    SoundyDataBaseConst.RenameSoundDatabase + " '" + soundDatabase.DatabaseName + "'",
+                    SoundyDataBaseConst.EnterDatabaseName,
+                    SoundyDataBaseConst.Ok);
 
                 return false;
             }
@@ -330,9 +330,10 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
             if (Contains(newDatabaseName))
             {
                 EditorUtility.DisplayDialog(
-                    UILabels.RenameSoundDatabase + " '" + soundDatabase.DatabaseName + "'",
-                    UILabels.NewSoundDatabase + ": '" + newDatabaseName + "" + "\n\n" + UILabels.AnotherEntryExists,
-                    UILabels.Ok);
+                    SoundyDataBaseConst.RenameSoundDatabase + " '" + soundDatabase.DatabaseName + "'",
+                    SoundyDataBaseConst.NewSoundDatabase + ": '" + newDatabaseName + "" + "\n\n" + 
+                    SoundyDataBaseConst.AnotherEntryExists,
+                    SoundyDataBaseConst.Ok);
 
                 return false;
             }
@@ -353,7 +354,10 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         {
             bool foundUnregisteredDatabase = false;
             SoundDatabase[] array = Resources.LoadAll<SoundDatabase>("");
-            if (array == null || array.Length == 0) return;
+            
+            if (array == null || array.Length == 0)
+                return;
+            
             if (SoundDatabases == null)
                 SoundDatabases = new List<SoundDatabase>();
             
@@ -366,7 +370,7 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
                 foundUnregisteredDatabase = true;
             }
 
-            if (!foundUnregisteredDatabase)
+            if (foundUnregisteredDatabase == false)
                 return;
             
             UpdateDatabaseNames();

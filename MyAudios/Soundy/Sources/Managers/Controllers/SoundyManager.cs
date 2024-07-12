@@ -2,7 +2,6 @@
 using Doozy.Engine.Utils;
 using MyAudios.MyUiFramework.Settings;
 using MyAudios.MyUiFramework.Utils;
-using MyAudios.Soundy.DataBases.Domain.Data;
 using MyAudios.Soundy.Sources.AudioControllers.Controllers;
 using MyAudios.Soundy.Sources.AudioPoolers.Controllers;
 using MyAudios.Soundy.Sources.DataBases.Domain.Data;
@@ -69,7 +68,7 @@ namespace MyAudios.Soundy.Managers
         public const string DATABASE = "Database";
         public const string GENERAL = "General";
         public const string NEW_SOUND_GROUP = "New Sound Group";
-        public const string NO_SOUND = "No Sound";
+        public const string NoSound = "No Sound";
         public const string SOUNDS = "Sounds";
         public const string SOUNDY = "Soundy";
 
@@ -212,7 +211,7 @@ namespace MyAudios.Soundy.Managers
             if (Database == null)
                 return null;
             
-            if (soundName.Equals(NO_SOUND))
+            if (soundName.Equals(NoSound))
                 return null;
             
             SoundGroupData soundGroupData = Database.GetAudioData(databaseName, soundName);
@@ -254,7 +253,7 @@ namespace MyAudios.Soundy.Managers
             if (Database == null)
                 return null;
             
-            if (soundName.Equals(NO_SOUND))
+            if (soundName.Equals(NoSound))
                 return null;
             
             SoundGroupData soundGroupData = Database.GetAudioData(databaseName, soundName);
@@ -296,7 +295,7 @@ namespace MyAudios.Soundy.Managers
             if (Database == null)
                 return null;
             
-            if (soundName.Equals(NO_SOUND))
+            if (soundName.Equals(NoSound))
                 return null;
             
             if (string.IsNullOrEmpty(databaseName) || string.IsNullOrEmpty(databaseName.Trim()))

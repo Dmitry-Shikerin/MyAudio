@@ -1,8 +1,8 @@
 ﻿using System;
-using Doozy.Engine.Soundy;
 using MyAudios.MyUiFramework.Utils;
 using MyAudios.Soundy.Sources.AudioPoolers.Controllers;
 using MyAudios.Soundy.Sources.DataBases.Domain.Data;
+using MyAudios.Soundy.Sources.Settings.Domain.Const;
 using UnityEngine;
 
 namespace MyAudios.Soundy.Sources.Settings.Domain.Configs
@@ -10,11 +10,7 @@ namespace MyAudios.Soundy.Sources.Settings.Domain.Configs
     [Serializable]
     public class SoundySettings : ScriptableObject
     {
-        public const string FILE_NAME = "SoundySettings";
-        // private static string ResourcesPath => DoozyPath.ENGINE_SOUNDY_RESOURCES_PATH;
-        private static string ResourcesPath = "Assets/MyAudios/Soundy/Resources/Soundy/Settings";
-
-        private static SoundySettings s_instance;
+        [SerializeField] private SoundyDatabase _database;
 
         public static SoundySettings Instance
         {
@@ -24,39 +20,41 @@ namespace MyAudios.Soundy.Sources.Settings.Domain.Configs
                     return s_instance;
                 
                 s_instance = AssetUtils.GetScriptableObject<SoundySettings>(
-                    FILE_NAME, ResourcesPath, false, false);
+                    SoundySettingsConst.FileName,
+                    SoundySettingsConst.ResourcesPath,
+                    false, 
+                    false);
                 
                 return s_instance;
             }
         }
 
-        [SerializeField] private SoundyDatabase database;
+        private static SoundySettings s_instance;
 
         public static SoundyDatabase Database
         {
             get
             {
-                if (Instance.database != null)
-                    return Instance.database;
+                if (Instance._database != null)
+                    return Instance._database;
                 
                 UpdateDatabase();
                 
-                return Instance.database;
+                return Instance._database;
             }
         }
 
         public static void UpdateDatabase()
         {
-            // Instance.database = AssetUtils.GetScriptableObject<SoundyDatabase>(
-            //     "_" + DoozyPath.SOUNDY_DATABASE, DoozyPath.GetDataPath(DoozyPath.ComponentName.Soundy), false, false);
-            Instance.database = AssetUtils.GetScriptableObject<SoundyDatabase>(
-                "_" + DoozyPath.SOUNDY_DATABASE, "Assets/MyAudios/Soundy/Resources/Soundy/DataBases", false, false);
+            Instance._database = AssetUtils.GetScriptableObject<SoundyDatabase>(
+                "_" + DoozyPath.SOUNDY_DATABASE, "Assets/MyAudios/Soundy/Resources/Soundy/DataBases", 
+                false, false);
 #if UNITY_EDITOR
-            if (Instance.database == null)
+            if (Instance._database == null)
                 return;
             
-            Instance.database.Initialize();
-            Instance.database.SearchForUnregisteredDatabases(false);
+            Instance._database.Initialize();
+            Instance._database.SearchForUnregisteredDatabases(false);
             Instance.SetDirty(true);
 #endif
         }
