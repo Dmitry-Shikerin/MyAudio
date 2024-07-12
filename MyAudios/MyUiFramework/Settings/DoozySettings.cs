@@ -27,7 +27,6 @@ namespace MyAudios.MyUiFramework.Settings
             }
         }
 
-
         public Language SelectedLanguage = LanguagePack.DEFAULT_LANGUAGE;
 
         public bool AutoDisableUIInteractions = true;

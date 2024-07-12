@@ -1,21 +1,15 @@
 using System;
 using UnityEngine;
 
-namespace MyAudios.Soundy.DataBases.Domain.Data
+namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
 {
     /// <summary> Audio info for any referenced AudioClip in the Soundy system </summary>
     [Serializable]
     public class AudioData
     {
-        #region Constants
-
         public const float DefaultWeight = 1f;
         public const float MaxWeight = 1f;
         public const float MinWeight = 0f;
-
-        #endregion
-
-        #region Public Variables
 
         /// <summary> Direct reference to an AudioClip </summary>
         public AudioClip AudioClip;
@@ -23,11 +17,7 @@ namespace MyAudios.Soundy.DataBases.Domain.Data
         /// <summary> (Not Implemented) Weight of this AudioClip in the SoundGroupData </summary>
         [Range(MinWeight, MaxWeight)]
         public float Weight = DefaultWeight;
-
-        #endregion
-
-        #region Constructors
-
+        
         /// <summary> Creates a new instance for this class </summary>
         public AudioData() =>
             Reset();
@@ -50,17 +40,11 @@ namespace MyAudios.Soundy.DataBases.Domain.Data
             Weight = weight;
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary> Resets this instance to the default values </summary>
         public void Reset()
         {
             AudioClip = null;
             Weight = 1;
         }
-
-        #endregion
     }
 }

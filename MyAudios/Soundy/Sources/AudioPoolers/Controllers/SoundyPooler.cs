@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Doozy.Engine.Utils;
-using MyAudios.MyUiFramework.Settings;
 using MyAudios.Soundy.Managers;
 using MyAudios.Soundy.Settings;
+using MyAudios.Soundy.Sources.AudioControllers.Controllers;
 using UnityEngine;
 
-namespace Doozy.Engine.Soundy
+namespace MyAudios.Soundy.Sources.AudioPoolers.Controllers
 {
     /// <inheritdoc />
     /// <summary>
@@ -21,16 +21,6 @@ namespace Doozy.Engine.Soundy
         /// <summary> Returns a reference to the SoundyPooler component that should be attached to the SoundyManager GameObject. If one does not exist, it gets added. </summary>
         public static SoundyPooler Instance => SoundyManager.Pooler;
 
-        /// <summary> Internal variable that holds a list of available SoundyControllers </summary>
-        private static List<SoundyController> s_pool;
-
-        /// <summary> The list of available SoundyControllers that make up the pool </summary>
-        private static List<SoundyController> Pool 
-        { 
-            get => s_pool ?? (s_pool = new List<SoundyController>());
-            set => s_pool = value;
-        }
-
         /// <summary> Auto kill any SoundyControllers that are have been unused for the set idle kill duration </summary>
         public static bool AutoKillIdleControllers => SoundySettings.Instance.AutoKillIdleControllers;
 
@@ -43,24 +33,28 @@ namespace Doozy.Engine.Soundy
         /// <summary> The minimum number of SoundyControllers that should be available in the pool, that will not get automatically killed even if they are killable </summary>
         public static int MinimumNumberOfControllers => SoundySettings.Instance.MinimumNumberOfControllers;
 
+        /// <summary> Internal variable that holds a list of available SoundyControllers </summary>
+        private static List<SoundyController> s_pool;
+
+        /// <summary> The list of available SoundyControllers that make up the pool </summary>
+        private static List<SoundyController> Pool 
+        { 
+            get => s_pool ?? (s_pool = new List<SoundyController>());
+            set => s_pool = value;
+        }
+
         #endregion
-
-        #region Properties
-
-        private bool DebugComponent => DoozySettings.Instance.DebugSoundyPooler;
-
-        #endregion
-
+        
         #region Private Variables
 
         /// <summary> Internal variable that holds a reference to the coroutine that performs the check for idle controllers </summary>
-        private Coroutine m_idleCheckCoroutine;
+        private Coroutine _idleCheckCoroutine;
 
         /// <summary> Wait interval between used by the coroutine that performs the check for idle controllers </summary>
-        private WaitForSecondsRealtime m_idleCheckIntervalWaitForSecondsRealtime;
+        private WaitForSecondsRealtime _idleCheckIntervalWaitForSecondsRealtime;
 
         /// <summary> Internal variable used as a reference holder to minimise memory allocations </summary>
-        private SoundyController m_tempController;
+        private SoundyController _tempController;
 
         #endregion
 
@@ -93,10 +87,7 @@ namespace Doozy.Engine.Soundy
                 RemoveNullControllersFromThePool();           //remove any null controllers (sanity check)
                 
                 if (Pool.Count <= MinimumNumberOfControllers) //make sure the minimum number of controllers are in the pool before killing them
-                {
-                    // if (Instance.DebugComponent) DDebug.Log("Clear Pool - " + Pool.Count + " Controllers Available", Instance);
                     return;
-                }
 
                 int killedControllersCount = 0;
                 
@@ -108,14 +99,11 @@ namespace Doozy.Engine.Soundy
                     killedControllersCount++;
                 }
 
-                // if (Instance.DebugComponent) DDebug.Log("Clear Pool - Killed " + killedControllersCount + " Controllers - " + Pool.Count + "' Controllers Available", Instance);
-
                 return;
             }
 
             SoundyController.KillAll();
             Pool.Clear();
-            // if (Instance.DebugComponent) DDebug.Log("Clear Pool - Killed All Controllers - " + Pool.Count + " Controllers Available", Instance);
         }
 
         /// <summary> Get a SoundyController from the Pool, or create a new one if all the available controllers are in use </summary>
@@ -156,7 +144,6 @@ namespace Doozy.Engine.Soundy
             
             controller.gameObject.SetActive(false);
             controller.transform.SetParent(Instance.transform);
-            // if (Instance.DebugComponent) DDebug.Log("Put '" + controller.name + "' Controller in the Pool - " + Pool.Count + " Controllers Available", Instance);
         }
 
         #endregion
@@ -165,20 +152,18 @@ namespace Doozy.Engine.Soundy
 
         private void StartIdleCheckInterval()
         {
-            // if (Instance.DebugComponent) DDebug.Log("Start Idle Check", Instance);
-            m_idleCheckIntervalWaitForSecondsRealtime = 
+            _idleCheckIntervalWaitForSecondsRealtime = 
                 new WaitForSecondsRealtime(IdleCheckInterval < 0 ? 0 : IdleCheckInterval);
-            m_idleCheckCoroutine = StartCoroutine(KillIdleControllersEnumerator());
+            _idleCheckCoroutine = StartCoroutine(KillIdleControllersEnumerator());
         }
 
         private void StopIdleCheckInterval()
         {
-            // if (Instance.DebugComponent) DDebug.Log("Stop Idle Check", Instance);
-            if (m_idleCheckCoroutine == null) 
+            if (_idleCheckCoroutine == null) 
                 return;
             
-            StopCoroutine(m_idleCheckCoroutine);
-            m_idleCheckCoroutine = null;
+            StopCoroutine(_idleCheckCoroutine);
+            _idleCheckCoroutine = null;
         }
 
         /// <summary> Removes any null controllers from the pool </summary>
@@ -193,7 +178,7 @@ namespace Doozy.Engine.Soundy
         {
             while (AutoKillIdleControllers)
             {
-                yield return m_idleCheckIntervalWaitForSecondsRealtime; //check idle wait interval
+                yield return _idleCheckIntervalWaitForSecondsRealtime; //check idle wait interval
                 
                 RemoveNullControllersFromThePool();                     //remove any null controllers (sanity check)
                 int minimumNumberOfControllers = MinimumNumberOfControllers > 0 ? MinimumNumberOfControllers : 0;
@@ -204,18 +189,18 @@ namespace Doozy.Engine.Soundy
                 
                 for (int i = Pool.Count - 1; i >= minimumNumberOfControllers; i--) //go through the pool
                 {
-                    m_tempController = Pool[i];
-                    if (m_tempController.gameObject.activeSelf) 
+                    _tempController = Pool[i];
+                    if (_tempController.gameObject.activeSelf) 
                         continue;                     //controller is active do not kill it
-                    if (m_tempController.IdleDuration < controllerIdleKillDuration) 
+                    if (_tempController.IdleDuration < controllerIdleKillDuration) 
                         continue; //controller is not killable as it has not been idle for long enough
                     
-                    Pool.Remove(m_tempController);                                            //remove controller from the pool
-                    m_tempController.Kill();                                                  //kill the controller
+                    Pool.Remove(_tempController);                                            //remove controller from the pool
+                    _tempController.Kill();                                                  //kill the controller
                 }
             }
 
-            m_idleCheckCoroutine = null;
+            _idleCheckCoroutine = null;
         }
 
         #endregion

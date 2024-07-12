@@ -1,19 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Doozy.Engine.Utils;
+using Doozy.Engine.Soundy;
 using MyAudios.MyUiFramework.Utils;
 using MyAudios.Soundy.Managers;
-using UnityEditor.SceneManagement;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
 using Object = UnityEngine.Object;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
-namespace Doozy.Engine.Soundy
+namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
 {
     /// <inheritdoc />
     /// <summary>
@@ -98,8 +94,8 @@ namespace Doozy.Engine.Soundy
                 newName = soundName + " (" + counter + ")";
             }
 
-            if (performUndo)
-                UndoRecord(UILabels.AddItem);
+            // if (performUndo)
+            //     UndoRecord(UILabels.AddItem);
 
             SoundGroupData data = CreateInstance<SoundGroupData>();
             data.DatabaseName = DatabaseName;
@@ -170,35 +166,17 @@ namespace Doozy.Engine.Soundy
         /// <param name="saveAssets"> Write all unsaved asset changes to disk? </param>
         public void RefreshDatabase(bool performUndo, bool saveAssets)
         {
-            // DoozyUtils.DisplayProgressBar(
-            //     UILabels.SoundyDatabase + ": " + DatabaseName, UILabels.RefreshDatabase, 0.1f);
-
             if (performUndo)
                 UndoRecord(UILabels.RefreshDatabase);
 
             bool addedTheNoSoundSoundGroup = AddNoSound();
             RemoveUnreferencedData();
-            // DoozyUtils.DisplayProgressBar(
-            //     UILabels.SoundyDatabase + ": " + DatabaseName, UILabels.RefreshDatabase, 0.2f);
             RemoveUnnamedEntries(false);
-            // DoozyUtils.DisplayProgressBar(
-            //     UILabels.SoundyDatabase + ": " + DatabaseName, UILabels.RefreshDatabase, 0.3f);
             RemoveDuplicateEntries(false);
-            // DoozyUtils.DisplayProgressBar(
-            //     UILabels.SoundyDatabase + ": " + DatabaseName, UILabels.RefreshDatabase, 0.4f);
             bool foundDataWithWrongDatabaseName = CheckAllDataForCorrectDatabaseName(false);
-            // DoozyUtils.DisplayProgressBar(
-            //     UILabels.SoundyDatabase + ": " + DatabaseName, UILabels.RefreshDatabase, 0.5f);
             Sort(false);
-            // DoozyUtils.DisplayProgressBar(
-            //     UILabels.SoundyDatabase + ": " + DatabaseName, UILabels.RefreshDatabase, 0.6f);
             UpdateSoundNames(false);
-            // DoozyUtils.DisplayProgressBar(
-            //     UILabels.SoundyDatabase + ": " + DatabaseName, UILabels.RefreshDatabase, 0.7f);
             SetDirty(saveAssets && (addedTheNoSoundSoundGroup || foundDataWithWrongDatabaseName));
-            // DoozyUtils.DisplayProgressBar(
-            //     UILabels.SoundyDatabase + ": " + DatabaseName, UILabels.RefreshDatabase, 1f);
-            // DoozyUtils.ClearProgressBar();
         }
 
         /// <summary> Iterates through the database to look for the data. If found, removes the entry and returns TRUE </summary>
@@ -210,18 +188,8 @@ namespace Doozy.Engine.Soundy
             if (data == null)
                 return false;
 
-            if (!Contains(data))
+            if (Contains(data) == false)
                 return false;
-// #if UNITY_EDITOR
-//             if (showDialog)
-//                 if (!EditorUtility.DisplayDialog(UILabels.RemovedEntry + " '" + data.SoundName + "'",
-//                         UILabels.AreYouSureYouWantToRemoveTheEntry +
-//                         "\n\n" +
-//                         UILabels.OperationCannotBeUndone,
-//                         UILabels.Yes,
-//                         UILabels.No))
-//                     return false;
-// #endif
 
             AssetDatabase.RemoveObjectFromAsset(data);
 
@@ -230,9 +198,7 @@ namespace Doozy.Engine.Soundy
                 if (Database[i] == data)
                 {
                     if (data != null)
-                    {
                         DestroyImmediate(data, true);
-                    }
 
                     Database.RemoveAt(i);
 
@@ -243,7 +209,6 @@ namespace Doozy.Engine.Soundy
             UpdateSoundNames(false);
             SetDirty(saveAssets);
 
-            Debug.Log($"Remove");
             return true;
         }
 
@@ -265,12 +230,15 @@ namespace Doozy.Engine.Soundy
                 if (data.Sounds == null)
                 {
                     Database.RemoveAt(i);
+                    
                     continue;
                 }
 
                 for (int j = data.Sounds.Count - 1; j >= 0; j--)
+                {
                     if (data.Sounds[j] == null)
                         data.Sounds.RemoveAt(j);
+                }
 
                 if (data.Sounds.Count == 0)
                     Database.RemoveAt(i);
@@ -316,9 +284,9 @@ namespace Doozy.Engine.Soundy
         /// <param name="saveAssets"> Write all unsaved asset changes to disk? </param>
         public void Sort(bool performUndo, bool saveAssets = false)
         {
-            if (performUndo)
-                UndoRecord(UILabels.SortDatabase);
-
+            // if (performUndo)
+            //     UndoRecord(UILabels.SortDatabase);
+            //
             Database = Database.OrderBy(data => data.SoundName).ToList();
 
             //remove the 'No Sound' entry wherever it is
