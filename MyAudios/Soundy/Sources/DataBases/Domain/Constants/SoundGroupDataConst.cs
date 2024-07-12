@@ -1,5 +1,6 @@
 ﻿using Doozy.Engine.Soundy;
-using MyAudios.Soundy.Managers;
+using MyAudios.Soundy.Sources.Managers.Controllers;
+using MyAudios.Soundy.Sources.Managers.Domain.Constants;
 
 namespace MyAudios.Soundy.Sources.DataBases.Domain.Constants
 {
@@ -19,6 +20,6 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Constants
         public const float MinSpatialBlend = 0;
         public const float MinVolume = -80;
         public const SoundGroupData.PlayMode DefaultPlayMode = SoundGroupData.PlayMode.Random;
-        public const string DefaultSoundName = SoundyManager.NoSound;
+        public const string DefaultSoundName = SoundyManagerConstant.NoSound;
     }
 }

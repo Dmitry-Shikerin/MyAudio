@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using MyAudios.MyUiFramework.Attributes;
 using MyAudios.MyUiFramework.Utils;
 using MyAudios.Scripts;
-using MyAudios.Soundy.Managers;
 using MyAudios.Soundy.Sources.AudioControllers.Controllers;
 using MyAudios.Soundy.Sources.AudioPoolers.Controllers;
 using MyAudios.Soundy.Sources.DataBases.Domain.Constants;
 using MyAudios.Soundy.Sources.DataBases.Domain.Data;
+using MyAudios.Soundy.Sources.Managers.Controllers;
+using MyAudios.Soundy.Sources.Managers.Domain.Constants;
 using MyAudios.Soundy.Utils;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -43,7 +44,7 @@ namespace Doozy.Engine.Soundy
         {
             get
             {
-                if (SoundName.Equals(SoundyManager.NoSound))
+                if (SoundName.Equals(SoundyManagerConstant.NoSound))
                     return false;
                 
                 if (Sounds == null || Sounds.Count == 0)
@@ -64,7 +65,7 @@ namespace Doozy.Engine.Soundy
         {
             get
             {
-                if (SoundName.Equals(SoundyManager.NoSound))
+                if (SoundName.Equals(SoundyManagerConstant.NoSound))
                     return false; //if SoundName is set to No Sound -> has no sound
                 
                 if (Sounds == null || Sounds.Count == 0)
@@ -278,7 +279,7 @@ namespace Doozy.Engine.Soundy
         /// <summary> [Editor Only] Marks target object as dirty. (Only suitable for non-scene objects) </summary>
         /// <param name="saveAssets"> Write all unsaved asset changes to disk? </param>
         public void SetDirty(bool saveAssets) =>
-            DoozyUtils.SetDirty(this, saveAssets);
+            MyUtils.SetDirty(this, saveAssets);
 
         #endregion
 

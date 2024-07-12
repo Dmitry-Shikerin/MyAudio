@@ -1,6 +1,7 @@
 ﻿using System;
 using Doozy.Engine.Soundy;
-using MyAudios.Soundy.Managers;
+using MyAudios.Soundy.Sources.Managers.Controllers;
+using MyAudios.Soundy.Sources.Managers.Domain.Constants;
 using MyAudios.Soundy.Sources.Settings.Domain.Configs;
 using MyAudios.Soundy.Sources.SoundSources.Enums;
 using UnityEngine;
@@ -56,8 +57,8 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         public void Reset()
         {
             SoundSource = SoundSource.Soundy;
-            DatabaseName = SoundyManager.GENERAL;
-            SoundName = SoundyManager.NoSound;
+            DatabaseName = SoundyManagerConstant.General;
+            SoundName = SoundyManagerConstant.NoSound;
             AudioClip = null;
         }
 

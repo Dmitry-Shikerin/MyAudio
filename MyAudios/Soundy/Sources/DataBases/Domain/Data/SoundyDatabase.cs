@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Doozy.Engine.Soundy;
 using MyAudios.MyUiFramework.Utils;
-using MyAudios.Soundy.Managers;
 using MyAudios.Soundy.Sources.DataBases.Domain.Constants;
+using MyAudios.Soundy.Sources.Managers.Controllers;
+using MyAudios.Soundy.Sources.Managers.Domain.Constants;
 using UnityEditor;
 using UnityEngine;
 
@@ -208,13 +209,13 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         {
             RemoveNullDatabases();
 
-            if (Contains(SoundyManager.GENERAL))
+            if (Contains(SoundyManagerConstant.General))
                 return;
 
 #if UNITY_EDITOR
             SearchForUnregisteredDatabases(false);
             
-            if (Contains(SoundyManager.GENERAL))
+            if (Contains(SoundyManagerConstant.General))
                 return;
 
             SoundDatabase soundDatabase = AssetUtils.CreateAsset<SoundDatabase>(
@@ -223,7 +224,7 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
             SoundDatabase soundDatabase = ScriptableObject.CreateInstance<SoundDatabase>();
 #endif
             AddSoundDatabase(soundDatabase, true);
-            soundDatabase.DatabaseName = SoundyManager.GENERAL;
+            soundDatabase.DatabaseName = SoundyManagerConstant.General;
             soundDatabase.Initialize(true);
             UpdateDatabaseNames(true);
         }
@@ -386,12 +387,12 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         /// <summary> [Editor Only] Marks target object as dirty. (Only suitable for non-scene objects) </summary>
         /// <param name="saveAssets"> Write all unsaved asset changes to disk? </param>
         public void SetDirty(bool saveAssets) =>
-            DoozyUtils.SetDirty(this, saveAssets);
+            MyUtils.SetDirty(this, saveAssets);
 
         /// <summary> Records any changes done on the object after this function </summary>
         /// <param name="undoMessage"> The title of the action to appear in the undo history (i.e. visible in the undo menu) </param>
         public void UndoRecord(string undoMessage) =>
-            DoozyUtils.UndoRecordObject(this, undoMessage);
+            MyUtils.UndoRecordObject(this, undoMessage);
 
         /// <summary> Updates the list of SoundDatabase names found in the database </summary>
         /// <param name="saveAssets"> Write all unsaved asset changes to disk? </param>

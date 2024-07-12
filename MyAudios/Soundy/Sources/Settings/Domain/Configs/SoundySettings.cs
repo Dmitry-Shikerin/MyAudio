@@ -97,11 +97,11 @@ namespace MyAudios.Soundy.Sources.Settings.Domain.Configs
         /// <summary> [Editor Only] Marks target object as dirty. (Only suitable for non-scene objects) </summary>
         /// <param name="saveAssets"> Write all unsaved asset changes to disk? </param>
         public void SetDirty(bool saveAssets) =>
-            DoozyUtils.SetDirty(this, saveAssets);
+            MyUtils.SetDirty(this, saveAssets);
 
         /// <summary> Records any changes done on the object after this function </summary>
         /// <param name="undoMessage"> The title of the action to appear in the undo history (i.e. visible in the undo menu) </param>
         public void UndoRecord(string undoMessage) =>
-            DoozyUtils.UndoRecordObject(this, undoMessage);
+            MyUtils.UndoRecordObject(this, undoMessage);
     }
 }

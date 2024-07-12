@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Doozy.Engine.Soundy;
 using MyAudios.MyUiFramework.Utils;
-using MyAudios.Soundy.Managers;
 using MyAudios.Soundy.Sources.DataBases.Domain.Constants;
+using MyAudios.Soundy.Sources.Managers.Controllers;
+using MyAudios.Soundy.Sources.Managers.Domain.Constants;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -218,7 +219,7 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
             {
                 SoundGroupData data = Database[i];
 
-                if (data.SoundName.Equals(SoundyManager.NoSound))
+                if (data.SoundName.Equals(SoundyManagerConstant.NoSound))
                     continue;
 
                 if (data.Sounds == null)
@@ -271,7 +272,7 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         /// <summary> [Editor Only] Marks target object as dirty. (Only suitable for non-scene objects) </summary>
         /// <param name="saveAssets"> Write all unsaved asset changes to disk? </param>
         public void SetDirty(bool saveAssets) =>
-            DoozyUtils.SetDirty(this, saveAssets);
+            MyUtils.SetDirty(this, saveAssets);
 
         /// <summary> Sorts the entire database by sound name </summary>
         /// <param name="performUndo"> Record changes? </param>
@@ -288,7 +289,7 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
 
             foreach (SoundGroupData audioData in Database)
             {
-                if (!audioData.SoundName.Equals(SoundyManager.NoSound))
+                if (!audioData.SoundName.Equals(SoundyManagerConstant.NoSound))
                     continue;
 
                 noSoundSoundGroupData = audioData;
@@ -307,7 +308,7 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         /// <summary> Records any changes done on the object after this function </summary>
         /// <param name="undoMessage"> The title of the action to appear in the undo history (i.e. visible in the undo menu) </param>
         public void UndoRecord(string undoMessage) =>
-            DoozyUtils.UndoRecordObject(this, undoMessage);
+            MyUtils.UndoRecordObject(this, undoMessage);
 
         /// <summary> Updates the list of sound names found in the database </summary>
         /// <param name="saveAssets"> Write all unsaved asset changes to disk? </param>
@@ -323,7 +324,7 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
             AddNoSound();
 #endif
             SoundNames.Clear();
-            SoundNames.Add(SoundyManager.NoSound);
+            SoundNames.Add(SoundyManagerConstant.NoSound);
             var list = new List<string>();
 
             foreach (SoundGroupData data in Database)
@@ -342,16 +343,16 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         /// <param name="saveAssets"> Write all unsaved asset changes to disk? </param>
         private bool AddNoSound(bool saveAssets = false)
         {
-            if (Contains(SoundyManager.NoSound))
+            if (Contains(SoundyManagerConstant.NoSound))
                 return false;
 
             if (SoundNames == null)
                 SoundNames = new List<string>();
 
-            SoundNames.Add(SoundyManager.NoSound);
+            SoundNames.Add(SoundyManagerConstant.NoSound);
             SoundGroupData data = CreateInstance<SoundGroupData>();
             data.DatabaseName = DatabaseName;
-            data.SoundName = SoundyManager.NoSound;
+            data.SoundName = SoundyManagerConstant.NoSound;
             data.name = data.SoundName;
             data.SetDirty(false);
 
@@ -368,7 +369,7 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         /// <summary>[Editor Only] Adds an object to this asset </summary>
         /// <param name="objectToAdd"> Object that will get added under the asset</param>
         private void AddObjectToAsset(Object objectToAdd) =>
-            DoozyUtils.AddObjectToAsset(objectToAdd, this);
+            MyUtils.AddObjectToAsset(objectToAdd, this);
 
         /// <summary> Checks that all the sound group data entries have the correct database name. Returns TRUE if an inconsistency was found </summary>
         /// <param name="saveAssets"> Write all unsaved asset changes to disk? </param>

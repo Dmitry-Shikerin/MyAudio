@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using MyAudios.MyUiFramework.Utils;
-using MyAudios.Soundy.Managers;
 using MyAudios.Soundy.Sources.AudioControllers.Controllers;
+using MyAudios.Soundy.Sources.Managers.Controllers;
 using MyAudios.Soundy.Sources.Settings.Domain.Configs;
 using UnityEngine;
 

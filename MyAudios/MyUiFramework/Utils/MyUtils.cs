@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace MyAudios.MyUiFramework.Utils
 {
-    public static class DoozyUtils
+    public static class MyUtils
     {
         public const string BACKGROUND = "Background";
         public const string OVERLAY = "Overlay";

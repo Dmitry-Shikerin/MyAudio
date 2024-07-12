@@ -67,8 +67,8 @@ namespace MyAudios.MyUiFramework.Utils
             
             resourcesPath = CleanPath(resourcesPath);
             // ReSharper disable once SuspiciousTypeConversion.Global
-//            if (!resourcesPath[resourcesPath.Length - 1].Equals(@"\")) resourcesPath += @"\";
-//            resourcesPath = resourcesPath.Replace(@"\", "/");
+            if (!resourcesPath[resourcesPath.Length - 1].Equals(@"\")) resourcesPath += @"\";
+            resourcesPath = resourcesPath.Replace(@"\", "/");
 
             return (T) Resources.Load(resourcesPath + fileName, typeof(T));
         }
@@ -126,7 +126,7 @@ namespace MyAudios.MyUiFramework.Utils
             
             foreach (string guid in guids)
             {
-                var asset = AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(guid));
+                T asset = AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(guid));
                 if (asset == null) continue;
                 list.Add(asset);
             }
@@ -148,12 +148,13 @@ namespace MyAudios.MyUiFramework.Utils
                 return;
             
             // ReSharper disable once SuspiciousTypeConversion.Global
-//            if (!relativePath[relativePath.Length - 1].Equals(@"\")) relativePath += @"\";
+            if (!relativePath[relativePath.Length - 1].Equals(@"\"))
+                relativePath += @"\";
+            
             relativePath = CleanPath(relativePath);
             
-            if (!AssetDatabase.MoveAssetToTrash(relativePath + fileName + ".asset"))
+            if (AssetDatabase.MoveAssetToTrash(relativePath + fileName + ".asset") == false)
                 return;
-            // if (printDebugMessage) DDebug.Log("The " + fileName + ".asset file has been moved to trash.");
             if (saveAssetDatabase)
                 AssetDatabase.SaveAssets();
             

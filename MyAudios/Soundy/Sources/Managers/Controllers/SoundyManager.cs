@@ -1,23 +1,23 @@
 ﻿using Doozy.Engine.Soundy;
-using MyAudios.MyUiFramework.Settings;
 using MyAudios.MyUiFramework.Utils;
 using MyAudios.Soundy.Sources.AudioControllers.Controllers;
 using MyAudios.Soundy.Sources.AudioPoolers.Controllers;
 using MyAudios.Soundy.Sources.DataBases.Domain.Data;
+using MyAudios.Soundy.Sources.Managers.Domain.Constants;
 using MyAudios.Soundy.Sources.Settings.Domain.Configs;
 using MyAudios.Soundy.Sources.SoundSources.Enums;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace MyAudios.Soundy.Managers
+namespace MyAudios.Soundy.Sources.Managers.Controllers
 {
     /// <inheritdoc />
     /// <summary>
     /// Central component of the Soundy system that binds all the sound sub-systems together.
     /// It gets the SoundGroupData references from the SoundyDatabase and passes them to the SoundyPooler, that in turn manages and uses SoundyControllers to play the sounds. 
     /// </summary>
-    [AddComponentMenu(MenuUtils.SoundyManager_AddComponentMenu_MenuName, MenuUtils.SoundyManager_AddComponentMenu_Order)]
+    [AddComponentMenu(SoundyManagerConstant.SoundyManagerAddComponentMenuMenuName, SoundyManagerConstant.SoundyManagerAddComponentMenuOrder)]
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(SoundyExecutionOrder.SoundyManager)]
     public class SoundyManager : MonoBehaviour
@@ -25,7 +25,7 @@ namespace MyAudios.Soundy.Managers
         #region UNITY_EDITOR
 
 #if UNITY_EDITOR
-        [MenuItem(MenuUtils.SoundyManager_MenuItem_ItemName, false, MenuUtils.SoundyManager_MenuItem_Priority)]
+        [MenuItem(SoundyManagerConstant.SoundyManagerMenuItemItemName, false, SoundyManagerConstant.SoundyManagerMenuItemPriority)]
         private static void CreateComponent(MenuCommand menuCommand)
         {
             SoundyManager addToScene = AddToScene(true);
@@ -59,17 +59,6 @@ namespace MyAudios.Soundy.Managers
                 return s_instance;
             }
         }
-
-        #endregion
-
-        #region Constants
-
-        public const string DATABASE = "Database";
-        public const string GENERAL = "General";
-        public const string NEW_SOUND_GROUP = "New Sound Group";
-        public const string NoSound = "No Sound";
-        public const string SOUNDS = "Sounds";
-        public const string SOUNDY = "Soundy";
 
         #endregion
 
@@ -128,8 +117,8 @@ namespace MyAudios.Soundy.Managers
 
         /// <summary> Add SoundyManager to scene and returns a reference to it </summary>
         public static SoundyManager AddToScene(bool selectGameObjectAfterCreation = false) =>
-            DoozyUtils.AddToScene<SoundyManager>(
-                MenuUtils.SoundyManager_GameObject_Name, true, selectGameObjectAfterCreation);
+            MyUtils.AddToScene<SoundyManager>(
+                SoundyManagerConstant.SoundyManagerGameObjectName, true, selectGameObjectAfterCreation);
 
         /// <summary> Create a new SoundyController in the current scene and get a reference to it </summary>
         public static SoundyController GetController() =>
@@ -210,7 +199,7 @@ namespace MyAudios.Soundy.Managers
             if (Database == null)
                 return null;
             
-            if (soundName.Equals(NoSound))
+            if (soundName.Equals(SoundyManagerConstant.NoSound))
                 return null;
             
             SoundGroupData soundGroupData = Database.GetAudioData(databaseName, soundName);
@@ -252,7 +241,7 @@ namespace MyAudios.Soundy.Managers
             if (Database == null)
                 return null;
             
-            if (soundName.Equals(NoSound))
+            if (soundName.Equals(SoundyManagerConstant.NoSound))
                 return null;
             
             SoundGroupData soundGroupData = Database.GetAudioData(databaseName, soundName);
@@ -294,7 +283,7 @@ namespace MyAudios.Soundy.Managers
             if (Database == null)
                 return null;
             
-            if (soundName.Equals(NoSound))
+            if (soundName.Equals(SoundyManagerConstant.NoSound))
                 return null;
             
             if (string.IsNullOrEmpty(databaseName) || string.IsNullOrEmpty(databaseName.Trim()))
@@ -366,7 +355,7 @@ namespace MyAudios.Soundy.Managers
             controller.SetPosition(position);
             controller.gameObject.name = "[AudioClip]-(" + audioClip.name + ")";
             controller.Play();
-            // if (Instance.DebugComponent) DDebug.Log("Play '" + audioClip.name + "' AudioClip", Instance);
+            
             return controller;
         }
 
@@ -415,7 +404,7 @@ namespace MyAudios.Soundy.Managers
 
             controller.gameObject.name = "[AudioClip]-(" + audioClip.name + ")";
             controller.Play();
-            // if (Instance.DebugComponent) DDebug.Log("Play '" + audioClip.name + "' AudioClip", Instance);
+            
             return controller;
         }
 
@@ -439,7 +428,6 @@ namespace MyAudios.Soundy.Managers
                 case SoundSource.AudioClip:
                     return Play(data.AudioClip, data.OutputAudioMixerGroup);
                 case SoundSource.MasterAudio:
-                    // if (Instance.DebugComponent) DDebug.Log("Play '" + data.SoundName + "' with MasterAudio", Instance);
 #if dUI_MasterAudio
                     DarkTonic.MasterAudio.MasterAudio.PlaySound(data.SoundName);
                     //DDebug.Log("MasterAudio - Play Sound: " + data.SoundName);
@@ -453,14 +441,12 @@ namespace MyAudios.Soundy.Managers
         /// <summary> Stop all the SoundyControllers that are currently playing </summary>
         public static void StopAllControllers()
         {
-            // if (Instance.DebugComponent) DDebug.Log("Stop All Controllers", Instance);
             SoundyController.StopAll();
         }
 
         /// <summary> Stop all sound sources (including MasterAudio) </summary>
         public static void StopAllSounds()
         {
-            // if (Instance.DebugComponent) DDebug.Log("Stop All Sounds", Instance);
             StopAllControllers();
 #if dUI_MasterAudio
             DarkTonic.MasterAudio.MasterAudio.StopEverything();
@@ -470,14 +456,12 @@ namespace MyAudios.Soundy.Managers
         /// <summary> Unmute all the SoundyControllers that were previously muted </summary>
         public static void UnmuteAllControllers()
         {
-            // if (Instance.DebugComponent) DDebug.Log("Unmute All Controllers", Instance);
             SoundyController.UnmuteAll();
         }
 
         /// <summary> Unmute all sound sources (including MasterAudio) </summary>
         public static void UnmuteAllSounds()
         {
-            // if (Instance.DebugComponent) DDebug.Log("Unmute All Sounds", Instance);
             UnmuteAllControllers();
 #if dUI_MasterAudio
             DarkTonic.MasterAudio.MasterAudio.UnmuteEverything();
@@ -487,14 +471,12 @@ namespace MyAudios.Soundy.Managers
         /// <summary> Unpause all the SoundyControllers that were previously paused </summary>
         public static void UnpauseAllControllers()
         {
-            // if (Instance.DebugComponent) DDebug.Log("Unpause All Controllers", Instance);
             SoundyController.UnpauseAll();
         }
 
         /// <summary> Unpause all sound sources (including MasterAudio) </summary>
         public static void UnpauseAllSounds()
         {
-            // if (Instance.DebugComponent) DDebug.Log("Unpause All Sounds", Instance);
             UnpauseAllControllers();
 #if dUI_MasterAudio
             DarkTonic.MasterAudio.MasterAudio.UnpauseEverything();
