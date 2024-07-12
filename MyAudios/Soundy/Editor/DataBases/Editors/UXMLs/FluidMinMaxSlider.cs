@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using Doozy.Editor.EditorUI;
-using Doozy.Editor.EditorUI.Components;
 using Doozy.Editor.EditorUI.Utils;
 using Doozy.Editor.Reactor.Internal;
 using Doozy.Runtime.Colors;
 using Doozy.Runtime.Common.Events;
-using Doozy.Runtime.Common.Extensions;
-using Doozy.Runtime.Reactor;
 using Doozy.Runtime.Reactor.Easings;
 using Doozy.Runtime.Reactor.Internal;
 using Doozy.Runtime.Reactor.Reactions;
@@ -44,7 +38,9 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors.UXMLs
 
         public UnityEvent onStartValueChange { get; } = new UnityEvent();
         public UnityEvent onEndValueChange { get; } = new UnityEvent();
-        public FloatEvent onValueChanged { get; } = new FloatEvent();
+        public FloatEvent onMinValueChanged { get; } = new FloatEvent();
+        public FloatEvent onMaxValueChanged { get; } = new FloatEvent();
+        public Action<Vector2> onValueChanged;
 
         private FloatReaction resetToValueReaction { get; set; }
 
@@ -208,6 +204,11 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors.UXMLs
             //     resetToValueReaction.Play();
             //
             // });
+            
+            slider.RegisterValueChangedCallback((evt) =>
+            {
+                onValueChanged?.Invoke(evt.newValue);
+            });
 
             Initialize();
             Compose();

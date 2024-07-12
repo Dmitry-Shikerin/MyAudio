@@ -1,8 +1,4 @@
-﻿// Copyright (c) 2015 - 2023 Doozy Entertainment. All Rights Reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement
-// A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Doozy.Editor.EditorUI.Components.Internal;
@@ -12,7 +8,6 @@ using Doozy.Runtime.Common.Extensions;
 using Doozy.Runtime.Reactor.Internal;
 using Doozy.Runtime.UIElements.Extensions;
 using UnityEngine.UIElements;
-// ReSharper disable MemberCanBePrivate.Global
 
 namespace Doozy.Editor.EditorUI.Components
 {
@@ -193,7 +188,6 @@ namespace Doozy.Editor.EditorUI.Components
                 return -1;
             }
         }
-
 
         public static FluidToggleGroup Get(string labelText, bool value, EditorSelectableColorInfo accentColor, string tooltip = "") =>
             Get().SetLabelText(labelText).SetToggleAccentColor(accentColor).SetIsOn(value).SetTooltip(tooltip);

@@ -1,8 +1,4 @@
-﻿// Copyright (c) 2015 - 2023 Doozy Entertainment. All Rights Reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement
-// A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Doozy.Editor.EditorUI.Components;
 using Doozy.Editor.EditorUI.Components.Internal;
 using Doozy.Editor.EditorUI.Editors;
@@ -10,7 +6,6 @@ using Doozy.Editor.EditorUI.ScriptableObjects.SpriteSheets;
 using Doozy.Runtime.UIElements.Extensions;
 using UnityEngine;
 using UnityEngine.UIElements;
-// ReSharper disable UnusedType.Global
 
 namespace Doozy.Editor.EditorUI.WindowLayouts
 {

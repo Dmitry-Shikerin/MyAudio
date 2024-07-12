@@ -10,6 +10,7 @@ using MyAudios.Soundy.DataBases.Domain.Data;
 using MyAudios.Soundy.Editor.DataBases.Editors.UXMLs;
 using MyAudios.Soundy.Editor.DataBases.Windows.Views;
 using UnityEditor;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace MyAudios.Soundy.Editor.DataBases.Editors
@@ -171,11 +172,32 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors
                     .SetStyleMinWidth(70);
             FluidMinMaxSlider volumeMinMaxSlider = new FluidMinMaxSlider();
             volumeMinMaxSlider.RegisterCallback<DragUpdatedEvent>((even) => {});
+            volumeMinMaxSlider.slider.value = new Vector2(
+                SoundGroupData.Volume.MinValue, SoundGroupData.Volume.MaxValue);
+            volumeMinMaxSlider.slider.lowLimit = SoundGroupData.MIN_VOLUME;
+            volumeMinMaxSlider.slider.highLimit = SoundGroupData.MAX_VOLUME;
+            volumeMinMaxSlider.slider.RegisterValueChangedCallback((value) =>
+            {
+                SoundGroupData.Volume.MinValue = value.newValue.x;
+                SoundGroupData.Volume.MaxValue = value.newValue.y;
+            });
+            
+            FluidButton resetVolumeButton = FluidButton
+                .Get()
+                .ResetLayout()
+                .SetElementSize(ElementSize.Normal)
+                .SetIcon(EditorSpriteSheets.EditorUI.Icons.Reset)
+                .AddOnClick(() =>
+                {
+                    volumeMinMaxSlider.slider.value = new Vector2(
+                        SoundGroupData.DEFAULT_VOLUME, SoundGroupData.DEFAULT_VOLUME);
+                });
             
             VisualElement volumeRow = DesignUtils
                 .row
                 .AddChild(volumeLabel)
-                .AddChild(volumeMinMaxSlider);
+                .AddChild(volumeMinMaxSlider)
+                .AddChild(resetVolumeButton);
             
             Label pitchLabel = 
                 DesignUtils
@@ -183,11 +205,31 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors
                     .SetStyleMinWidth(70);
             FluidMinMaxSlider pitchMinMaxSlider = new FluidMinMaxSlider();
             pitchMinMaxSlider.RegisterCallback<DragUpdatedEvent>((even) => {});
+            pitchMinMaxSlider.slider.value = new Vector2(SoundGroupData.Pitch.MinValue, SoundGroupData.Pitch.MaxValue);
+            pitchMinMaxSlider.slider.lowLimit = SoundGroupData.MIN_PITCH;
+            pitchMinMaxSlider.slider.highLimit = SoundGroupData.MAX_PITCH;
+            pitchMinMaxSlider.slider.RegisterValueChangedCallback((value) =>
+            {
+                SoundGroupData.Pitch.MinValue = value.newValue.x;
+                SoundGroupData.Pitch.MaxValue = value.newValue.y;
+            });
+            
+            FluidButton resetPitchButton = FluidButton
+                .Get()
+                .ResetLayout()
+                .SetElementSize(ElementSize.Normal)
+                .SetIcon(EditorSpriteSheets.EditorUI.Icons.Reset)
+                .AddOnClick(() =>
+                {
+                    pitchMinMaxSlider.slider.value = new Vector2(
+                        SoundGroupData.DEFAULT_PITCH, SoundGroupData.DEFAULT_PITCH);
+                });
             
             VisualElement pitchRow = DesignUtils
                 .row
                 .AddChild(pitchLabel)
-                .AddChild(pitchMinMaxSlider);
+                .AddChild(pitchMinMaxSlider)
+                .AddChild(resetPitchButton);
             
             Label spatialBlendLabel = 
                 DesignUtils
@@ -213,8 +255,11 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors
                 .ResetLayout()
                 .SetStyleFlexGrow(1)
                 .SetLabelText("Sliders");
-            
+
             FluidToggleButtonTab volumeButtonTab = new FluidToggleButtonTab();
+            FluidToggleButtonTab pitchButtonTab = new FluidToggleButtonTab();
+            FluidToggleButtonTab spatialBlendButtonTab = new FluidToggleButtonTab();
+
             volumeButtonTab
                 .ResetLayout()
                 .SetStyleFlexGrow(1)
@@ -222,10 +267,10 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors
                 .SetLabelText("Volume")
                 .SetOnClick(() =>
                 {
-                    if (volumeButtonTab.isOn)
-                        volumeButtonTab.SetToggleAccentColor(EditorSelectableColors.EditorUI.Orange);
-                    else
-                        volumeButtonTab.ResetColors();
+                    volumeButtonTab.ResetColors();
+                    pitchButtonTab.ResetColors();
+                    spatialBlendButtonTab.ResetColors();
+                    volumeButtonTab.SetToggleAccentColor(EditorSelectableColors.EditorUI.Orange);
                     
                     slidersContainer.ClearContent();
                     slidersContainer
@@ -234,8 +279,7 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors
                 });
             volumeButtonTab.AddToToggleGroup(slidersToggleGroup);
             slidersToggleGroup.RegisterToggle(volumeButtonTab);
-            
-            FluidToggleButtonTab pitchButtonTab = new FluidToggleButtonTab();
+
             pitchButtonTab
                 .ResetLayout()
                 .SetStyleFlexGrow(1)
@@ -243,10 +287,10 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors
                 .SetLabelText("Pitch")
                 .SetOnClick(() => 
                 { 
-                    if (pitchButtonTab.isOn)
-                        pitchButtonTab.SetToggleAccentColor(EditorSelectableColors.EditorUI.Orange);
-                    else
-                        pitchButtonTab.ResetColors();
+                    volumeButtonTab.ResetColors();
+                    pitchButtonTab.ResetColors();
+                    spatialBlendButtonTab.ResetColors();
+                    pitchButtonTab.SetToggleAccentColor(EditorSelectableColors.EditorUI.Orange);
                     
                     slidersContainer.ClearContent();
                     slidersContainer
@@ -255,8 +299,7 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors
                 });
             pitchButtonTab.AddToToggleGroup(slidersToggleGroup);
             slidersToggleGroup.RegisterToggle(pitchButtonTab);
-            
-            FluidToggleButtonTab spatialBlendButtonTab = new FluidToggleButtonTab();
+
             spatialBlendButtonTab
                 .ResetLayout()
                 .SetStyleFlexGrow(1)
@@ -264,16 +307,20 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors
                 .SetLabelText("Spatial Blend")
                 .SetOnClick(() =>
                 {
-                    if (spatialBlendButtonTab.isOn)
-                        spatialBlendButtonTab.SetToggleAccentColor(EditorSelectableColors.EditorUI.Orange);
-                    else
-                        spatialBlendButtonTab.ResetColors();
+                    volumeButtonTab.ResetColors();
+                    pitchButtonTab.ResetColors();
+                    spatialBlendButtonTab.ResetColors();
+                    spatialBlendButtonTab.SetToggleAccentColor(EditorSelectableColors.EditorUI.Orange);
                     
                     slidersContainer.ClearContent();
                     slidersContainer
                         .AddContent(spatialBlendRow)
                         .Show();
                 });
+            spatialBlendButtonTab.AddOnValueChanged((isOn) =>
+            {
+                    spatialBlendButtonTab.ResetColors();
+            });
             spatialBlendButtonTab.AddToToggleGroup(slidersToggleGroup);
             slidersToggleGroup.RegisterToggle(spatialBlendButtonTab);
 
