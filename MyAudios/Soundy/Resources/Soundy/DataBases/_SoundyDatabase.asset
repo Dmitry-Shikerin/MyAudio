@@ -13,12 +13,6 @@ MonoBehaviour:
   m_Name: _SoundyDatabase
   m_EditorClassIdentifier: 
   DatabaseNames:
-  - ascascasc
-  - ButtonClick
   - General
-  - scacasc
   SoundDatabases:
-  - {fileID: 11400000, guid: 3b3152dc22aed9940803ab1483e08935, type: 2}
-  - {fileID: 11400000, guid: 41d06d41911c12340af7b60a6a9e1df7, type: 2}
   - {fileID: 11400000, guid: 5355e2e781c3b54408246352f49b99cf, type: 2}
-  - {fileID: 11400000, guid: a26934cc03252f54f873d1ec0c3dc475, type: 2}

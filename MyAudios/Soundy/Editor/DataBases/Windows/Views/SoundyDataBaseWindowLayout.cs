@@ -25,7 +25,7 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
         public override EditorSelectableColorInfo selectableAccentColor => 
             EditorSelectableColors.Default.UIComponent;
         
-        private SoundyDatabase Database { get; set; }
+        public SoundyDatabase Database { get; set; }
         private AudioClip PlugAudio { get; set; }
         
         private FluidFoldout CurrentFoldout { get; set; }
@@ -37,7 +37,7 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
 
         public SoundyDataBaseWindowLayout()
         {
-            AddHeader("Soundy Database", "UIButton Ids", animatedIconTextures);
+            AddHeader("Soundy Database", "Sound Groups", animatedIconTextures);
             sideMenu
                 .SetMenuLevel(FluidSideMenu.MenuLevel.Level_2)
                 .IsCollapsable(false);
@@ -59,6 +59,12 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
                 .Initialize();
         }
 
+        public void RefreshDataBasesButtons()
+        {
+            sideMenu.buttons.Clear();
+            AfterInitialize();
+        }
+        
         public SoundyDataBaseWindowLayout AfterInitialize()
         {
             foreach (SoundDatabase soundDatabase in Database.SoundDatabases)
@@ -85,7 +91,7 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
             return this;
         }
 
-        private void UpdateDataBase(SoundDatabase soundDatabase)
+        public void UpdateDataBase(SoundDatabase soundDatabase)
         {
             content.Clear();
 
@@ -94,7 +100,8 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
                 .AddSpaceBlock(4)
                 .AddChild(NewSoundContentVisualElement)
                 .AddSpaceBlock(2);
-            HeaderVisualElement.SetLabelText(soundDatabase.DatabaseName);
+            HeaderVisualElement
+                .SetLabelText(soundDatabase.DatabaseName);
 
             foreach (SoundGroupData soundGroup in soundDatabase.Database)
             {

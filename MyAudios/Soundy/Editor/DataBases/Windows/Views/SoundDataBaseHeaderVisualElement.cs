@@ -2,6 +2,7 @@
 using Doozy.Editor.EditorUI.Components;
 using Doozy.Editor.EditorUI.Utils;
 using Doozy.Runtime.UIElements.Extensions;
+using UnityEngine.Events;
 using UnityEngine.UIElements;
 
 namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
@@ -27,8 +28,7 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
             SoundGroupTextField = new TextField();
             //Потом включить
             SoundGroupTextField
-                .SetStyleFlexGrow(1)
-                .SetEnabled(false);
+                .SetStyleFlexGrow(1);
             SoundGroupTextField
                 .SetValueWithoutNotify("New Sound Group");
             RenameButton = new FluidButton();
@@ -37,7 +37,13 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
                 .SetElementSize(ElementSize.Normal)
                 .SetIcon(EditorSpriteSheets.EditorUI.Icons.Save)
                 .SetStyleMinWidth(130)
-                .SetLabelText("Rename");
+                .SetLabelText("Rename")
+                .SetOnClick(() =>
+                {
+                    Parent.Database.RenameSoundDatabase(
+                        Parent.CurrentSoundDatabase, SoundGroupTextField.value);
+                    Parent.AfterInitialize();
+                });
             
             PingAssetButton = new FluidButton();
             PingAssetButton
@@ -50,7 +56,13 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
                 .SetButtonStyle(ButtonStyle.Contained)
                 .SetElementSize(ElementSize.Normal)
                 .SetIcon(EditorSpriteSheets.EditorUI.Icons.Close)
-                .SetLabelText("Remove");
+                .SetLabelText("Remove")
+                .AddOnClick(() =>
+                {
+                    Parent.Database.DeleteDatabase(Parent.CurrentSoundDatabase);
+                    Parent.RefreshDataBasesButtons();
+                    Parent.ShowDataBase();
+                });
 
             Container
                 .AddChild(SoundGroupTextField)
@@ -73,6 +85,13 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
             LabelText = labelText;
             SoundGroupTextField.SetValueWithoutNotify(labelText);
 
+            return this;
+        }
+
+        public SoundDataBaseHeaderVisualElement SetRenameOnClick(UnityAction callback)
+        {
+            RenameButton.SetOnClick(callback);
+            
             return this;
         }
     }

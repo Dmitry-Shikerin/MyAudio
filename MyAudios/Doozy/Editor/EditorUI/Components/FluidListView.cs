@@ -1,8 +1,4 @@
-﻿// Copyright (c) 2015 - 2023 Doozy Entertainment. All Rights Reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement
-// A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using Doozy.Editor.EditorUI.ScriptableObjects.Colors;
@@ -184,6 +180,7 @@ namespace Doozy.Editor.EditorUI.Components
             {
                 if (inSearchMode) //do not add new items if in search mode 
                     return;
+                
                 AddNewItemButtonCallback?.Invoke();
             };
 
@@ -210,7 +207,9 @@ namespace Doozy.Editor.EditorUI.Components
             listContainer.Add(emptyListPlaceholder);
             emptyListPlaceholderClickable = new Clickable(() =>
             {
-                if (inSearchMode) return;
+                if (inSearchMode)
+                    return;
+                
                 AddNewItemButtonCallback?.Invoke(); //set placeholder on click to add a new item (if not in search mode)
             });
             emptyListPlaceholder.AddManipulator(emptyListPlaceholderClickable);
@@ -220,7 +219,9 @@ namespace Doozy.Editor.EditorUI.Components
             listContainer.Add(emptySearchPlaceholder);
             emptySearchPlaceholderClickable = new Clickable(() =>
             {
-                if (!hasSearch) return;
+                if (!hasSearch)
+                    return;
+                
                 searchBox.ClearSearch(); //set placeholder on click to clear search (if in search mode)
             });
             emptySearchPlaceholder.AddManipulator(emptySearchPlaceholderClickable);
@@ -272,7 +273,8 @@ namespace Doozy.Editor.EditorUI.Components
                     : DisplayStyle.Flex
             );
 
-            if (!hasToolbar) return;
+            if (!hasToolbar)
+                return;
 
             if (listViewIsEmpty & disableToolbarWhenEmpty)
             {
@@ -343,6 +345,7 @@ namespace Doozy.Editor.EditorUI.Components
             listViewContainer.SetStyleDisplay(listViewIsEmpty & useSmallEmptyListPlaceholder ? DisplayStyle.None : DisplayStyle.Flex);
 
             footerContainer.SetStyleDisplay(hideFooter ? DisplayStyle.None : DisplayStyle.Flex);
+            
             if (hideFooter == false & hideFooterWhenEmpty)
                 footerContainer.SetStyleDisplay(listViewIsEmpty ? DisplayStyle.None : DisplayStyle.Flex);
 
@@ -352,7 +355,9 @@ namespace Doozy.Editor.EditorUI.Components
 
         private void VisualUpdate_UpdateSearchBoxWidth()
         {
-            if (!hasSearch) return;
+            if (!hasSearch)
+                return;
+            
             schedule.Execute(() => m_SearchBoxMinWidthAnimation
                 .PlayToValue(searchBox.isSearching ? searchBoxMinWidthWhenSearching : SEARCH_BOX_MIN_WIDTH));
         }
@@ -363,6 +368,7 @@ namespace Doozy.Editor.EditorUI.Components
         {
             disableToolbarWhenEmpty = disableWhenEmpty;
             VisualUpdate_Toolbar();
+            
             return this;
         }
 
@@ -371,6 +377,7 @@ namespace Doozy.Editor.EditorUI.Components
             footerLabel.text = text;
             bool hasFooterText = !text.IsNullOrEmpty();
             footerLabel.SetStyleDisplay(hasFooterText ? DisplayStyle.Flex : DisplayStyle.None);
+            
             return this;
         }
 
@@ -380,7 +387,10 @@ namespace Doozy.Editor.EditorUI.Components
 
             bool hasListName = !text.IsNullOrEmpty();
             listTitle.SetStyleDisplay(hasListName ? DisplayStyle.Flex : DisplayStyle.None);
-            if (hasListName) headerContainer.SetStyleDisplay(DisplayStyle.Flex);
+            
+            if (hasListName)
+                headerContainer.SetStyleDisplay(DisplayStyle.Flex);
+            
             return this;
         }
 
@@ -390,7 +400,10 @@ namespace Doozy.Editor.EditorUI.Components
 
             bool hasListDescription = !text.IsNullOrEmpty();
             listDescription.SetStyleDisplay(hasListDescription ? DisplayStyle.Flex : DisplayStyle.None);
-            if (hasListDescription) headerContainer.SetStyleDisplay(DisplayStyle.Flex);
+            
+            if (hasListDescription)
+                headerContainer.SetStyleDisplay(DisplayStyle.Flex);
+            
             return this;
         }
 
@@ -422,6 +435,7 @@ namespace Doozy.Editor.EditorUI.Components
         {
             preferredListHeight = Mathf.Max(k_ListMinimumHeight, height);
             VisualUpdate_ListViewHeight();
+            
             return this;
         }
 
@@ -454,6 +468,7 @@ namespace Doozy.Editor.EditorUI.Components
         {
             addItemButtonContainer.SetStyleDisplay(DisplayStyle.Flex);
             addNewItemButtonIsHidden = true;
+            
             return this;
         }
 
@@ -461,6 +476,7 @@ namespace Doozy.Editor.EditorUI.Components
         {
             addItemButtonContainer.SetStyleDisplay(DisplayStyle.None);
             addNewItemButtonIsHidden = false;
+            
             return this;
         }
 
@@ -470,7 +486,10 @@ namespace Doozy.Editor.EditorUI.Components
             toolbarContainer.SetStyleDisplay(DisplayStyle.Flex);
             toolbarContainer.Add(element);
             toolbarElements.Add(element);
-            if (hasSearch) searchBox.BringToFront();
+            
+            if (hasSearch)
+                searchBox.BringToFront();
+            
             return this;
         }
 
@@ -478,11 +497,13 @@ namespace Doozy.Editor.EditorUI.Components
 
         public FluidListView HasSearch(bool enabled)
         {
-            if (hasSearch == enabled) return this;
+            if (hasSearch == enabled)
+                return this;
 
             flexibleSpaceBeforeSearchBox ??= DesignUtils.flexibleSpace;
 
             hasSearch = enabled;
+            
             if (hasSearch)
             {
                 toolbarContainer.Add(flexibleSpaceBeforeSearchBox);
@@ -528,6 +549,7 @@ namespace Doozy.Editor.EditorUI.Components
         public FluidListView HideToolbarWhileSearching(bool hideWhileSearching)
         {
             hideToolbarWhileSearching = hideWhileSearching;
+            
             return this;
         }
 
@@ -552,8 +574,8 @@ namespace Doozy.Editor.EditorUI.Components
                     .SetIcon(emptyListSmallPlaceholderTextures)
                     .SetStyleMarginLeft(DesignUtils.k_Spacing2X);
 
-                listHeaderContainer
-                    .Insert(0, emptyListPlaceholder);
+                listHeaderContainer.Insert(0, emptyListPlaceholder);
+                
                 return this;
             }
 
@@ -566,12 +588,14 @@ namespace Doozy.Editor.EditorUI.Components
         public FluidListView HideFooter(bool hide)
         {
             hideFooter = hide;
+            
             return this;
         }
 
         public FluidListView HideFooterWhenEmpty(bool hideWhenEmpty)
         {
             hideFooterWhenEmpty = hideWhenEmpty;
+            
             return this;
         }
 

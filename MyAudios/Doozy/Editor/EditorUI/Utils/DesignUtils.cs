@@ -540,13 +540,16 @@ namespace Doozy.Editor.EditorUI.Utils
                 item.OnRemoveButtonClick += itemProperty =>
                 {
                     int propertyIndex = 0;
+                    
                     for (int j = 0; j < arrayProperty.arraySize; j++)
                     {
                         if (itemProperty.propertyPath != arrayProperty.GetArrayElementAtIndex(j).propertyPath)
                             continue;
+                        
                         propertyIndex = j;
                         break;
                     }
+                    
                     arrayProperty.DeleteArrayElementAtIndex(propertyIndex);
                     arrayProperty.serializedObject.ApplyModifiedProperties();
 
@@ -576,9 +579,12 @@ namespace Doozy.Editor.EditorUI.Utils
             UpdateItemsSource();
 
             int arraySize = arrayProperty.arraySize;
+            
             flv.schedule.Execute(() =>
             {
-                if (arrayProperty.arraySize == arraySize) return;
+                if (arrayProperty.arraySize == arraySize)
+                    return;
+                
                 arraySize = arrayProperty.arraySize;
                 UpdateItemsSource();
 
@@ -587,6 +593,7 @@ namespace Doozy.Editor.EditorUI.Utils
             void UpdateItemsSource()
             {
                 itemsSource.Clear();
+                
                 for (int i = 0; i < arrayProperty.arraySize; i++)
                     itemsSource.Add(arrayProperty.GetArrayElementAtIndex(i));
 
