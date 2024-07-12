@@ -45,7 +45,9 @@ namespace Doozy.Editor.EditorUI.Components
         /// <param name="debug"> Print relevant debug messages to the console </param>
         public virtual void Recycle(bool debug = false)
         {
-            if (debug) Debug.Log($"{nameof(PoolService)}.{nameof(PoolService.AddToPool)} < [{nameof(Recycle)}] < {GetType().Name}");
+            if (debug)
+                Debug.Log($"{nameof(PoolService)}.{nameof(PoolService.AddToPool)} < [{nameof(Recycle)}] < {GetType().Name}");
+            
             RemoveFromHierarchy();
             PoolService.AddToPool(this as T);
         }

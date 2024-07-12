@@ -3,13 +3,9 @@ using Doozy.Editor.EditorUI;
 using Doozy.Editor.EditorUI.Components;
 using Doozy.Editor.EditorUI.Components.Internal;
 using Doozy.Editor.EditorUI.ScriptableObjects.Colors;
-using Doozy.Editor.EditorUI.Utils;
-using Doozy.Editor.UIElements;
 using Doozy.Engine.Soundy;
 using Doozy.Runtime.UIElements.Extensions;
 using MyAudios.Soundy.Sources.DataBases.Domain.Data;
-using UnityEditor;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -34,6 +30,7 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
         public NewSoundContentVisualElement NewSoundContentVisualElement { get; private set; }
         public SoundDataBaseHeaderVisualElement HeaderVisualElement { get; private set; }
         public SoundDatabase CurrentSoundDatabase { get; private set; }
+        private List<FluidToggleButtonTab> FluidToggleButtonTabs { get; set; }
 
         public SoundyDataBaseWindowLayout()
         {
@@ -42,6 +39,7 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
                 .SetMenuLevel(FluidSideMenu.MenuLevel.Level_2)
                 .IsCollapsable(false);
             
+            FluidToggleButtonTabs = new List<FluidToggleButtonTab>();
             CurrentSoundGroupVisualElements = new List<SoundGroupVisualElement>();
             NewSoundContentVisualElement =
                 new NewSoundContentVisualElement();
@@ -61,7 +59,10 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
 
         public void RefreshDataBasesButtons()
         {
-            sideMenu.buttons.Clear();
+            foreach (FluidToggleButtonTab button in FluidToggleButtonTabs)
+                button.Recycle();
+            
+            FluidToggleButtonTabs.Clear();
             AfterInitialize();
         }
         
@@ -78,6 +79,8 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
                         CurrentSoundDatabase = soundDatabase;
                         UpdateDataBase(soundDatabase);
                     });
+                    
+                    FluidToggleButtonTabs.Add(button);
             }
             
             return this;

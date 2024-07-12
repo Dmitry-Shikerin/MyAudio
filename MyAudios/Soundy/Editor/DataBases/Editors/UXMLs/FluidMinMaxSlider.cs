@@ -78,8 +78,7 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors.UXMLs
                     .SetStyleHeight(28)
                     .SetName("Slider Container")
                     .SetStyleFlexGrow(1)
-                    .SetStylePaddingTop(8)
-                ;
+                    .SetStylePaddingTop(8);
 
             snapIntervalIndicatorsContainer =
                 new VisualElement()

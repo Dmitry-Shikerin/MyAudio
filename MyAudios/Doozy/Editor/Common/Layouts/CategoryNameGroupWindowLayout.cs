@@ -928,6 +928,7 @@ namespace Doozy.Editor.Common.Layouts
             //FLAG for SEARCH RESULTS (for this single pass)
 
             m_SearchResultsItems.Clear();
+            
             foreach (CategoryNameItem item in database.items)
             {
                 if (!Regex.IsMatch(item.name, $"{sideMenu.searchBox.searchPattern}",
@@ -954,6 +955,7 @@ namespace Doozy.Editor.Common.Layouts
                     .ToList();
 
             string category = string.Empty;
+            
             foreach (CategoryNameItem resultsItem in m_SearchResultsItems)
             {
                 if (category.Equals(resultsItem.category) == false)

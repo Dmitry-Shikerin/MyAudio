@@ -14,6 +14,8 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         /// <summary> (Not Implemented) Weight of this AudioClip in the SoundGroupData </summary>
         [Range(AudioDataConst.MinWeight, AudioDataConst.MaxWeight)]
         public float Weight = AudioDataConst.DefaultWeight;
+
+        public bool IsPlaying;
         
         /// <summary> Creates a new instance for this class </summary>
         public AudioData() =>

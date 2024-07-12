@@ -134,6 +134,8 @@ namespace Doozy.Engine.Soundy
         /// <summary> List of AudioData that are available to play </summary>
         public List<AudioData> Sounds = new List<AudioData>();
 
+        public bool IsPlaying;
+
         #endregion
 
         #region Private Variables
