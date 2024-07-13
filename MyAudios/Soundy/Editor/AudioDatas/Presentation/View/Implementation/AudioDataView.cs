@@ -5,7 +5,7 @@ using Doozy.Editor.EditorUI.Utils;
 using Doozy.Editor.UIElements;
 using Doozy.Runtime.UIElements.Extensions;
 using MyAudios.Soundy.Editor.AudioDatas.Controllers;
-using MyAudios.Soundy.Editor.AudioDatas.View.Interfaces;
+using MyAudios.Soundy.Editor.AudioDatas.Presentation.View.Interfaces;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -137,6 +137,7 @@ namespace MyAudios.Soundy.Editor.AudioDatas.View.Implementation
         {
             _playButton?.Dispose();
             _deleteButton?.Dispose();
+            Root.RemoveFromHierarchy();
             _presenter?.Dispose();
         }
     }

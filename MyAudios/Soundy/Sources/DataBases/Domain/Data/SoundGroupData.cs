@@ -196,9 +196,12 @@ namespace Doozy.Engine.Soundy
             return false;
         }
 
-        public void AddAudioData(AudioClip audioClip = null)
+        public AudioData AddAudioData(AudioClip audioClip = null)
         {
-            Sounds.Add(new AudioData(audioClip));
+            AudioData audioData = new AudioData(audioClip);
+            Sounds.Add(audioData);
+
+            return audioData;
         }
 
         public void RemoveAudioData(AudioData audioData)

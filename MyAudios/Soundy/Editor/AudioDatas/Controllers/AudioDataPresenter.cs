@@ -1,6 +1,6 @@
 ﻿using System;
 using Doozy.Engine.Soundy;
-using MyAudios.Soundy.Editor.AudioDatas.View.Interfaces;
+using MyAudios.Soundy.Editor.AudioDatas.Presentation.View.Interfaces;
 using MyAudios.Soundy.Editor.Presenters.Controllers;
 using MyAudios.Soundy.Sources.DataBases.Domain.Data;
 using UnityEditor;
@@ -27,7 +27,14 @@ namespace MyAudios.Soundy.Editor.AudioDatas.Controllers
 
         public void Initialize()
         {
-            _view.SetLabelText(_audioData.AudioClip.name);
+            SetLabel();
+        }
+
+        private void SetLabel()
+        {
+            string name = _audioData.AudioClip != null ? _audioData.AudioClip.name : "Empty";
+            _view.SetLabelText(name);
+
         }
 
         public void Dispose()
@@ -67,6 +74,7 @@ namespace MyAudios.Soundy.Editor.AudioDatas.Controllers
         public void DeleteAudioData()
         {
             _soundGroupData.RemoveAudioData(_audioData);
+            _view.Dispose();
         }
 
         public void SetAudioClip(AudioClip audioClip)

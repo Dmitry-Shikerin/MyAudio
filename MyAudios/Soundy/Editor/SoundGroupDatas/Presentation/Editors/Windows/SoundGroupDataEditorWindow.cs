@@ -33,7 +33,7 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Editors.Windows
             
             root
                 .AddChild(editorRoot)
-                // .SetStylePadding(15, 15, 15, 15)
+                .SetStylePadding(15, 15, 15, 15)
                 ;
         }
     }

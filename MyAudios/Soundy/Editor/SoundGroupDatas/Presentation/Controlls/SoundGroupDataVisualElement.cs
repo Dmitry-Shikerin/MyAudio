@@ -40,8 +40,7 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Controlls
                     .Get()
                     .SetComponentNameText("Sound Group")
                     .SetIcon(EditorSpriteSheets.EditorUI.Icons.Sound)
-                    .SetAccentColor(EditorColors.EditorUI.Orange)
-                ;
+                    .SetAccentColor(EditorColors.EditorUI.Orange);
         }
 
         private void Compose()

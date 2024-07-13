@@ -1,7 +1,6 @@
 ﻿using MyAudios.Soundy.Editor.Views;
-using UnityEngine.UIElements;
 
-namespace MyAudios.Soundy.Editor.AudioDatas.View.Interfaces
+namespace MyAudios.Soundy.Editor.AudioDatas.Presentation.View.Interfaces
 {
     public interface IAudioDataView : IView
     {
