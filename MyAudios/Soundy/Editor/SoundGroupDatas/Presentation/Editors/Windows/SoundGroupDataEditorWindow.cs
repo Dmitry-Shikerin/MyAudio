@@ -24,6 +24,7 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Editors.Windows
         protected override void CreateGUI()
         {
             Root.Clear();
+            
             SoundGroupDataEditor editor = (SoundGroupDataEditor)UnityEditor.Editor.CreateEditor(SoundGroupData);
             VisualElement editorRoot = editor.CreateInspectorGUI();
             editorRoot.Bind(editor.serializedObject);
@@ -32,7 +33,6 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Editors.Windows
                 .AddChild(editorRoot)
                 .SetStylePadding(15, 15, 15, 15)
                 ;
-            Debug.Log($"CreateGUI: {SoundGroupData}");
         }
     }
 }

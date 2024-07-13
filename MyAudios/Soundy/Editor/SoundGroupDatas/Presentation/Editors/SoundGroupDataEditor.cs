@@ -9,6 +9,7 @@ using Doozy.Runtime.UIElements.Extensions;
 using MyAudios.Soundy.Editor.DataBases.Windows.Views;
 using MyAudios.Soundy.Editor.MinMaxSliders;
 using MyAudios.Soundy.Editor.SoundGroupDatas.Ifrastructure.Factories;
+using MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Views.Interfaces;
 using MyAudios.Soundy.Sources.DataBases.Domain.Constants;
 using MyAudios.Soundy.Sources.DataBases.Domain.Data;
 using UnityEditor;
@@ -23,13 +24,6 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Editors
         private SoundGroupData SoundGroupData { get; set; }
         
         private SerializedProperty Name { get; set; }
-        private SerializedProperty Sounds { get; set; }   
-        private SerializedProperty PlayModeProperty { get; set; }
-        private SerializedProperty Loop { get; set; }
-        private SerializedProperty Volume { get; set; }
-        private SerializedProperty Pitch { get; set; }
-        private SerializedProperty SpatialBlend { get; set; }
-        public SerializedProperty ResetSequenceAfterInactiveTime { get; set; }
         public SerializedProperty SequenceResetTime { get; set; }
 
         public VisualElement Root { get; private set; }
@@ -40,8 +34,9 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Editors
         public override VisualElement CreateInspectorGUI()
         {
             FindProperties();
-            InitializeEditor();
-            Compose();
+            ISoundGroupDataView view = new SoundGroupDataViewFactory().Create(SoundGroupData);
+            Root = view.Root;
+            // Compose();
 
             return Root;
         }
@@ -49,16 +44,6 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Editors
         private void FindProperties()
         {
             SoundGroupData = (SoundGroupData)serializedObject.targetObject;
-            Name = serializedObject.FindProperty(nameof(SoundGroupData.DatabaseName));
-            PlayModeProperty = serializedObject.FindProperty(nameof(SoundGroupData.Mode));
-            Loop = serializedObject.FindProperty(nameof(SoundGroupData.Loop));
-            ResetSequenceAfterInactiveTime = 
-                serializedObject.FindProperty(nameof(SoundGroupData.ResetSequenceAfterInactiveTime));
-            SequenceResetTime = serializedObject.FindProperty(nameof(SoundGroupData.SequenceResetTime));
-            Volume = serializedObject.FindProperty(nameof(SoundGroupData.Volume));
-            Pitch = serializedObject.FindProperty(nameof(SoundGroupData.Pitch));
-            SpatialBlend = serializedObject.FindProperty(nameof(SoundGroupData.SpatialBlend));
-            Sounds = serializedObject.FindProperty(nameof(SoundGroupData.Sounds));
         }
 
         private void InitializeEditor()

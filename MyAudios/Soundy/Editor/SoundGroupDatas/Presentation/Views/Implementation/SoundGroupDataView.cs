@@ -1,7 +1,12 @@
 ﻿using System;
+using Doozy.Editor.EditorUI.Utils;
+using Doozy.Runtime.UIElements.Extensions;
+using MyAudios.Soundy.Editor.AudioDatas.View.Interfaces;
 using MyAudios.Soundy.Editor.SoundGroupDatas.Controllers;
 using MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Controlls;
 using MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Views.Interfaces;
+using UnityEditor;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Views.Implementation
@@ -10,6 +15,7 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Views.Implementati
     {
         private SoundGroupDataPresenter _presenter;
         private SoundGroupDataVisualElement _soundGroupDataVisualElement;
+        private SerializedProperty _sequenceResetTime;
         public VisualElement Root { get; private set; }
 
         public void Construct(SoundGroupDataPresenter presenter)
@@ -22,7 +28,8 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Views.Implementati
         public void CreateView()
         {
             _soundGroupDataVisualElement = new SoundGroupDataVisualElement();
-            Root = _soundGroupDataVisualElement;
+            Root = DesignUtils.column.AddChild(_soundGroupDataVisualElement);
+            Debug.Log(Root);
         }
 
         public void Initialize()
@@ -32,6 +39,11 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Views.Implementati
         public void Dispose()
         {
             
+        }
+
+        public void AddAudioData(IAudioDataView audioDataView)
+        {
+            _soundGroupDataVisualElement.AudioDataContent.AddChild(audioDataView.Root);
         }
     }
 }

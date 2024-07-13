@@ -20,12 +20,10 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Controlls
     {
         public SoundGroupDataVisualElement()
         {
-            InitializeEditor();
+            Root = new VisualElement();
+            InitializeHeader();
             Compose();
         }
-        private SoundGroupData SoundGroupData { get; set; }
-        private SerializedProperty Name { get; set; }
-        public SerializedProperty SequenceResetTime { get; set; }
 
         public VisualElement Root { get; private set; }
         public ScrollView AudioDataContent { get; set; }
@@ -41,19 +39,22 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Controlls
         public FluidMinMaxSlider PitchMinMaxSlider { get; private set; }
         public FluidButton ResetPitchButton { get; private set; }
         public NewSoundContentVisualElement NewSoundContentVisualElement { get; private set; }
-        
 
-        private void InitializeEditor()
+        private void InitializeHeader()
         {
-            Root = new VisualElement();
-
-            InitializeHeader();
+            Header =
+                FluidComponentHeader
+                    .Get()
+                    .SetComponentNameText("Sound Group")
+                    .SetIcon(EditorSpriteSheets.EditorUI.Icons.Sound)
+                    .SetAccentColor(EditorColors.EditorUI.Orange)
+                ;
         }
 
         private void Compose()
         {
             Label = DesignUtils
-                .NewLabel(Name.stringValue);
+                .NewLabel("");
             VisualElement labelRow = DesignUtils.row.AddChild(Label);
             
             //PlayMode
@@ -109,18 +110,18 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Controlls
             
             Label sequenceResetTimeLabel = 
                 DesignUtils.NewLabel("seconds");
-            SequenceResetTimeField = DesignUtils
-                .NewFloatField(SequenceResetTime)
-                .ResetLayout()
-                .SetStyleFlexGrow(0);
-            SequenceResetTimeField
-                .Q<VisualElement>("unity-text-input")
-                .SetStyleFlexGrow(0)
-                .SetStyleMinWidth(50)
-                .SetStyleMarginRight(5);
+            // SequenceResetTimeField = DesignUtils
+            //     .NewFloatField(SequenceResetTime)
+            //     .ResetLayout()
+            //     .SetStyleFlexGrow(0);
+            // SequenceResetTimeField
+            //     .Q<VisualElement>("unity-text-input")
+            //     .SetStyleFlexGrow(0)
+            //     .SetStyleMinWidth(50)
+            //     .SetStyleMarginRight(5);
             VisualElement sequenceResetTimeRow = DesignUtils
                 .row
-                .AddChild(SequenceResetTimeField)
+                // .AddChild(SequenceResetTimeField)
                 .AddChild(sequenceResetTimeLabel);
             VisualElement sequenceTimeRow = DesignUtils.row
                 .ResetLayout()
@@ -258,7 +259,7 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Controlls
                     volumeButtonTab.ResetColors();
                     pitchButtonTab.ResetColors();
                     spatialBlendButtonTab.ResetColors();
-                    // volumeButtonTab.SetToggleAccentColor(EditorSelectableColors.EditorUI.Orange);
+                    volumeButtonTab.SetToggleAccentColor(EditorSelectableColors.EditorUI.Orange);
                     
                     slidersContainer.ClearContent();
                     slidersContainer
@@ -325,11 +326,7 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Controlls
 
             NewSoundContentVisualElement =
                 new NewSoundContentVisualElement();
-                    // .SetOnClick(() =>
-                    // {
-                    //     SoundGroupData.AddAudioData();
-                    //     RefreshAudioData();
-                    // });
+
             AudioDataContent = 
                 new ScrollView()
                     .ResetLayout()
@@ -358,48 +355,7 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Controlls
                 .AddSpaceBlock(2)
                 .AddChild(AudioDataContent)
                 ;
-
-                // RefreshAudioData();
+            Debug.Log($"Root filled {Root}");
         }
-
-        public void RefreshAudioData()
-        {
-            AudioDataContent.Clear();
-            
-            foreach (AudioData audioData in SoundGroupData.Sounds)
-            {
-                AudioDataVisualElement audioDataVisualElement =
-                    new AudioDataVisualElement()
-                        .SetAudioData(audioData)
-                        .SetSoundGroupData(SoundGroupData)
-                        .Initialize()
-                        .SetDeleteOnClick(() =>
-                        {
-                            SoundGroupData.RemoveAudioData(audioData);
-                            RefreshAudioData();
-                        });
-                
-                AudioDataContent
-                    .AddChild(audioDataVisualElement)
-                    .AddSpaceBlock();
-            }
-        }
-
-        private void InitializeHeader()
-        {
-            Header =
-                FluidComponentHeader
-                    .Get()
-                    .SetComponentNameText("Sound Group")
-                    .SetIcon(EditorSpriteSheets.EditorUI.Icons.Sound)
-                    .SetAccentColor(EditorColors.EditorUI.Orange)
-                ;
-        }
-        
-        private void ChangeLoop(FluidBoolEvent newValue) =>
-            SoundGroupData.Loop = newValue.newValue;
-        
-        private void ChangeResetSequenceAfterInactiveTimeRow(FluidBoolEvent newValue) =>
-            SoundGroupData.ResetSequenceAfterInactiveTime = newValue.newValue;
     }
 }

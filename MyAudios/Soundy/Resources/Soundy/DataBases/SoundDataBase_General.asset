@@ -25,8 +25,9 @@ MonoBehaviour:
   Loop: 0
   Mode: 1
   ResetSequenceAfterInactiveTime: 0
-  SequenceResetTime: 0
+  SequenceResetTime: 2
   Sounds: []
+  IsPlaying: 0
 --- !u!114 &-5030960130438782761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54,6 +55,7 @@ MonoBehaviour:
   ResetSequenceAfterInactiveTime: 0
   SequenceResetTime: 5
   Sounds: []
+  IsPlaying: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
