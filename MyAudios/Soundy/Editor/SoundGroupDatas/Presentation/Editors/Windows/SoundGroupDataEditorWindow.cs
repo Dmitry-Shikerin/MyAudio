@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography;
-using Doozy.Editor.EditorUI.Windows.Internal;
+﻿using Doozy.Editor.EditorUI.Windows.Internal;
 using Doozy.Engine.Soundy;
 using Doozy.Runtime.UIElements.Extensions;
 using MyAudios.Soundy.Editor.DataBases.Editors;
@@ -7,9 +6,9 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace MyAudios.Soundy.Editor.DataBases.Windows
+namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Editors.Windows
 {
-    public class SoundGroupEditorWindow : FluidWindow<SoundGroupEditorWindow>
+    public class SoundGroupDataEditorWindow : FluidWindow<SoundGroupDataEditorWindow>
     {
         private VisualElement Root => rootVisualElement;
         private static SoundGroupData SoundGroupData { get; set; }
@@ -17,7 +16,7 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows
         public static void Open(SoundGroupData soundGroupData)
         {
             SoundGroupData = soundGroupData;
-            SoundGroupEditorWindow window = GetWindow<SoundGroupEditorWindow>();
+            SoundGroupDataEditorWindow window = GetWindow<SoundGroupDataEditorWindow>();
             window.titleContent = new GUIContent("Sound Group");
             window.Show();
         }

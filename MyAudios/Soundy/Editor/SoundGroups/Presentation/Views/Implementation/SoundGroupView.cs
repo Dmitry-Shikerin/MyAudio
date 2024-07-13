@@ -33,6 +33,7 @@ namespace MyAudios.Soundy.Editor.SoundGroups.Presentation.Implementation
             //     .SetOnClick(() => _presenter.PlaySoundGroup());
             // _soundGroupVisualElement.TopSlider
             // _soundGroupVisualElement.Label
+            _soundGroupVisualElement.SoundGroupDataButton.SetOnClick(() => _presenter.ShowSoundGroupData());
         }
 
         public void Dispose()

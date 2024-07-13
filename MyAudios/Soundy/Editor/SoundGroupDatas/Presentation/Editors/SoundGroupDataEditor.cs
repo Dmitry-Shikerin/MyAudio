@@ -8,13 +8,14 @@ using Doozy.Engine.Soundy;
 using Doozy.Runtime.UIElements.Extensions;
 using MyAudios.Soundy.Editor.DataBases.Windows.Views;
 using MyAudios.Soundy.Editor.MinMaxSliders;
+using MyAudios.Soundy.Editor.SoundGroupDatas.Ifrastructure.Factories;
 using MyAudios.Soundy.Sources.DataBases.Domain.Constants;
 using MyAudios.Soundy.Sources.DataBases.Domain.Data;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace MyAudios.Soundy.Editor.DataBases.Editors
+namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Editors
 {
     [CustomEditor(typeof(SoundGroupData))]
     public class SoundGroupDataEditor : UnityEditor.Editor
@@ -62,9 +63,9 @@ namespace MyAudios.Soundy.Editor.DataBases.Editors
 
         private void InitializeEditor()
         {
-            Root = new VisualElement();
+            Root = new SoundGroupDataViewFactory().Create(SoundGroupData).Root;
 
-            InitializeHeader();
+            // InitializeHeader();
         }
 
         private void Compose()

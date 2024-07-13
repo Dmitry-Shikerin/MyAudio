@@ -7,7 +7,7 @@ using MyAudios.Soundy.Editor.SoundDataBases.Presentation.Interfaces;
 using MyAudios.Soundy.Editor.SoundGroups.Presentation.Interfaces;
 using UnityEngine.UIElements;
 
-namespace MyAudios.Soundy.Editor.SoundDataBases.Presentation.Implementation
+namespace MyAudios.Soundy.Editor.SoundDataBases.Presentation.Views.Implementation
 {
     public class SoundDataBaseView : ISoundDataBaseView
     {

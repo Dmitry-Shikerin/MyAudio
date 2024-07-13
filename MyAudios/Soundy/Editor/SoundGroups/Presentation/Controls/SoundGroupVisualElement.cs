@@ -4,6 +4,7 @@ using Doozy.Editor.EditorUI.Components;
 using Doozy.Editor.EditorUI.Utils;
 using Doozy.Engine.Soundy;
 using Doozy.Runtime.UIElements.Extensions;
+using MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Editors.Windows;
 using MyAudios.Soundy.Sources.DataBases.Domain.Data;
 using UnityEditor;
 using UnityEngine;
@@ -18,7 +19,7 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
         public VisualElement Container { get; private set; }
         public VisualElement SlidersContainer { get; private set; }
         public FluidButton PlayButton { get; private set; }
-        public FluidButton SoundsDataButton { get; private set; }
+        public FluidButton SoundGroupDataButton { get; private set; }
         public FluidButton DeleteButton { get; private set; }
         public string Label { get; set; }
         public FluidRangeSlider TopSlider { get; private set; }
@@ -41,7 +42,7 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
                     .SetStyleAlignContent(Align.Center)
                     .SetStyleBackgroundColor(EditorColors.Default.Background);
             
-            SoundsDataButton =
+            SoundGroupDataButton =
                 FluidButton
                     .Get()
                     .ResetLayout()
@@ -50,7 +51,7 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
                     .SetStyleMinWidth(130)
                     .SetStyleMaxWidth(130)
                     .SetLabelText(Label)
-                    .SetOnClick(() => SoundGroupEditorWindow.Open(SoundGroupData));
+                    .SetOnClick(() => SoundGroupDataEditorWindow.Open(SoundGroupData));
             
             PlayButton =
                 FluidButton
@@ -105,7 +106,7 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
                 ;
             
             Container
-                .AddChild(SoundsDataButton)
+                .AddChild(SoundGroupDataButton)
                 .AddSpace(4)
                 .AddChild(PlayButton)
                 .AddSpace(4)
@@ -156,7 +157,7 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
         public SoundGroupVisualElement SetLabelText(string labelText)
         {
             Label = labelText;
-            SoundsDataButton.SetLabelText(labelText);
+            SoundGroupDataButton.SetLabelText(labelText);
             
             return this;
         }
