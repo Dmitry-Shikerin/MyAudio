@@ -28,8 +28,7 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Views.Implementati
         public void CreateView()
         {
             _soundGroupDataVisualElement = new SoundGroupDataVisualElement();
-            Root = DesignUtils.column.AddChild(_soundGroupDataVisualElement);
-            Debug.Log(Root);
+            Root = _soundGroupDataVisualElement;
         }
 
         public void Initialize()

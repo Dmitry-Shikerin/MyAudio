@@ -2,6 +2,8 @@
 using Doozy.Engine.Soundy;
 using Doozy.Runtime.UIElements.Extensions;
 using MyAudios.Soundy.Editor.DataBases.Editors;
+using MyAudios.Soundy.Editor.SoundGroupDatas.Infrastructure.Factories;
+using MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Views.Interfaces;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -10,7 +12,6 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Editors.Windows
 {
     public class SoundGroupDataEditorWindow : FluidWindow<SoundGroupDataEditorWindow>
     {
-        private VisualElement Root => rootVisualElement;
         private static SoundGroupData SoundGroupData { get; set; }
         
         public static void Open(SoundGroupData soundGroupData)
@@ -23,15 +24,16 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Editors.Windows
         
         protected override void CreateGUI()
         {
-            Root.Clear();
+            root.Clear();
             
             SoundGroupDataEditor editor = (SoundGroupDataEditor)UnityEditor.Editor.CreateEditor(SoundGroupData);
             VisualElement editorRoot = editor.CreateInspectorGUI();
-            editorRoot.Bind(editor.serializedObject);
+            editorRoot
+                .Bind(editor.serializedObject);
             
-            Root
+            root
                 .AddChild(editorRoot)
-                .SetStylePadding(15, 15, 15, 15)
+                // .SetStylePadding(15, 15, 15, 15)
                 ;
         }
     }

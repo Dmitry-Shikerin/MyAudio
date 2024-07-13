@@ -4,15 +4,14 @@ using Doozy.Editor.EditorUI.Components;
 using Doozy.Editor.EditorUI.Utils;
 using Doozy.Engine.Soundy;
 using Doozy.Runtime.UIElements.Extensions;
+using MyAudios.Soundy.Editor.DataBases.Windows.Views;
 using MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Editors.Windows;
-using MyAudios.Soundy.Sources.DataBases.Domain.Data;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
-using Slider = UnityEngine.UI.Slider;
 
-namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
+namespace MyAudios.Soundy.Editor.SoundGroups.Presentation.Controls
 {
     public class SoundGroupVisualElement : VisualElement
     {
@@ -23,7 +22,6 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
         public FluidButton DeleteButton { get; private set; }
         public string Label { get; set; }
         public FluidRangeSlider TopSlider { get; private set; }
-        public FluidRangeSlider BotomSlider { get; private set; }
         public SoundGroupData SoundGroupData { get; set; }
         public bool IsPlaying { get; private set; }
         public SoundyDataBaseWindowLayout Parent { get; private set; }
@@ -33,7 +31,7 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
             Initialize();
         }
 
-        public SoundGroupVisualElement Initialize()
+        private void Initialize()
         {
             Container =
                 DesignUtils.row
@@ -116,8 +114,6 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
                 ;
 
             Add(Container);
-
-            return this;
         }
 
         private void ChangeSoundGroupState()
@@ -152,42 +148,6 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
             SoundGroupData.StopSoundPreview(
                 Object.FindObjectOfType<AudioSource>());
             TopSlider.slider.value = 0;
-        }
-        
-        public SoundGroupVisualElement SetLabelText(string labelText)
-        {
-            Label = labelText;
-            SoundGroupDataButton.SetLabelText(labelText);
-            
-            return this;
-        }
-        
-        public SoundGroupVisualElement SetParent(SoundyDataBaseWindowLayout parentWindow)
-        {
-            Parent = parentWindow;
-            
-            return this;
-        }
-
-        public SoundGroupVisualElement SetSoundGroup(SoundGroupData soundGroupData)
-        {
-            SoundGroupData = soundGroupData;
-            
-            return this;
-        }
-        
-        public SoundGroupVisualElement SetPlayOnClick(UnityAction callback)
-        {
-            PlayButton.SetOnClick(callback);
-            
-            return this;
-        }
-        
-        public SoundGroupVisualElement SetDeleteOnClick(UnityAction callback)
-        {
-            DeleteButton.SetOnClick(callback);
-            
-            return this;
         }
     }
 }

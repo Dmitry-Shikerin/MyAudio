@@ -3,9 +3,8 @@ using MyAudios.Soundy.Editor.AudioDatas.Infrastructure.Factories;
 using MyAudios.Soundy.Editor.SoundGroupDatas.Controllers;
 using MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Views.Implementation;
 using MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Views.Interfaces;
-using UnityEditor;
 
-namespace MyAudios.Soundy.Editor.SoundGroupDatas.Ifrastructure.Factories
+namespace MyAudios.Soundy.Editor.SoundGroupDatas.Infrastructure.Factories
 {
     public class SoundGroupDataViewFactory
     {

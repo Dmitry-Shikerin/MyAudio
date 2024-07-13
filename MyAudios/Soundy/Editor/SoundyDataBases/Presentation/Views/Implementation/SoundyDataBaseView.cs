@@ -7,6 +7,7 @@ using Doozy.Engine.Soundy;
 using Doozy.Runtime.UIElements.Extensions;
 using MyAudios.Soundy.Editor.DataBases.Windows.Views;
 using MyAudios.Soundy.Editor.SoundDataBases.Presentation.Interfaces;
+using MyAudios.Soundy.Editor.SoundGroups.Presentation.Controls;
 using MyAudios.Soundy.Editor.SoundyDataBases.Controllers;
 using MyAudios.Soundy.Editor.SoundyDataBases.Views.Interfaces;
 using MyAudios.Soundy.Sources.DataBases.Domain.Data;

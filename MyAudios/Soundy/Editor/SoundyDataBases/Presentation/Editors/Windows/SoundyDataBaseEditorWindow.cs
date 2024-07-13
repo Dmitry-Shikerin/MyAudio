@@ -4,6 +4,7 @@ using Doozy.Engine.Soundy;
 using MyAudios.Soundy.Editor.DataBases.Editors;
 using MyAudios.Soundy.Editor.DataBases.Windows.Views;
 using MyAudios.Soundy.Editor.SoundyDataBases.Infrastructure.Factories;
+using MyAudios.Soundy.Editor.SoundyDataBases.Views.Interfaces;
 using MyAudios.Soundy.Sources.DataBases.Domain.Data;
 using MyAudios.Soundy.Sources.Settings.Domain.Configs;
 using UnityEditor;
@@ -34,15 +35,7 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows
             editorRoot
                 .Bind(editor.serializedObject);
 
-            // windowLayout =
-            //     new SoundyDataBaseWindowLayout()
-            //         .SetDatabase(_database)
-            //         .SetPlugAudio(_plugAudio)
-            //     // .AfterInitialize()
-            //     // .ShowDataBase();
-            //     ;
-
-            var view = new SoundyDataBaseViewFactory().Create(_database);
+            ISoundyDataBaseView view = new SoundyDataBaseViewFactory().Create(_database);
             
             root
                 .Add(view.Root);

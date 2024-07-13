@@ -2,6 +2,7 @@
 using Doozy.Editor.EditorUI;
 using Doozy.Editor.EditorUI.Components;
 using Doozy.Editor.EditorUI.ScriptableObjects.Colors;
+using MyAudios.Soundy.Editor.SoundGroups.Presentation.Controls;
 using MyAudios.Soundy.Sources.DataBases.Domain.Data;
 using UnityEngine;
 using UnityEngine.UIElements;
