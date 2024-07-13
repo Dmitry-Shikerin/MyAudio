@@ -8,7 +8,7 @@ namespace MyAudios.Soundy.Editor.AudioDatas.Infrastructure.Factories
 {
     public class AudioDataViewFactory
     {
-        public AudioDataView Create(AudioData audioData, SoundGroupData soundGroupData)
+        public IAudioDataView Create(AudioData audioData, SoundGroupData soundGroupData)
         {
             AudioDataView audioDataView = new AudioDataView();
             AudioDataPresenter presenter = new AudioDataPresenter(audioData, soundGroupData, audioDataView);

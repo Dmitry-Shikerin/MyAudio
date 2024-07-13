@@ -11,9 +11,9 @@ namespace MyAudios.Soundy.Editor.AudioDatas.Controllers
 {
     public class AudioDataPresenter : IPresenter
     {
-        private readonly AudioData _audioData;
-        private readonly SoundGroupData _soundGroupData;
-        private readonly IAudioDataView _view;
+        private AudioData _audioData;
+        private SoundGroupData _soundGroupData;
+        private IAudioDataView _view;
 
         public AudioDataPresenter(
             AudioData audioData,
@@ -23,8 +23,6 @@ namespace MyAudios.Soundy.Editor.AudioDatas.Controllers
             _audioData = audioData ?? throw new ArgumentNullException(nameof(audioData));
             _soundGroupData = soundGroupData ?? throw new ArgumentNullException(nameof(soundGroupData));
             _view = view ?? throw new ArgumentNullException(nameof(view));
-            
-            Initialize();
         }
 
         public void Initialize()
@@ -34,6 +32,9 @@ namespace MyAudios.Soundy.Editor.AudioDatas.Controllers
 
         public void Dispose()
         {
+            _audioData = null;
+            _soundGroupData = null;
+            _view = null;
         }
 
         public void PlaySound()
@@ -46,7 +47,7 @@ namespace MyAudios.Soundy.Editor.AudioDatas.Controllers
                 Object.FindObjectOfType<AudioSource>(),
                 null, _audioData.AudioClip);
         }
-        
+
         private void SetSliderValue()
         {
             _view.SetSliderValue(_audioData.AudioClip.length);
