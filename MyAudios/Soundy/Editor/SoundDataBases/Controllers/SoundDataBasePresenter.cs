@@ -1,9 +1,9 @@
 ﻿using System;
 using JetBrains.Annotations;
 using MyAudios.Soundy.Editor.Presenters.Controllers;
-using MyAudios.Soundy.Editor.SoundDataBases.Presentation.Interfaces;
+using MyAudios.Soundy.Editor.SoundDataBases.Presentation.Views.Interfaces;
 using MyAudios.Soundy.Editor.SoundGroups.Infrastructure.Factories;
-using MyAudios.Soundy.Editor.SoundGroups.Presentation.Interfaces;
+using MyAudios.Soundy.Editor.SoundGroups.Presentation.Views.Interfaces;
 using MyAudios.Soundy.Sources.DataBases.Domain.Data;
 
 namespace MyAudios.Soundy.Editor.SoundDataBases.Controllers
@@ -39,6 +39,7 @@ namespace MyAudios.Soundy.Editor.SoundDataBases.Controllers
             foreach (var soundGroup in _soundDatabase.Database)
             {
                 ISoundGroupView view = _soundGroupViewFactory.Create(soundGroup);
+                view.SetDataBase(_view);
                 _view.AddSoundGroup(view);
             }
         }

@@ -27,16 +27,9 @@ namespace MyAudios.Soundy.Editor.AudioDatas.Controllers
 
         public void Initialize()
         {
-            SetLabel();
+            _view.SetAudioClip(_audioData.AudioClip);
         }
-
-        private void SetLabel()
-        {
-            string name = _audioData.AudioClip != null ? _audioData.AudioClip.name : "Empty";
-            _view.SetLabelText(name);
-
-        }
-
+        
         public void Dispose()
         {
             _audioData = null;
@@ -77,10 +70,8 @@ namespace MyAudios.Soundy.Editor.AudioDatas.Controllers
             _view.Dispose();
         }
 
-        public void SetAudioClip(AudioClip audioClip)
-        {
+        public void SetAudioClip(AudioClip audioClip) =>
             _audioData.AudioClip = audioClip;
-        }
 
         public void ChangeSoundGroupState()
         {

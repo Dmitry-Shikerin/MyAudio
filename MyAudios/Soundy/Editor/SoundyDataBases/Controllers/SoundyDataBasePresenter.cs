@@ -2,7 +2,7 @@
 using JetBrains.Annotations;
 using MyAudios.Soundy.Editor.Presenters.Controllers;
 using MyAudios.Soundy.Editor.SoundDataBases.Infrastructure.Factories;
-using MyAudios.Soundy.Editor.SoundDataBases.Presentation.Interfaces;
+using MyAudios.Soundy.Editor.SoundDataBases.Presentation.Views.Interfaces;
 using MyAudios.Soundy.Editor.SoundyDataBases.Views.Interfaces;
 using MyAudios.Soundy.Sources.DataBases.Domain.Data;
 

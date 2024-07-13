@@ -1,6 +1,6 @@
 ﻿using MyAudios.Soundy.Editor.SoundDataBases.Controllers;
-using MyAudios.Soundy.Editor.SoundDataBases.Presentation.Interfaces;
 using MyAudios.Soundy.Editor.SoundDataBases.Presentation.Views.Implementation;
+using MyAudios.Soundy.Editor.SoundDataBases.Presentation.Views.Interfaces;
 using MyAudios.Soundy.Editor.SoundGroups.Infrastructure.Factories;
 using MyAudios.Soundy.Sources.DataBases.Domain.Data;
 

@@ -2,14 +2,13 @@
 using Doozy.Editor.EditorUI;
 using Doozy.Editor.EditorUI.Components;
 using Doozy.Editor.EditorUI.Utils;
-using Doozy.Engine.Soundy;
 using Doozy.Runtime.UIElements.Extensions;
 using MyAudios.Soundy.Sources.DataBases.Domain.Data;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace MyAudios.Soundy.Editor.DataBases.Editors
+namespace MyAudios.Soundy.Editor.SoundyDataBases.Presentation.Editors
 {
     [CustomEditor(typeof(SoundyDatabase))]
     public class SoundyDataBaseEditor : UnityEditor.Editor

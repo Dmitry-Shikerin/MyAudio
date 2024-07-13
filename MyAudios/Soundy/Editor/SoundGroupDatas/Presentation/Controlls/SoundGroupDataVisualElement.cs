@@ -27,9 +27,10 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Controlls
         public FluidToggleSwitch ResetSequenceAfterInactiveTimeToggle { get; private set; }
         public FloatField SequenceResetTimeField { get; private set; }
         public FluidToggleSwitch LoopToggle { get; private set; }
-        public FluidMinMaxSlider VolumeMinMaxSlider { get; private set; }
+        public FluidMinMaxSlider VolumeSlider { get; private set; }
         public FluidButton ResetVolumeButton { get; private set; }
-        public FluidMinMaxSlider PitchMinMaxSlider { get; private set; }
+        public FluidMinMaxSlider PitchSlider { get; private set; }
+        public FluidRangeSlider SpatialBlendSlider { get; private set; }
         public FluidButton ResetPitchButton { get; private set; }
         public NewSoundContentVisualElement NewSoundContentVisualElement { get; private set; }
 
@@ -76,15 +77,6 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Controlls
                 ;
             SequenceButtonTab.AddToToggleGroup(playModeToggleGroup);
             playModeToggleGroup.RegisterToggle(SequenceButtonTab);
-
-            // Action changePlayMode = SoundGroupData.Mode switch
-            // {
-            //     SoundGroupData.PlayMode.Random => () => RandomButtonTab.isOn = true,
-            //     SoundGroupData.PlayMode.Sequence => () => SequenceButtonTab.isOn = true,
-            //     _ => throw new ArgumentOutOfRangeException()
-            // };
-            //
-            // changePlayMode?.Invoke();
 
             //ResetSequenceAfterInactiveTime
             Label resetSequenceAfterInactiveTimeLabel =
@@ -151,7 +143,7 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Controlls
                 DesignUtils
                     .NewLabel("Volume")
                     .SetStyleMinWidth(70);
-            VolumeMinMaxSlider = new FluidMinMaxSlider();
+            VolumeSlider = new FluidMinMaxSlider();
             // volumeMinMaxSlider.RegisterCallback<DragUpdatedEvent>((even) => {});
             // volumeMinMaxSlider.slider.value = new Vector2(
             //     SoundGroupData.Volume.MinValue, SoundGroupData.Volume.MaxValue);
@@ -177,14 +169,14 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Controlls
             VisualElement volumeRow = DesignUtils
                 .row
                 .AddChild(volumeLabel)
-                .AddChild(VolumeMinMaxSlider)
+                .AddChild(VolumeSlider)
                 .AddChild(ResetVolumeButton);
 
             Label pitchLabel =
                 DesignUtils
                     .NewLabel("Pitch")
                     .SetStyleMinWidth(70);
-            PitchMinMaxSlider = new FluidMinMaxSlider();
+            PitchSlider = new FluidMinMaxSlider();
             // pitchMinMaxSlider.RegisterCallback<DragUpdatedEvent>((even) => {});
             // pitchMinMaxSlider.slider.value = new Vector2(SoundGroupData.Pitch.MinValue, SoundGroupData.Pitch.MaxValue);
             // pitchMinMaxSlider.slider.lowLimit = SoundGroupDataConst.MinPitch;
@@ -209,21 +201,21 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Controlls
             VisualElement pitchRow = DesignUtils
                 .row
                 .AddChild(pitchLabel)
-                .AddChild(PitchMinMaxSlider)
+                .AddChild(PitchSlider)
                 .AddChild(ResetPitchButton);
 
             Label spatialBlendLabel =
                 DesignUtils
                     .NewLabel("SpatialBlend")
                     .SetStyleMinWidth(70);
-            FluidRangeSlider spatialBlendSlider = new FluidRangeSlider();
-            spatialBlendSlider.SetStyleFlexGrow(1);
-            spatialBlendSlider.RegisterCallback<DragUpdatedEvent>((even) => { });
+            SpatialBlendSlider = new FluidRangeSlider();
+            SpatialBlendSlider.SetStyleFlexGrow(1);
+            SpatialBlendSlider.RegisterCallback<DragUpdatedEvent>((even) => { });
 
             VisualElement spatialBlendRow = DesignUtils
                 .row
                 .AddChild(spatialBlendLabel)
-                .AddChild(spatialBlendSlider);
+                .AddChild(SpatialBlendSlider);
 
             FluidAnimatedContainer slidersContainer =
                 new FluidAnimatedContainer()

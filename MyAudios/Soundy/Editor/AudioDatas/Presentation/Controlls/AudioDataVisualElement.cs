@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Doozy.Editor.EditorUI;
+﻿using Doozy.Editor.EditorUI;
 using Doozy.Editor.EditorUI.Components;
 using Doozy.Editor.EditorUI.Utils;
 using Doozy.Editor.UIElements;
@@ -14,185 +12,78 @@ using UnityEngine.Events;
 using UnityEngine.UIElements;
 using Object = UnityEngine.Object;
 
-namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
+namespace MyAudios.Soundy.Editor.AudioDatas.Presentation.Controlls
 {
     public class AudioDataVisualElement : VisualElement
     {
-        public VisualElement Container { get; private set; }
-        public VisualElement SlidersContainer { get; private set; }
         public FluidButton PlayButton { get; private set; }
         public FluidButton DeleteButton { get; private set; }
-        public string Label { get; set; }
-        public FluidRangeSlider TopSlider { get; private set; }
-        public AudioData AudioData { get; set; }
-        public bool IsPlaying { get; private set; }
-        public SoundGroupData ParentDatabase { get; private set; }
-        public VisualElement TopLine { get; private set; }
-        public VisualElement BotLine { get; set; }
+        public FluidRangeSlider Slider { get; private set; }
         public ObjectField ObjectField { get; private set; }
-        public Label LabelField { get; private set; }
 
         public AudioDataVisualElement()
         {
+            Initialize();
         }
 
-        public AudioDataVisualElement Initialize()
+        private void Initialize()
         {
-            Container =
+            VisualElement container =
                 DesignUtils.column
                     .ResetLayout()
                     .SetStyleColor(EditorColors.Default.Background)
                     .SetStyleAlignContent(Align.Center)
                     .SetStyleBackgroundColor(EditorColors.Default.Background);
 
-            TopLine = DesignUtils.row;
-            BotLine = DesignUtils.row;
-            
-            LabelField = DesignUtils
+            VisualElement topLine = DesignUtils.row;
+            VisualElement botLine = DesignUtils.row;
+            Label labelField = DesignUtils
                 .NewLabel()
                 .SetText("AudioClip");
-            LabelField
+            labelField
                 .SetStyleColor(EditorColors.Default.WindowHeaderTitle)
                 .SetStyleMinWidth(70);
             
             ObjectField = new ObjectField();
             ObjectField.SetStyleFlexGrow(1);
-            Object audioClip = AudioData.AudioClip ?? 
-                                  null;
-            // SerializedObject audioDatSerializedObject =
-            //     new SerializedObject(audioClip);
-            ObjectField.RegisterCallback<ChangeEvent<Object>>(
-                (evt) =>
-                    AudioData.AudioClip = evt.newValue as AudioClip);
             ObjectField
-                .SetObjectType(typeof(AudioClip))
-                // .BindProperty(audioDatSerializedObject);
-                ;
-            ObjectField.SetValueWithoutNotify(audioClip);
-            
+                .SetObjectType(typeof(AudioClip));
+            ObjectField.SetValueWithoutNotify(null);
+
             PlayButton =
                 FluidButton
                     .Get()
                     .ResetLayout()
                     .SetButtonStyle(ButtonStyle.Contained)
-                    .SetIcon(EditorSpriteSheets.EditorUI.Icons.Play)
-                    .SetOnClick(() =>
-                    {
-                        ChangeSoundGroupState();
-                    });                            
-
-            SlidersContainer = DesignUtils.column;
-            
-            TopSlider = new FluidRangeSlider().SetStyleMaxHeight(18);
-            TopSlider.slider.highValue = AudioData.AudioClip != null 
-                ? AudioData.AudioClip.length 
-                : default;
-            
-            TopSlider
+                    .SetIcon(EditorSpriteSheets.EditorUI.Icons.Play);                            
+            VisualElement slidersContainer = DesignUtils.column;
+            Slider = new FluidRangeSlider().SetStyleMaxHeight(18);
+            Slider
                 .slider
                 .SetStyleBorderColor(EditorColors.EditorUI.Orange)
                 .SetStyleColor(EditorColors.EditorUI.Orange);
-            
-            SlidersContainer
-                .AddChild(TopSlider);
-            
+            slidersContainer
+                .AddChild(Slider);
             DeleteButton =
                 FluidButton
                     .Get()
                     .ResetLayout()
                     .SetButtonStyle(ButtonStyle.Contained)
-                    .SetIcon(EditorSpriteSheets.EditorUI.Icons.Minus)
-                ;
-            
-            TopLine
+                    .SetIcon(EditorSpriteSheets.EditorUI.Icons.Minus);
+            topLine
                 .AddChild(PlayButton)
-                .AddChild(SlidersContainer)
-                ;
-
-            BotLine
-                .AddChild(LabelField)
+                .AddChild(slidersContainer);
+            botLine
+                .AddChild(labelField)
                 .AddChild(ObjectField)
                 .AddChild(new VisualElement().SetStyleMinWidth(7))
-                .AddChild(DeleteButton)
-                ;
-
-            Container
-                .AddChild(TopLine)
+                .AddChild(DeleteButton);
+            container
+                .AddChild(topLine)
                 .AddSpaceBlock()
-                .AddChild(BotLine);
+                .AddChild(botLine);
 
-            Add(Container);
-
-            return this;
-        }
-
-        private void ChangeSoundGroupState()
-        {
-            if (IsPlaying == false)
-                PlaySound();
-            else
-                StopSound();
-        }
-
-        private void UpdateSliderValue()
-        {
-            TopSlider.slider.value = Object.FindObjectOfType<AudioSource>().time;
-        }
-
-        public void PlaySound()
-        {
-            // Parent.StopAllSounds();
-            EditorApplication.update += UpdateSliderValue;
-            IsPlaying = true;
-            PlayButton.SetIcon(EditorSpriteSheets.EditorUI.Icons.Stop);
-            ParentDatabase.PlaySoundPreview(
-                Object.FindObjectOfType<AudioSource>(),
-                null, AudioData.AudioClip);
-        }
-
-        public void StopSound()
-        {
-            EditorApplication.update -= UpdateSliderValue;
-            IsPlaying = false;
-            PlayButton.SetIcon(EditorSpriteSheets.EditorUI.Icons.Play);
-            ParentDatabase.StopSoundPreview(
-                Object.FindObjectOfType<AudioSource>());
-            TopSlider.slider.value = 0;
-        }
-        
-        public AudioDataVisualElement SetLabelText(string labelText)
-        {
-            Label = labelText;
-            
-            return this;
-        }
-
-        public AudioDataVisualElement SetSoundGroupData(SoundGroupData parentData)
-        {
-            ParentDatabase = parentData;
-            
-            return this;
-        }
-
-        public AudioDataVisualElement SetAudioData(AudioData audioData)
-        {
-            AudioData = audioData;
-            
-            return this;
-        }
-        
-        public AudioDataVisualElement SetPlayOnClick(UnityAction callback)
-        {
-            PlayButton.SetOnClick(callback);
-            
-            return this;
-        }
-        
-        public AudioDataVisualElement SetDeleteOnClick(UnityAction callback)
-        {
-            DeleteButton.SetOnClick(callback);
-            
-            return this;
+            Add(container);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using MyAudios.Soundy.Editor.SoundDataBases.Presentation.Interfaces;
+﻿using MyAudios.Soundy.Editor.SoundDataBases.Presentation.Views.Interfaces;
 using MyAudios.Soundy.Editor.Views;
 using UnityEngine.Events;
 
