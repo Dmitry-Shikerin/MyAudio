@@ -1,8 +1,4 @@
-﻿// Copyright (c) 2015 - 2023 Doozy Entertainment. All Rights Reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement
-// A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Doozy.Editor.EditorUI.ScriptableObjects.Colors;
 using Doozy.Editor.EditorUI.Utils;
@@ -229,11 +225,15 @@ namespace Doozy.Editor.EditorUI.Components
             searchBoxContainer.SetStyleDisplay(DisplayStyle.None);
             searchBox?.OnShowSearchResultsCallback?.Invoke(false);
             searchBox?.DisconnectFromToggleGroup();
+            
             if (buttons.Contains(searchBox?.searchTabButton))
                 buttons.Remove(searchBox?.searchTabButton);
+            
             RemoveSearchButtonFromButtonsContainer();
+            
             if (searchBox != null)
                 collapseButton.OnClick -= searchBox.ClearSearch;
+            
             searchBox = null;
             return this;
         }
@@ -319,7 +319,10 @@ namespace Doozy.Editor.EditorUI.Components
         private int ExpandedWidth()
         {
             int value = CollapsedWidth();
-            if (hasCustomWidth) return customWidth - value;
+            
+            if (hasCustomWidth)
+                return customWidth - value;
+            
             switch (menuLevel)
             {
                 case MenuLevel.Level_0: return 208 - value;
@@ -367,6 +370,7 @@ namespace Doozy.Editor.EditorUI.Components
             menuInfoIconReaction?.Recycle();
             menuInfoIconReaction = null;
             menuInfoIcon.SetStyleBackgroundImage((Texture2D)null);
+            
             return this;
         }
 
@@ -670,6 +674,7 @@ namespace Doozy.Editor.EditorUI.Components
             templateContainer.SetStyleBackgroundColor(backgroundColor);
 
             EditorSelectableColorInfo buttonContainerColor = ButtonContainerColor();
+            
             foreach (FluidToggleButtonTab button in buttons)
             {
                 button.iconContainerSelectableColor = buttonContainerColor;
@@ -689,7 +694,10 @@ namespace Doozy.Editor.EditorUI.Components
         private void RemoveSearchButtonFromButtonsContainer()
         {
             FluidToggleButtonTab button = searchBox?.searchTabButton;
-            if (button != null) buttonsScrollViewContainer.Remove(button);
+            
+            if (button != null)
+                buttonsScrollViewContainer.Remove(button);
+            
             UpdateColors();
         }
 
@@ -737,7 +745,10 @@ namespace Doozy.Editor.EditorUI.Components
         {
             hideToolbarWhenCollapsed = hide;
             hasToolbar = true;
-            if (isCollapsed) toolbarContainer.SetStyleDisplay(DisplayStyle.None);
+            
+            if (isCollapsed)
+                toolbarContainer.SetStyleDisplay(DisplayStyle.None);
+            
             return this;
         }
 
@@ -745,6 +756,7 @@ namespace Doozy.Editor.EditorUI.Components
         {
             hasToolbar = value;
             toolbarContainer.SetStyleDisplay(hasToolbar ? DisplayStyle.Flex : DisplayStyle.None);
+            
             return this;
         }
 
@@ -769,6 +781,7 @@ namespace Doozy.Editor.EditorUI.Components
             VisualElement spaceBlock = DesignUtils.GetSpaceBlock(width, height);
             spacesBetweenButtons.Add(spaceBlock);
             buttonsScrollViewContainer.Add(spaceBlock);
+            
             return spaceBlock;
         }
     }

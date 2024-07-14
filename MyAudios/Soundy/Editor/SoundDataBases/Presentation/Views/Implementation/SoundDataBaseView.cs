@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Doozy.Editor.EditorUI;
+using Doozy.Editor.EditorUI.Components;
 using Doozy.Editor.EditorUI.Utils;
 using Doozy.Runtime.UIElements.Extensions;
 using MyAudios.Soundy.Editor.NewSoundContents.Presentation.Controlls;
@@ -8,6 +9,7 @@ using MyAudios.Soundy.Editor.SoundDataBases.Controllers;
 using MyAudios.Soundy.Editor.SoundDataBases.Presentation.Controls;
 using MyAudios.Soundy.Editor.SoundDataBases.Presentation.Views.Interfaces;
 using MyAudios.Soundy.Editor.SoundGroups.Presentation.Views.Interfaces;
+using UnityEditor;
 using UnityEngine.UIElements;
 
 namespace MyAudios.Soundy.Editor.SoundDataBases.Presentation.Views.Implementation
@@ -65,7 +67,22 @@ namespace MyAudios.Soundy.Editor.SoundDataBases.Presentation.Views.Implementatio
                 .AddChild(_newSoundContentVisualElement)
                 .AddChild(_soundGroupsContainer);
         }
-        
+
+        public void Initialize()
+        {
+            // _newSoundContentVisualElement
+            //     .SetOnClick(() =>
+            //     {
+            //         // _presenter.Add(
+            //         //     _newSoundContentVisualElement.SoundGroupTextField.value, false, true);
+            //         //Сделать рефрешь елементов
+            //         // UpdateDataBase(CurrentSoundDatabase);
+            //     });
+            _headerVisualElement.PingAssetButton.SetOnClick(() => Selection.activeObject = _presenter.GetDataBase());
+            _soundGroups = new List<ISoundGroupView>();
+            _presenter.Initialize();
+        }
+
         public void RemoveSoundGroup(ISoundGroupView soundGroupView)
         {
             _soundGroups.Remove(soundGroupView);
@@ -84,20 +101,6 @@ namespace MyAudios.Soundy.Editor.SoundDataBases.Presentation.Views.Implementatio
                 .AddChild(soundGroupView.Root)
                 .AddSpace(4);
             _soundGroups.Add(soundGroupView);
-        }
-
-        public void Initialize()
-        {
-            // _newSoundContentVisualElement
-            //     .SetOnClick(() =>
-            //     {
-            //         // _presenter.Add(
-            //         //     _newSoundContentVisualElement.SoundGroupTextField.value, false, true);
-            //         //Сделать рефрешь елементов
-            //         // UpdateDataBase(CurrentSoundDatabase);
-            //     });
-            _soundGroups = new List<ISoundGroupView>();
-            _presenter.Initialize();
         }
 
 

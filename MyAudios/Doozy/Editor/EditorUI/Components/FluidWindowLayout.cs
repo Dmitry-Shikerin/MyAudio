@@ -91,7 +91,9 @@ namespace Doozy.Editor.EditorUI.Components
             //SIDE MENU - SEARCH BOX - callback when a search ended to reselect the previously selected side menu button (and show its content)
             sideMenu.searchBox.OnShowSearchResultsCallback += value =>
             {
-                if (value) return;
+                if (value)
+                    return;
+                
                 if (sideMenu.selectedMenuIndex < 0)
                     return;
 
@@ -123,12 +125,16 @@ namespace Doozy.Editor.EditorUI.Components
             sideMenuResizer = new FluidResizer(FluidResizer.Position.Right);
             sideMenuResizer.onPointerMoveEvent += evt =>
             {
-                if (sideMenu.isCollapsed) return;
+                if (sideMenu.isCollapsed)
+                    return;
+                
                 sideMenu.SetCustomWidth((int)(sideMenu.customWidth + evt.deltaPosition.x));
             };
             sideMenuResizer.onPointerUp += evt =>
             {
-                if (sideMenu.isCollapsed) return;
+                if (sideMenu.isCollapsed)
+                    return;
+                
                 EditorPrefs.SetInt(sideMenuWidthKey, sideMenu.customWidth);
             };
 

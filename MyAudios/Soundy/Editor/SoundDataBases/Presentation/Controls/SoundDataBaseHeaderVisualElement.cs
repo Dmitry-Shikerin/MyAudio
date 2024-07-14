@@ -41,7 +41,7 @@ namespace MyAudios.Soundy.Editor.SoundDataBases.Presentation.Controls
             PingAssetButton
                 .SetButtonStyle(ButtonStyle.Contained)
                 .SetElementSize(ElementSize.Small)
-                .SetIcon(EditorSpriteSheets.EditorUI.Icons.PingPong);
+                .SetIcon(EditorSpriteSheets.EditorUI.Icons.Location);
             
             RemoveButton = new FluidButton();
             RemoveButton

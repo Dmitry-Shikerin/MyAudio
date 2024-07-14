@@ -4,6 +4,7 @@ using MyAudios.Soundy.Editor.SoundDataBases.Presentation.Views.Interfaces;
 using MyAudios.Soundy.Editor.SoundGroups.Infrastructure.Factories;
 using MyAudios.Soundy.Editor.SoundGroups.Presentation.Views.Interfaces;
 using MyAudios.Soundy.Sources.DataBases.Domain.Data;
+using Object = UnityEngine.Object;
 
 namespace MyAudios.Soundy.Editor.SoundDataBases.Controllers
 {
@@ -42,5 +43,8 @@ namespace MyAudios.Soundy.Editor.SoundDataBases.Controllers
                 _view.AddSoundGroup(view);
             }
         }
+
+        public SoundDatabase GetDataBase() =>
+            _soundDatabase;
     }
 }
