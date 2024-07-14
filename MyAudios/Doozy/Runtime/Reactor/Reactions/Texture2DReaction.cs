@@ -60,7 +60,6 @@ namespace Doozy.Runtime.Reactor.Reactions
 
         public override void UpdateCurrentValue()
         {
-
             // CurrentValue = (int)Mathf.Lerp(FromValue, ToValue, easedProgress);
             CurrentValue = (int)Mathf.Lerp(cycleFrom, cycleTo, currentCycleEasedProgress);
             CurrentValue = Mathf.Clamp(CurrentValue, firstFrame, lastFrame);
@@ -253,6 +252,7 @@ namespace Doozy.Runtime.Reactor.Reactions
                     cycleValues[i] = FromValue;
                     continue;
                 }
+                
                 float random = Random.value;
                 cycleValues[i] = (int)(FromValue + ToValue * random * settings.strength);
                 cycleValues[i] = Mathf.Clamp(cycleValues[i], firstFrame, lastFrame);

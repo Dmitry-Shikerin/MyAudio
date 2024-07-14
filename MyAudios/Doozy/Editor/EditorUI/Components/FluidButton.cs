@@ -371,6 +371,7 @@ namespace Doozy.Editor.EditorUI.Components
         public static T SetIcon<T>(this T target, IEnumerable<Texture2D> textures, ButtonAnimationTrigger trigger = ButtonAnimationTrigger.OnPointerEnter) where T : FluidButton
         {
             target.UpdateIconType(IconType.Animated);
+            
             if (target.iconReaction == null)
             {
                 target.iconReaction = target.buttonIcon.GetTexture2DReaction(textures).SetEditorHeartbeat().SetDuration(0.6f);
@@ -379,6 +380,7 @@ namespace Doozy.Editor.EditorUI.Components
             {
                 target.iconReaction.SetTextures(textures);
             }
+            
             target.buttonIcon.SetStyleDisplay(DisplayStyle.Flex);
             target.SetAnimationTrigger(trigger);
             return target;

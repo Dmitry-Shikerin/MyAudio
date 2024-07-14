@@ -1,8 +1,4 @@
-﻿// Copyright (c) 2015 - 2023 Doozy Entertainment. All Rights Reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement
-// A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Doozy.Editor.EditorUI.Utils;
 using Doozy.Editor.Reactor.Internal;
@@ -219,14 +215,18 @@ namespace Doozy.Editor.EditorUI.Components
         // public FluidComponentHeader AddManualButton(string url = "https://bit.ly/DoozyKnowledgeBase4")
         public FluidComponentHeader AddManualButton(string url = "https://www.doozyui.com/docs/documentation/")
         {
-            if (EditorApplication.isPlayingOrWillChangePlaymode) return this; //do not add Manual button in play mode
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+                return this; //do not add Manual button in play mode
+            
             return AddElement(GetNewButton(EditorSpriteSheets.EditorUI.Icons.BookOpen, "Manual")
                 .SetOnClick(() => Application.OpenURL(url)));
         }
 
         public FluidComponentHeader AddYouTubeButton(string url = "www.youtube.com/c/DoozyEntertainment")
         {
-            if (EditorApplication.isPlayingOrWillChangePlaymode) return this; //do not add YouTube button in play mode
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+                return this; //do not add YouTube button in play mode
+            
             return AddElement(GetNewButton(EditorSpriteSheets.EditorUI.Icons.Youtube, "YouTube")
                 .SetOnClick(() => Application.OpenURL(url)));
         }
@@ -295,7 +295,9 @@ namespace Doozy.Editor.EditorUI.Components
             iconContainer.SetStyleDisplay(DisplayStyle.Flex);
             icon.SetStyleDisplay(DisplayStyle.Flex);
 
-            if (showRotatedIcon) SetRotatedIcon(textures);
+            if (showRotatedIcon)
+                SetRotatedIcon(textures);
+            
             return this;
         }
 
@@ -313,7 +315,9 @@ namespace Doozy.Editor.EditorUI.Components
             iconContainer.SetStyleDisplay(DisplayStyle.Flex);
             icon.SetStyleDisplay(DisplayStyle.Flex);
 
-            if (showRotatedIcon) SetRotatedIcon(texture2D);
+            if (showRotatedIcon)
+                SetRotatedIcon(texture2D);
+            
             return this;
         }
 
@@ -327,14 +331,21 @@ namespace Doozy.Editor.EditorUI.Components
             icon.SetStyleBackgroundImage((Texture2D)null);
             iconContainer.SetStyleDisplay(DisplayStyle.None);
             icon.SetStyleDisplay(DisplayStyle.None);
-            if (clearRotatedIcon) ClearRotatedIcon();
+            
+            if (clearRotatedIcon)
+                ClearRotatedIcon();
+            
             return this;
         }
 
         private void UpdateIconType(IconType value)
         {
-            if (iconType != IconType.None) icon.RemoveClass(iconType.ToString());
-            if (value != IconType.None) icon.AddClass(value.ToString());
+            if (iconType != IconType.None)
+                icon.RemoveClass(iconType.ToString());
+            
+            if (value != IconType.None)
+                icon.AddClass(value.ToString());
+            
             iconType = value;
         }
 
@@ -357,6 +368,7 @@ namespace Doozy.Editor.EditorUI.Components
 
             rotatedIconReaction.SetTextures(textures);
             rotatedIcon.SetStyleDisplay(textures?.Count > 0 ? DisplayStyle.Flex : DisplayStyle.None);
+            
             return this;
         }
 
@@ -388,8 +400,12 @@ namespace Doozy.Editor.EditorUI.Components
 
         private void UpdateRotatedIconType(IconType value)
         {
-            if (rotatedIconType != IconType.None) rotatedIcon.RemoveClass(iconType.ToString());
-            if (value != IconType.None) rotatedIcon.AddClass(value.ToString());
+            if (rotatedIconType != IconType.None)
+                rotatedIcon.RemoveClass(iconType.ToString());
+            
+            if (value != IconType.None)
+                rotatedIcon.AddClass(value.ToString());
+            
             rotatedIconType = value;
         }
 
@@ -409,6 +425,7 @@ namespace Doozy.Editor.EditorUI.Components
 
             secondaryIconReaction.SetTextures(textures);
             secondaryIcon.SetStyleDisplay(textures?.Count > 0 ? DisplayStyle.Flex : DisplayStyle.None);
+            
             return this;
         }
 
@@ -421,6 +438,7 @@ namespace Doozy.Editor.EditorUI.Components
             secondaryIconReaction = null;
             secondaryIcon.SetStyleBackgroundImage(texture2D);
             secondaryIcon.SetStyleDisplay(DisplayStyle.Flex);
+            
             return this;
         }
 
@@ -432,13 +450,18 @@ namespace Doozy.Editor.EditorUI.Components
             secondaryIconReaction = null;
             secondaryIcon.SetStyleBackgroundImage((Texture2D)null);
             secondaryIcon.SetStyleDisplay(DisplayStyle.None);
+            
             return this;
         }
 
         private void UpdateSecondaryIconType(IconType value)
         {
-            if (secondaryIconType != IconType.None) secondaryIcon.RemoveClass(secondaryIconType.ToString());
-            if (value != IconType.None) secondaryIcon.AddClass(value.ToString());
+            if (secondaryIconType != IconType.None)
+                secondaryIcon.RemoveClass(secondaryIconType.ToString());
+            
+            if (value != IconType.None)
+                secondaryIcon.AddClass(value.ToString());
+            
             secondaryIconType = value;
         }
 
