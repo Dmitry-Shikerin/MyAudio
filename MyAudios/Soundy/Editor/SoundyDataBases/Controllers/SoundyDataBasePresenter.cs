@@ -25,14 +25,14 @@ namespace MyAudios.Soundy.Editor.SoundyDataBases.Controllers
                                         throw new ArgumentNullException(nameof(soundDataBaseViewFactory));
         }
 
-        public void Dispose()
-        {
-            
-        }
-
         public void Initialize()
         {
             AddDataBasesButtons();
+        }
+
+        public void Dispose()
+        {
+            
         }
 
         public void Add(string value, bool b, bool b1)

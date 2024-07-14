@@ -17,6 +17,7 @@ namespace MyAudios.Soundy.Editor.SoundDataBases.Presentation.Views.Implementatio
         private SoundDataBasePresenter _presenter;
         private SoundDataBaseHeaderVisualElement _headerVisualElement;
         private NewSoundContentVisualElement _newSoundContentVisualElement;
+        private SoundDataBaseAudioMixerVisualElement _audioMixerVisualElement;
         private VisualElement _spaseElement;
         private ScrollView _scrollView;
         private VisualElement _soundGroupsContainer;
@@ -33,10 +34,9 @@ namespace MyAudios.Soundy.Editor.SoundDataBases.Presentation.Views.Implementatio
 
         public void CreateView()
         {
-            _headerVisualElement = 
-                new SoundDataBaseHeaderVisualElement();
-            _newSoundContentVisualElement =
-                new NewSoundContentVisualElement();
+            _headerVisualElement = new SoundDataBaseHeaderVisualElement();
+            _newSoundContentVisualElement = new NewSoundContentVisualElement();
+            _audioMixerVisualElement = new SoundDataBaseAudioMixerVisualElement();
             VisualElement spaseLine = DesignUtils.row
                 .SetStyleMaxHeight(4)
                 .SetStyleMinHeight(4)
@@ -57,6 +57,8 @@ namespace MyAudios.Soundy.Editor.SoundDataBases.Presentation.Views.Implementatio
             
             Root = DesignUtils.column
                 .AddChild(_headerVisualElement)
+                .AddSpace(4)
+                .AddChild(_audioMixerVisualElement)
                 .AddSpace(4)
                 .AddChild(_spaseElement)
                 .AddSpace(4)

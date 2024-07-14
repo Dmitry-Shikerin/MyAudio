@@ -33,14 +33,16 @@ namespace MyAudios.Soundy.Editor.AudioDatas.Presentation.Controlls
                     .ResetLayout()
                     .SetStyleColor(EditorColors.Default.Background)
                     .SetStyleAlignContent(Align.Center)
+                    .SetStyleBorderRadius(4,4,4,4)
+                    .SetStylePadding(4,4,4,4)
                     .SetStyleBackgroundColor(EditorColors.Default.Background);
 
             VisualElement topLine = DesignUtils.row;
             VisualElement botLine = DesignUtils.row;
-            Label labelField = DesignUtils
+            Label label = DesignUtils
                 .NewLabel()
                 .SetText("AudioClip");
-            labelField
+            label
                 .SetStyleColor(EditorColors.Default.WindowHeaderTitle)
                 .SetStyleMinWidth(70);
             
@@ -70,12 +72,13 @@ namespace MyAudios.Soundy.Editor.AudioDatas.Presentation.Controlls
                     .Get()
                     .ResetLayout()
                     .SetButtonStyle(ButtonStyle.Contained)
-                    .SetIcon(EditorSpriteSheets.EditorUI.Icons.Minus);
+                    .SetIcon(EditorSpriteSheets.EditorUI.Icons.Minus)
+                    .SetAccentColor(EditorSelectableColors.Default.Remove);
             topLine
                 .AddChild(PlayButton)
                 .AddChild(slidersContainer);
             botLine
-                .AddChild(labelField)
+                .AddChild(label)
                 .AddChild(ObjectField)
                 .AddChild(new VisualElement().SetStyleMinWidth(7))
                 .AddChild(DeleteButton);

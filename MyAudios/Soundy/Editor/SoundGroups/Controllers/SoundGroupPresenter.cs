@@ -72,5 +72,10 @@ namespace MyAudios.Soundy.Editor.SoundGroups.Controllers
             else
                 StopSound();
         }
+
+        public void MouseDown(int mouseButton)
+        {
+            Debug.Log($"MouseDown");
+        }
     }
 }

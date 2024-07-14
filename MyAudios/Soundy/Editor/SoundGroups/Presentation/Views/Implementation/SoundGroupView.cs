@@ -37,6 +37,7 @@ namespace MyAudios.Soundy.Editor.SoundGroups.Presentation.Views.Implementation
             // _soundGroupVisualElement.TopSlider
             // _soundGroupVisualElement.Label
             _visualElement.SoundGroupDataButton.SetOnClick(() => _presenter.ShowSoundGroupData());
+            _visualElement.Slider.sliderTracker.RegisterCallback<MouseDownEvent>((mouse) => _presenter.MouseDown(mouse.button)); ;
             _presenter.Initialize();
         }
 

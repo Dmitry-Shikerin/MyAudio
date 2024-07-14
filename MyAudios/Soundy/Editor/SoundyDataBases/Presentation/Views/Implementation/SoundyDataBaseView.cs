@@ -71,6 +71,8 @@ namespace MyAudios.Soundy.Editor.SoundyDataBases.Views.Implementation
             FluidToggleButtonTab button =
                 _fluidWindowLayout.sideMenu
                     .AddButton(name, EditorSelectableColors.EditorUI.Orange)
+                    .SetElementSize(ElementSize.Normal)
+                    .SetIcon(EditorSpriteSheets.EditorUI.Icons.ToggleON)
                     .AddOnClick(() => callback?.Invoke());
             
             _databasesButtons.Add(button);
