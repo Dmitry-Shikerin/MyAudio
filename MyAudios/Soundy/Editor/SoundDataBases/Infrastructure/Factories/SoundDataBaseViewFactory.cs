@@ -8,13 +8,13 @@ namespace MyAudios.Soundy.Editor.SoundDataBases.Infrastructure.Factories
 {
     public class SoundDataBaseViewFactory
     {
-        public ISoundDataBaseView Create(SoundDatabase soundDatabase)
+        public ISoundDataBaseView Create(SoundDatabase soundDatabase, SoundyDatabase soundyDatabase)
         {
             SoundGroupViewFactory soundGroupViewFactory = new SoundGroupViewFactory();
             
             SoundDataBaseView view = new SoundDataBaseView();
             SoundDataBasePresenter presenter = new SoundDataBasePresenter(
-                soundDatabase, view, soundGroupViewFactory);
+                soundDatabase, soundyDatabase, view,  soundGroupViewFactory);
             view.Construct(presenter);
             
             return view;

@@ -24,6 +24,8 @@ namespace MyAudios.Soundy.Editor.SoundyDataBases.Views.Implementation
         private List<SoundGroupVisualElement> _soundGroups;
         private List<FluidToggleButtonTab> _databasesButtons;
         private ISoundDataBaseView _soundDataBaseView;
+        
+        public IReadOnlyList<FluidToggleButtonTab> DatabaseButtons => _databasesButtons;
 
         public VisualElement Root { get; private set; }
 
@@ -49,6 +51,8 @@ namespace MyAudios.Soundy.Editor.SoundyDataBases.Views.Implementation
 
         public void Initialize()
         {
+            _fluidWindowLayout.NewDataBaseButton.SetOnClick(() => _presenter.CreateNewDataBase());
+            _fluidWindowLayout.RefreshButton.SetOnClick(() => _presenter.RefreshDataBases());
             _presenter.Initialize();
         }
 
@@ -63,7 +67,25 @@ namespace MyAudios.Soundy.Editor.SoundyDataBases.Views.Implementation
                 button.Recycle();
 
             _databasesButtons.Clear();
-            // AfterInitialize();
+        }
+
+        public void RenameButtons()
+        {
+            _presenter.RenameButtons();
+        }
+
+        public void UpdateDataBase()
+        {
+            _presenter.UpdateDataBase();
+        }
+
+        public void ClearButtons()
+        {
+            foreach (FluidToggleButtonTab button in _databasesButtons)
+            {
+                _fluidWindowLayout.sideMenu.buttons.Remove(button);
+                button.RemoveFromHierarchy();
+            }
         }
 
         public void AddDataBaseButton(string name, UnityAction callback)

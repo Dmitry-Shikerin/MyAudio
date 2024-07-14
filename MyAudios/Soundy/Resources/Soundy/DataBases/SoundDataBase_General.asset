@@ -27,10 +27,10 @@ MonoBehaviour:
   ResetSequenceAfterInactiveTime: 0
   SequenceResetTime: 2
   Sounds:
-  - AudioClip: {fileID: 8300000, guid: 8ab8a6d8aa0a5294fa88e752b71fddf5, type: 3}
+  - AudioClip: {fileID: 0}
     Weight: 1
     IsPlaying: 0
-  - AudioClip: {fileID: 8300000, guid: ac6f3ae1184b4614baacf21d43dc39de, type: 3}
+  - AudioClip: {fileID: 0}
     Weight: 1
     IsPlaying: 0
   IsPlaying: 0
@@ -60,13 +60,7 @@ MonoBehaviour:
   Mode: 1
   ResetSequenceAfterInactiveTime: 0
   SequenceResetTime: 5
-  Sounds:
-  - AudioClip: {fileID: 8300000, guid: d7b48b5e162adc74cb423ea0fdfd12be, type: 3}
-    Weight: 1
-    IsPlaying: 0
-  - AudioClip: {fileID: 8300000, guid: 6dda42685485b164aaf2161781239876, type: 3}
-    Weight: 1
-    IsPlaying: 0
+  Sounds: []
   IsPlaying: 0
 --- !u!114 &11400000
 MonoBehaviour:
@@ -84,6 +78,7 @@ MonoBehaviour:
   OutputAudioMixerGroup: {fileID: 0}
   SoundNames:
   - No Sound
+  - adgsdsdf
   - No Sound
   Database:
   - {fileID: -5726047050956110512}

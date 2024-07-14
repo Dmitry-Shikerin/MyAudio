@@ -146,7 +146,8 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         /// <param name="database"> SoundDatabase to delete </param>
         public bool DeleteDatabase(SoundDatabase database)
         {
-            if (database == null) return false;
+            if (database == null)
+                return false;
 
 #if UNITY_EDITOR
             if (!EditorUtility.DisplayDialog(SoundyDataBaseConst.DeleteDatabase + " '" + database.DatabaseName + "'",
@@ -171,7 +172,8 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
         /// </summary>
         /// <param name="databaseName"> The database name to search for </param>
         /// <param name="soundName"> The sound name to search for </param>
-        public SoundGroupData GetAudioData(string databaseName, string soundName) { return !Contains(databaseName) ? null : GetSoundDatabase(databaseName).GetData(soundName); }
+        public SoundGroupData GetAudioData(string databaseName, string soundName) => 
+            Contains(databaseName) == false ? null : GetSoundDatabase(databaseName).GetData(soundName);
 
         /// <summary> Iterates through the database to look for the given database name to return the corresponding SoundDatabase reference. If the name does not exist, it will return null </summary>
         /// <param name="databaseName"> The database name to search for </param>

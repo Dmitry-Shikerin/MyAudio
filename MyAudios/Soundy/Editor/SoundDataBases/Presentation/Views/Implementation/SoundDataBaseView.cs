@@ -9,7 +9,9 @@ using MyAudios.Soundy.Editor.SoundDataBases.Controllers;
 using MyAudios.Soundy.Editor.SoundDataBases.Presentation.Controls;
 using MyAudios.Soundy.Editor.SoundDataBases.Presentation.Views.Interfaces;
 using MyAudios.Soundy.Editor.SoundGroups.Presentation.Views.Interfaces;
+using MyAudios.Soundy.Editor.SoundyDataBases.Views.Interfaces;
 using UnityEditor;
+using UnityEngine.Audio;
 using UnityEngine.UIElements;
 
 namespace MyAudios.Soundy.Editor.SoundDataBases.Presentation.Views.Implementation
@@ -24,7 +26,8 @@ namespace MyAudios.Soundy.Editor.SoundDataBases.Presentation.Views.Implementatio
         private ScrollView _scrollView;
         private VisualElement _soundGroupsContainer;
         private List<ISoundGroupView> _soundGroups;
-        
+        private ISoundyDataBaseView _soundyDataBaseView;
+
         public VisualElement Root { get; private set; }
 
         public void Construct(SoundDataBasePresenter presenter)
@@ -70,15 +73,16 @@ namespace MyAudios.Soundy.Editor.SoundDataBases.Presentation.Views.Implementatio
 
         public void Initialize()
         {
-            // _newSoundContentVisualElement
-            //     .SetOnClick(() =>
-            //     {
-            //         // _presenter.Add(
-            //         //     _newSoundContentVisualElement.SoundGroupTextField.value, false, true);
-            //         //Сделать рефрешь елементов
-            //         // UpdateDataBase(CurrentSoundDatabase);
-            //     });
-            _headerVisualElement.PingAssetButton.SetOnClick(() => Selection.activeObject = _presenter.GetDataBase());
+            _newSoundContentVisualElement.CreateButton.SetOnClick(() 
+                => _presenter.CreateSoundGroup(_newSoundContentVisualElement.SoundGroupTextField.value));
+            _headerVisualElement.PingAssetButton.SetOnClick(() 
+                => Selection.activeObject = _presenter.GetDataBase());
+            _headerVisualElement.RenameButton.SetOnClick(() => 
+                _presenter.RenameDataBase(_headerVisualElement.SoundGroupTextField.value));
+            _headerVisualElement.RemoveButton.SetOnClick(() => _presenter.RemoveDataBase());
+            _audioMixerVisualElement.ObjectField
+                .RegisterCallback<ChangeEvent<AudioMixerGroup>>((value) 
+                    => _presenter.ChangeAudioMixerGroup(value.newValue));
             _soundGroups = new List<ISoundGroupView>();
             _presenter.Initialize();
         }
@@ -88,12 +92,24 @@ namespace MyAudios.Soundy.Editor.SoundDataBases.Presentation.Views.Implementatio
             _soundGroups.Remove(soundGroupView);
             Root.Remove(soundGroupView.Root);
         }
-
+        
         public void StopAllSoundGroup()
         {
             foreach (ISoundGroupView soundGroup in _soundGroups)
                 soundGroup.StopPlaySound();
         }
+
+        public void SetName(string name) =>
+            _headerVisualElement.SoundGroupTextField.value = name;
+
+        public void SetAudioMixerGroup(AudioMixerGroup audioMixerGroup) =>
+            _audioMixerVisualElement.ObjectField.SetValueWithoutNotify(audioMixerGroup);
+
+        public void RenameDataBaseButtons() =>
+            _soundyDataBaseView.RenameButtons();
+        
+        public void SetSoundyDataBaseView(ISoundyDataBaseView view) =>
+            _soundyDataBaseView = view ?? throw new ArgumentNullException(nameof(view));
 
         public void AddSoundGroup(ISoundGroupView soundGroupView)
         {
@@ -106,7 +122,9 @@ namespace MyAudios.Soundy.Editor.SoundDataBases.Presentation.Views.Implementatio
 
         public void Dispose()
         {
-            
+            Root.RemoveFromHierarchy();
+            _soundyDataBaseView.UpdateDataBase();
+            _presenter.Dispose();
         }
     }
 }

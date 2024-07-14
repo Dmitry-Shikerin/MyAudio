@@ -35,23 +35,39 @@ namespace MyAudios.Soundy.Editor.SoundyDataBases.Controllers
             
         }
 
-        public void Add(string value, bool b, bool b1)
+        private void CreateView(SoundDatabase soundDatabase)
         {
-            
-        }
-
-        public void CreateView(SoundDatabase soundDatabase)
-        {
-            ISoundDataBaseView view = _soundDataBaseViewFactory.Create(soundDatabase);
+            ISoundDataBaseView view = _soundDataBaseViewFactory.Create(soundDatabase, _soundyDatabase);
+            view.SetSoundyDataBaseView(_view);
             _view.SetSoundDataBase(view);
         }
 
         private void AddDataBasesButtons()
         {
             foreach (SoundDatabase database in _soundyDatabase.SoundDatabases)
-            {
                 _view.AddDataBaseButton(database.DatabaseName,() => CreateView(database));
-            }
+        }
+
+        public void CreateNewDataBase()
+        {
+            _soundyDatabase.CreateSoundDatabase("Default", true, true);
+            _view.RefreshDataBasesButtons();
+            AddDataBasesButtons();
+        }
+
+        public void RefreshDataBases() =>
+            _soundyDatabase.RefreshDatabase();
+
+        public void RenameButtons()
+        {
+            for (int i = 0; i < _view.DatabaseButtons.Count; i++)
+                _view.DatabaseButtons[i].SetLabelText(_soundyDatabase.SoundDatabases[i].DatabaseName);
+        }
+
+        public void UpdateDataBase()
+        {
+            _view.ClearButtons();
+            AddDataBasesButtons();
         }
     }
 }

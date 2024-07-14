@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: _SoundyDatabase
   m_EditorClassIdentifier: 
   DatabaseNames:
+  - Default
   - General
   SoundDatabases:
   - {fileID: 11400000, guid: 5355e2e781c3b54408246352f49b99cf, type: 2}
+  - {fileID: 11400000, guid: 5de1de429dcec524ca03b0308d3d6999, type: 2}

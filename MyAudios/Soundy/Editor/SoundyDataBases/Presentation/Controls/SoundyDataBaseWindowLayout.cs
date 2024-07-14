@@ -10,7 +10,7 @@ namespace MyAudios.Soundy.Editor.SoundyDataBases.Presentation.Controls
     public class SoundyDataBaseWindowLayout : FluidWindowLayout
     {
         public override string layoutName => "Sound Databases";
-        public override List<Texture2D> animatedIconTextures => EditorSpriteSheets.UIManager.Icons.SignalToAudioSource;
+        public override List<Texture2D> animatedIconTextures => EditorSpriteSheets.EditorUI.Components.LineMixedValues;
         public override Color accentColor => EditorColors.Default.UIComponent;
         public override EditorSelectableColorInfo selectableAccentColor => 
             EditorSelectableColors.Default.UIComponent;
