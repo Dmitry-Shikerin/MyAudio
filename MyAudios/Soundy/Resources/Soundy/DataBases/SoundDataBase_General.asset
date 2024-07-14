@@ -26,7 +26,13 @@ MonoBehaviour:
   Mode: 1
   ResetSequenceAfterInactiveTime: 0
   SequenceResetTime: 2
-  Sounds: []
+  Sounds:
+  - AudioClip: {fileID: 8300000, guid: 8ab8a6d8aa0a5294fa88e752b71fddf5, type: 3}
+    Weight: 1
+    IsPlaying: 0
+  - AudioClip: {fileID: 8300000, guid: ac6f3ae1184b4614baacf21d43dc39de, type: 3}
+    Weight: 1
+    IsPlaying: 0
   IsPlaying: 0
 --- !u!114 &-5030960130438782761
 MonoBehaviour:
@@ -51,10 +57,16 @@ MonoBehaviour:
     MaxValue: 0
   SpatialBlend: 0
   Loop: 0
-  Mode: 0
+  Mode: 1
   ResetSequenceAfterInactiveTime: 0
   SequenceResetTime: 5
-  Sounds: []
+  Sounds:
+  - AudioClip: {fileID: 8300000, guid: d7b48b5e162adc74cb423ea0fdfd12be, type: 3}
+    Weight: 1
+    IsPlaying: 0
+  - AudioClip: {fileID: 8300000, guid: 6dda42685485b164aaf2161781239876, type: 3}
+    Weight: 1
+    IsPlaying: 0
   IsPlaying: 0
 --- !u!114 &11400000
 MonoBehaviour:

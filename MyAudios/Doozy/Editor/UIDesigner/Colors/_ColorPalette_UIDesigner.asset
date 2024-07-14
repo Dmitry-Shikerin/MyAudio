@@ -18,3 +18,7 @@ MonoBehaviour:
     ThemeColor:
       ColorOnDark: {r: 0.99215686, g: 0.33333334, b: 0.37254903, a: 1}
       ColorOnLight: {r: 0.54901963, g: 0.20392157, b: 0.22745098, a: 1}
+  - ColorName: Soundy
+    ThemeColor:
+      ColorOnDark: {r: 0.99215686, g: 0.7440589, b: 0.3333334, a: 1}
+      ColorOnLight: {r: 0.5471698, g: 0.4480042, b: 0.23228906, a: 1}

@@ -1,8 +1,4 @@
-﻿// Copyright (c) 2015 - 2023 Doozy Entertainment. All Rights Reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement
-// A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Doozy.Runtime.Reactor.Easings;
@@ -49,14 +45,12 @@ namespace Doozy.Runtime.Reactor.Reactions
         {
             base.Reset();
             this.SetEase(Ease.Linear);
+            
             if (textures == null)
-            {
                 textures = new List<Texture2D>(DEFAULT_CAPACITY);
-            }
             else
-            {
                 textures.Clear();
-            }
+            
             textures.Add(null);
             OnFrameChangedCallback = null;
         }
@@ -82,24 +76,37 @@ namespace Doozy.Runtime.Reactor.Reactions
             value = Mathf.Clamp(value, firstFrame, lastFrame);
             base.SetValue(value);
             setter?.Invoke(current);
+            
             return this;
         }
 
         public override Reaction SetFrom(int value, bool relative = false)
         {
             FromValue = value;
-            if (relative) FromValue += CurrentValue;
+            
+            if (relative)
+                FromValue += CurrentValue;
+            
             FromValue = Mathf.Clamp(FromValue, firstFrame, lastFrame);
-            if (isActive) ComputePlayMode();
+            
+            if (isActive)
+                ComputePlayMode();
+            
             return this;
         }
 
         public override Reaction SetTo(int value, bool relative = false)
         {
             ToValue = value;
-            if (relative) ToValue += CurrentValue;
+            
+            if (relative)
+                ToValue += CurrentValue;
+            
             ToValue = Mathf.Clamp(ToValue, firstFrame, lastFrame);
-            if (isActive) ComputePlayMode();
+            
+            if (isActive)
+                ComputePlayMode();
+            
             return this;
         }
 
@@ -147,6 +154,7 @@ namespace Doozy.Runtime.Reactor.Reactions
                 (textures[i], textures[count - i - 1]) = (textures[count - i - 1], textures[i]);
             // textures = textures.OrderByDescending(t => t.name).ToList();
             setter?.Invoke(current);
+            
             return this;
         }
 
@@ -155,7 +163,9 @@ namespace Doozy.Runtime.Reactor.Reactions
         public Texture2DReaction SetTextures(IEnumerable<Texture2D> textures2D)
         {
             _ = textures2D ?? throw new ArgumentNullException(nameof(textures2D));
-            if (isActive) Stop(true);
+            
+            if (isActive)
+                Stop(true);
 
             textures ??= new List<Texture2D>(DEFAULT_CAPACITY);
             int allocatedSlots = textures.Count;
@@ -165,13 +175,10 @@ namespace Doozy.Runtime.Reactor.Reactions
             foreach (Texture2D texture in textures2D)
             {
                 if (numberOfAddedTextures < allocatedSlots)
-                {
                     textures[numberOfAddedTextures] = texture;
-                }
                 else
-                {
                     textures.Add(texture);
-                }
+                
                 numberOfAddedTextures++;
             }
 
@@ -224,18 +231,21 @@ namespace Doozy.Runtime.Reactor.Reactions
             base.ComputeSpring();
             float springForce = settings.strength;
             float forceReduction = springForce / (numberOfCycles - 1);
+            
             for (int i = 0; i < numberOfCycles; i++)
             {
                 cycleValues[i] = (int)(FromValue + ToValue * (i % 2 == 0 ? springForce : -springForce * settings.elasticity));
                 cycleValues[i] = Mathf.Clamp(cycleValues[i], firstFrame, lastFrame);
                 springForce -= forceReduction;
             }
+            
             cycleValues[numberOfCycles - 1] = FromValue;
         }
 
         protected override void ComputeShake()
         {
             base.ComputeShake();
+            
             for (int i = 0; i < numberOfCycles; i++)
             {
                 if (i % 2 == 0)
@@ -247,6 +257,7 @@ namespace Doozy.Runtime.Reactor.Reactions
                 cycleValues[i] = (int)(FromValue + ToValue * random * settings.strength);
                 cycleValues[i] = Mathf.Clamp(cycleValues[i], firstFrame, lastFrame);
             }
+            
             cycleValues[numberOfCycles - 1] = FromValue;
         }
     }
@@ -283,15 +294,21 @@ namespace Doozy.Runtime.Reactor.Reactions
 
         public static T SetOnValueChangedCallback<T>(this T target, ReactionCallback<int> callback) where T : Texture2DReaction
         {
-            if (callback == null) return target;
+            if (callback == null)
+                return target;
+            
             target.OnValueChangedCallback = callback;
+            
             return target;
         }
 
         public static T AddOnValueChangedCallback<T>(this T target, ReactionCallback<int> callback) where T : Texture2DReaction
         {
-            if (callback == null) return target;
+            if (callback == null)
+                return target;
+            
             target.OnValueChangedCallback += callback;
+            
             return target;
         }
 

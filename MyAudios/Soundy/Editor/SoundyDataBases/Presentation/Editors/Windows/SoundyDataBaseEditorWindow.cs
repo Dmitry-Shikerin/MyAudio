@@ -2,7 +2,6 @@
 using Doozy.Editor.EditorUI.Windows.Internal;
 using Doozy.Engine.Soundy;
 using MyAudios.Soundy.Editor.DataBases.Editors;
-using MyAudios.Soundy.Editor.DataBases.Windows.Views;
 using MyAudios.Soundy.Editor.SoundyDataBases.Infrastructure.Factories;
 using MyAudios.Soundy.Editor.SoundyDataBases.Presentation.Editors;
 using MyAudios.Soundy.Editor.SoundyDataBases.Views.Interfaces;

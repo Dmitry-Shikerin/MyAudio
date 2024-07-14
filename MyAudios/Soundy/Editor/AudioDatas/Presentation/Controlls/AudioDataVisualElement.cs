@@ -55,7 +55,8 @@ namespace MyAudios.Soundy.Editor.AudioDatas.Presentation.Controlls
                     .Get()
                     .ResetLayout()
                     .SetButtonStyle(ButtonStyle.Contained)
-                    .SetIcon(EditorSpriteSheets.EditorUI.Icons.Play);                            
+                    .SetIcon(EditorSpriteSheets.EditorUI.Icons.Play)
+                    .SetAccentColor(EditorSelectableColors.SceneManagement.Component);
             VisualElement slidersContainer = DesignUtils.column;
             Slider = new FluidRangeSlider().SetStyleMaxHeight(18);
             Slider

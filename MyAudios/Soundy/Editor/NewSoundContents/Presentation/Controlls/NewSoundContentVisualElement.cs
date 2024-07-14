@@ -1,11 +1,11 @@
 ﻿using Doozy.Editor.EditorUI;
 using Doozy.Editor.EditorUI.Components;
+using Doozy.Editor.EditorUI.ScriptableObjects.Colors;
 using Doozy.Editor.EditorUI.Utils;
 using Doozy.Runtime.UIElements.Extensions;
-using UnityEngine.Events;
 using UnityEngine.UIElements;
 
-namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
+namespace MyAudios.Soundy.Editor.NewSoundContents.Presentation.Controlls
 {
     public class NewSoundContentVisualElement : VisualElement
     {
@@ -15,16 +15,12 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
 
         public NewSoundContentVisualElement()
         {
-            Initialize();
-        }
-        
-        public NewSoundContentVisualElement Initialize()
-        {
             Container =
                 DesignUtils
                     .row
-                    .ResetLayout();
-            Add(Container);
+                    .ResetLayout()
+                    .SetStylePadding(4,4,4,4)
+                    .SetStyleBackgroundColor(EditorColors.Default.BoxBackground);
 
             SoundGroupTextField = new TextField();
             SoundGroupTextField
@@ -32,7 +28,7 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
             CreateButton = new FluidButton();
             CreateButton
                 .SetButtonStyle(ButtonStyle.Contained)
-                .SetElementSize(ElementSize.Normal)
+                .SetElementSize(ElementSize.Large)
                 .SetIcon(EditorSpriteSheets.EditorUI.Icons.Save)
                 .SetStyleMinWidth(130)
                 .SetLabelText("New Sound Group");
@@ -42,14 +38,7 @@ namespace MyAudios.Soundy.Editor.DataBases.Windows.Views
                 .AddChild(CreateButton)
                 ;
 
-            return this;
-        }
-        
-        public NewSoundContentVisualElement SetOnClick(UnityAction callback)
-        {
-            CreateButton.SetOnClick(callback);
-            
-            return this;
+            Add(Container);
         }
     }
 }

@@ -37,6 +37,7 @@ namespace MyAudios.Soundy.Editor.SoundGroups.Presentation.Views.Implementation
             // _soundGroupVisualElement.TopSlider
             // _soundGroupVisualElement.Label
             _visualElement.SoundGroupDataButton.SetOnClick(() => _presenter.ShowSoundGroupData());
+            _presenter.Initialize();
         }
 
         public void Dispose()
@@ -69,5 +70,12 @@ namespace MyAudios.Soundy.Editor.SoundGroups.Presentation.Views.Implementation
 
         public void StopPlaySound() =>
             _presenter.StopSound();
+
+        public void SetSoundGroupName(string soundGroupName)
+        {
+            _visualElement
+                .SoundGroupDataButton
+                .SetLabelText(soundGroupName);
+        }
     }
 }

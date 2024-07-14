@@ -1,8 +1,4 @@
-﻿// Copyright (c) 2015 - 2023 Doozy Entertainment. All Rights Reserved.
-// This code can only be used under the standard Unity Asset Store End User License Agreement
-// A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Doozy.Editor.EditorUI.Components.Internal;
 using Doozy.Editor.EditorUI.ScriptableObjects.Colors;
@@ -55,13 +51,16 @@ namespace Doozy.Editor.EditorUI.Components
 
         private ElementSize elementSize { get; set; }
         private List<VisualElement> elementSizeDependentElements { get; }
+        
         public FluidButton SetElementSize(ElementSize value)
         {
             UIElementsUtils.RemoveClass(elementSize.ToString(), elementSizeDependentElements);
             UIElementsUtils.AddClass(value.ToString(), elementSizeDependentElements);
             elementSize = value;
+            
             return this;
         }
+        
         public FluidButton ResetElementSize() =>
             SetElementSize(ElementSize.Normal);
 
@@ -76,8 +75,10 @@ namespace Doozy.Editor.EditorUI.Components
             UIElementsUtils.RemoveClass(layoutOrientation.ToString(), layoutOrientationDependentElements);
             UIElementsUtils.AddClass(value.ToString(), layoutOrientationDependentElements);
             layoutOrientation = value;
+            
             return this;
         }
+        
         public FluidButton ResetLayoutOrientation() =>
             SetLayoutOrientation(LayoutOrientation.Horizontal);
 
@@ -87,6 +88,7 @@ namespace Doozy.Editor.EditorUI.Components
 
         private ButtonStyle buttonStyle { get; set; }
         private List<VisualElement> buttonStyleDependentElements { get; }
+        
         public FluidButton SetButtonStyle(ButtonStyle value)
         {
             UIElementsUtils.RemoveClass(buttonStyle.ToString(), buttonStyleDependentElements);
@@ -95,6 +97,7 @@ namespace Doozy.Editor.EditorUI.Components
             fluidElement.StateChanged();
             return this;
         }
+        
         public FluidButton ResetButtonStyle() =>
             SetButtonStyle(ButtonStyle.Clear);
 
@@ -103,11 +106,13 @@ namespace Doozy.Editor.EditorUI.Components
         #region ButtonAnimationTrigger
 
         private ButtonAnimationTrigger animationTrigger { get; set; }
+        
         public FluidButton SetAnimationTrigger(ButtonAnimationTrigger value)
         {
             animationTrigger = value;
             return this;
         }
+        
         public FluidButton ResetAnimationTrigger() =>
             SetAnimationTrigger(ButtonAnimationTrigger.OnPointerEnter);
 
@@ -264,7 +269,9 @@ namespace Doozy.Editor.EditorUI.Components
 
         public void ExecuteOnPointerEnter(PointerEnterEvent enterEvent = null)
         {
-            if (selectionState == SelectionState.Disabled) return;
+            if (selectionState == SelectionState.Disabled)
+                return;
+            
             if (animationTrigger == ButtonAnimationTrigger.OnPointerEnter)
                 iconReaction?.Play();
         }
@@ -345,6 +352,7 @@ namespace Doozy.Editor.EditorUI.Components
             target.buttonLabel
                 .SetText(labelText)
                 .SetStyleDisplay(labelText.IsNullOrEmpty() ? DisplayStyle.None : DisplayStyle.Flex);
+            
             return target;
         }
 
@@ -421,7 +429,9 @@ namespace Doozy.Editor.EditorUI.Components
         /// <param name="callback"> OnClick callback </param>
         public static T AddOnClick<T>(this T target, UnityAction callback) where T : FluidButton
         {
-            if (callback == null) return target;
+            if (callback == null)
+                return target;
+            
             target.OnClick += callback;
             return target;
         }

@@ -469,12 +469,15 @@ namespace Doozy.Editor.EditorUI
             
             public enum ColorName
             {
-                Color
+                Color,
+                Soundy,
             }
             
 
             private static EditorSelectableColorInfo s_Color;
             public static EditorSelectableColorInfo Color => s_Color ?? (s_Color = GetSelectableColorInfo(ColorName.Color));
+            private static EditorSelectableColorInfo s_Soundy;
+            public static EditorSelectableColorInfo Soundy => s_Color ?? (s_Color = GetSelectableColorInfo(ColorName.Soundy));
             
         }
 

@@ -27,6 +27,7 @@ namespace MyAudios.Soundy.Editor.SoundGroups.Controllers
         public void Initialize()
         {
             _soundGroupData.IsPlaying = false;
+            _view.SetSoundGroupName(_soundGroupData.SoundName);
         }
 
         public void Dispose()

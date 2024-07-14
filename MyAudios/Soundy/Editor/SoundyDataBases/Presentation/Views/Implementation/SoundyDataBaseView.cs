@@ -5,7 +5,6 @@ using Doozy.Editor.EditorUI.Components;
 using Doozy.Editor.EditorUI.Components.Internal;
 using Doozy.Engine.Soundy;
 using Doozy.Runtime.UIElements.Extensions;
-using MyAudios.Soundy.Editor.DataBases.Windows.Views;
 using MyAudios.Soundy.Editor.SoundDataBases.Presentation.Views.Interfaces;
 using MyAudios.Soundy.Editor.SoundGroups.Presentation.Controls;
 using MyAudios.Soundy.Editor.SoundyDataBases.Controllers;
@@ -43,11 +42,8 @@ namespace MyAudios.Soundy.Editor.SoundyDataBases.Views.Implementation
                 .sideMenu
                 .SetMenuLevel(FluidSideMenu.MenuLevel.Level_2)
                 .IsCollapsable(false);
-
             _soundGroups = new List<SoundGroupVisualElement>();
-
             _databasesButtons = new List<FluidToggleButtonTab>();
-
             Root = _fluidWindowLayout;
         }
 

@@ -3,8 +3,8 @@ using Doozy.Editor.EditorUI.Components;
 using Doozy.Editor.EditorUI.Components.Internal;
 using Doozy.Editor.EditorUI.Utils;
 using Doozy.Runtime.UIElements.Extensions;
-using MyAudios.Soundy.Editor.DataBases.Windows.Views;
 using MyAudios.Soundy.Editor.MinMaxSliders;
+using MyAudios.Soundy.Editor.NewSoundContents.Presentation.Controlls;
 using UnityEngine.UIElements;
 
 namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Controlls

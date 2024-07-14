@@ -92,6 +92,7 @@ namespace Doozy.Editor.EditorUI.Components.Internal
         {
             selectableAccentColor = value;
             StateChanged();
+            
             return this;
         }
 
