@@ -2,15 +2,10 @@
 using Doozy.Editor.EditorUI.Components;
 using Doozy.Editor.EditorUI.Utils;
 using Doozy.Editor.UIElements;
-using Doozy.Engine.Soundy;
 using Doozy.Runtime.UIElements.Extensions;
-using MyAudios.Soundy.Sources.DataBases.Domain.Data;
-using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UIElements;
-using Object = UnityEngine.Object;
 
 namespace MyAudios.Soundy.Editor.AudioDatas.Presentation.Controlls
 {
@@ -23,12 +18,7 @@ namespace MyAudios.Soundy.Editor.AudioDatas.Presentation.Controlls
 
         public AudioDataVisualElement()
         {
-            Initialize();
-        }
-
-        private void Initialize()
-        {
-            VisualElement container =
+                        VisualElement container =
                 DesignUtils.column
                     .ResetLayout()
                     .SetStyleColor(EditorColors.Default.Background)

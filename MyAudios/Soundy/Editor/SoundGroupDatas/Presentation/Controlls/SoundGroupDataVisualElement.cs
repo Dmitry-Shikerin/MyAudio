@@ -62,9 +62,7 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Controlls
                 .ResetLayout()
                 .SetStyleFlexGrow(1)
                 .SetElementSize(ElementSize.Large)
-                .SetLabelText("Random")
-                // .SetOnClick(() => SoundGroupData.Mode = SoundGroupData.PlayMode.Random)
-                ;
+                .SetLabelText("Random");
             RandomButtonTab.AddToToggleGroup(playModeToggleGroup);
             playModeToggleGroup.RegisterToggle(RandomButtonTab);
             SequenceButtonTab = new FluidToggleButtonTab();
@@ -72,9 +70,7 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Controlls
                 .ResetLayout()
                 .SetStyleFlexGrow(1)
                 .SetElementSize(ElementSize.Large)
-                .SetLabelText("Sequence")
-                // .SetOnClick(() => SoundGroupData.Mode = SoundGroupData.PlayMode.Sequence)
-                ;
+                .SetLabelText("Sequence");
             SequenceButtonTab.AddToToggleGroup(playModeToggleGroup);
             playModeToggleGroup.RegisterToggle(SequenceButtonTab);
 
@@ -83,8 +79,6 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Controlls
                 DesignUtils.NewLabel("Auto Reset Sequence After");
             ResetSequenceAfterInactiveTimeToggle =
                 new FluidToggleSwitch();
-            // resetSequenceAfterInactiveTimeToggle.OnValueChanged -= ChangeResetSequenceAfterInactiveTimeRow;
-            // resetSequenceAfterInactiveTimeToggle.OnValueChanged += ChangeResetSequenceAfterInactiveTimeRow;
             VisualElement resetSequenceAfterInactiveTimeRow = DesignUtils
                 .row
                 .AddChild(ResetSequenceAfterInactiveTimeToggle)
@@ -94,18 +88,8 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Controlls
 
             Label sequenceResetTimeLabel =
                 DesignUtils.NewLabel("seconds");
-            // SequenceResetTimeField = DesignUtils
-            //     .NewFloatField(SequenceResetTime)
-            //     .ResetLayout()
-            //     .SetStyleFlexGrow(0);
-            // SequenceResetTimeField
-            //     .Q<VisualElement>("unity-text-input")
-            //     .SetStyleFlexGrow(0)
-            //     .SetStyleMinWidth(50)
-            //     .SetStyleMarginRight(5);
             VisualElement sequenceResetTimeRow = DesignUtils
                 .row
-                // .AddChild(SequenceResetTimeField)
                 .AddChild(sequenceResetTimeLabel);
             VisualElement sequenceTimeRow = DesignUtils.row
                 .ResetLayout()
@@ -114,12 +98,12 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Controlls
             VisualElement playModeRow = DesignUtils
                 .column
                 .SetStyleBackgroundColor(EditorColors.Default.Background)
+                .SetStyleBorderRadius(4,4,4,4)
                 .AddChild(playModeToggleGroup)
                 .AddSpaceBlock(2)
                 .AddChild(sequenceTimeRow);
 
-            VisualElement toggleGroupRow = DesignUtils
-                .row
+            VisualElement toggleGroupRow = DesignUtils.row
                 .AddChild(RandomButtonTab)
                 .AddChild(SequenceButtonTab);
             playModeToggleGroup
@@ -130,13 +114,13 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Controlls
             Label loopLabel = DesignUtils.NewLabel("Loop");
             LoopToggle =
                 new FluidToggleSwitch();
-            // loopToggle.OnValueChanged -= ChangeLoop;
-            // loopToggle.OnValueChanged += ChangeLoop;
             VisualElement loopRow = DesignUtils
                 .row
                 .AddChild(loopLabel)
                 .AddChild(LoopToggle)
-                .SetStyleBackgroundColor(EditorColors.Default.Background);
+                .SetStyleBackgroundColor(EditorColors.Default.Background)
+                .SetStyleBorderRadius(4,4,4,4)
+                .SetStylePadding(4,4,4,4);
 
             //Sliders
             Label volumeLabel =
@@ -144,65 +128,36 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Controlls
                     .NewLabel("Volume")
                     .SetStyleMinWidth(70);
             VolumeSlider = new FluidMinMaxSlider();
-            // volumeMinMaxSlider.RegisterCallback<DragUpdatedEvent>((even) => {});
-            // volumeMinMaxSlider.slider.value = new Vector2(
-            //     SoundGroupData.Volume.MinValue, SoundGroupData.Volume.MaxValue);
-            // volumeMinMaxSlider.slider.lowLimit = SoundGroupDataConst.MinVolume;
-            // volumeMinMaxSlider.slider.highLimit = SoundGroupDataConst.MaxVolume;
-            // volumeMinMaxSlider.slider.RegisterValueChangedCallback((value) =>
-            // {
-            //     SoundGroupData.Volume.MinValue = value.newValue.x;
-            //     SoundGroupData.Volume.MaxValue = value.newValue.y;
-            // });
 
             ResetVolumeButton = FluidButton
                 .Get()
                 .ResetLayout()
                 .SetElementSize(ElementSize.Normal)
                 .SetIcon(EditorSpriteSheets.EditorUI.Icons.Reset);
-            // .AddOnClick(() =>
-            // {
-            //     volumeMinMaxSlider.slider.value = new Vector2(
-            //         SoundGroupDataConst.DefaultVolume, SoundGroupDataConst.DefaultVolume);
-            // });
 
-            VisualElement volumeRow = DesignUtils
-                .row
+            VisualElement volumeRow = DesignUtils.row
                 .AddChild(volumeLabel)
                 .AddChild(VolumeSlider)
-                .AddChild(ResetVolumeButton);
+                .AddChild(ResetVolumeButton)
+                .SetStyleBorderRadius(0,0,4,4);
 
             Label pitchLabel =
                 DesignUtils
                     .NewLabel("Pitch")
                     .SetStyleMinWidth(70);
             PitchSlider = new FluidMinMaxSlider();
-            // pitchMinMaxSlider.RegisterCallback<DragUpdatedEvent>((even) => {});
-            // pitchMinMaxSlider.slider.value = new Vector2(SoundGroupData.Pitch.MinValue, SoundGroupData.Pitch.MaxValue);
-            // pitchMinMaxSlider.slider.lowLimit = SoundGroupDataConst.MinPitch;
-            // pitchMinMaxSlider.slider.highLimit = SoundGroupDataConst.MaxPitch;
-            // pitchMinMaxSlider.slider.RegisterValueChangedCallback((value) =>
-            // {
-            //     SoundGroupData.Pitch.MinValue = value.newValue.x;
-            //     SoundGroupData.Pitch.MaxValue = value.newValue.y;
-            // });
 
             ResetPitchButton = FluidButton
                 .Get()
                 .ResetLayout()
                 .SetElementSize(ElementSize.Normal)
                 .SetIcon(EditorSpriteSheets.EditorUI.Icons.Reset);
-            // .AddOnClick(() =>
-            // {
-            //     pitchMinMaxSlider.slider.value = new Vector2(
-            //         SoundGroupDataConst.DefaultPitch, SoundGroupDataConst.DefaultPitch);
-            // });
 
-            VisualElement pitchRow = DesignUtils
-                .row
+            VisualElement pitchRow = DesignUtils.row
                 .AddChild(pitchLabel)
                 .AddChild(PitchSlider)
-                .AddChild(ResetPitchButton);
+                .AddChild(ResetPitchButton)
+                .SetStyleBorderRadius(0,0,4,4);
 
             Label spatialBlendLabel =
                 DesignUtils
@@ -212,14 +167,14 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Controlls
             SpatialBlendSlider.SetStyleFlexGrow(1);
             SpatialBlendSlider.RegisterCallback<DragUpdatedEvent>((even) => { });
 
-            VisualElement spatialBlendRow = DesignUtils
-                .row
+            VisualElement spatialBlendRow = DesignUtils.row
                 .AddChild(spatialBlendLabel)
-                .AddChild(SpatialBlendSlider);
+                .AddChild(SpatialBlendSlider)
+                .SetStyleBorderRadius(0,0,4,4);
 
             FluidAnimatedContainer slidersContainer =
                 new FluidAnimatedContainer()
-                    .SetStyleBackgroundColor(EditorColors.Default.Background);
+                    .SetStylePadding(4,4,4,4);
 
             //SlidersToggles
             FluidToggleGroup slidersToggleGroup = new FluidToggleGroup();
@@ -227,7 +182,9 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Controlls
             slidersToggleGroup
                 .ResetLayout()
                 .SetStyleFlexGrow(1)
-                .SetLabelText("Sliders");
+                .SetLabelText("Sliders")
+                .SetStyleBackgroundColor(EditorColors.Default.Background)
+                .SetStyleBorderRadius(4,4,0,0);
 
             FluidToggleButtonTab volumeButtonTab = new FluidToggleButtonTab();
             FluidToggleButtonTab pitchButtonTab = new FluidToggleButtonTab();
