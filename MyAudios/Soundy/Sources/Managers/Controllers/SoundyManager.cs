@@ -144,21 +144,18 @@ namespace MyAudios.Soundy.Sources.Managers.Controllers
         /// <summary> Stop all SoundyControllers from playing and destroys the GameObjects they are attached to </summary>
         public static void KillAllControllers()
         {
-            // if (Instance.DebugComponent) DDebug.Log("Kill All Controllers", Instance);
             SoundyController.KillAll();
         }
 
         /// <summary> Mute all the SoundyControllers </summary>
         public static void MuteAllControllers()
         {
-            // if (Instance.DebugComponent) DDebug.Log("Mute All Controllers", Instance);
             SoundyController.MuteAll();
         }
 
         /// <summary> Mute all sound sources (including MasterAudio) </summary>
         public static void MuteAllSounds()
         {
-            // if (Instance.DebugComponent) DDebug.Log("Mute All Sounds", Instance);
             MuteAllControllers();
 #if dUI_MasterAudio
             DarkTonic.MasterAudio.MasterAudio.MuteEverything();
@@ -168,15 +165,12 @@ namespace MyAudios.Soundy.Sources.Managers.Controllers
         /// <summary> Pause all the SoundyControllers that are currently playing </summary>
         public static void PauseAllControllers()
         {
-            // if (Instance.DebugComponent) DDebug.Log("Pause All Controllers", Instance);
             SoundyController.PauseAll();
         }
 
         /// <summary> Pause all sound sources (including MasterAudio) </summary>
         public static void PauseAllSounds()
         {
-            // if (Instance.DebugComponent) DDebug.Log("Pause All Sounds", Instance);
-
             PauseAllControllers();
 #if dUI_MasterAudio
             DarkTonic.MasterAudio.MasterAudio.PauseEverything();
@@ -193,7 +187,7 @@ namespace MyAudios.Soundy.Sources.Managers.Controllers
         /// <param name="position"> The position from where this sound will play from </param>
         public static SoundyController Play(string databaseName, string soundName, Vector3 position)
         {
-            if (!s_initialized)
+            if (s_initialized == false)
                 s_instance = Instance;
             
             if (Database == null)
@@ -206,7 +200,7 @@ namespace MyAudios.Soundy.Sources.Managers.Controllers
             
             if (soundGroupData == null)
                 return null;
-            // if (Instance.DebugComponent) DDebug.Log("Play '" + databaseName + "' / '" + soundName + "' SoundGroupData at " + position + " position", Instance);
+            
             return soundGroupData.Play(position, Database.GetSoundDatabase(databaseName).OutputAudioMixerGroup);
         }
 
@@ -219,7 +213,7 @@ namespace MyAudios.Soundy.Sources.Managers.Controllers
         /// <param name="position"> The position from where this sound will play from </param>
         public static SoundyController Play(AudioClip audioClip, Vector3 position)
         {
-            if (!s_initialized)
+            if (s_initialized == false)
                 s_instance = Instance;
             
             return Play(audioClip, null, position);
@@ -235,7 +229,7 @@ namespace MyAudios.Soundy.Sources.Managers.Controllers
         /// <param name="followTarget"> The target transform that the sound will follow while playing </param>
         public static SoundyController Play(string databaseName, string soundName, Transform followTarget)
         {
-            if (!s_initialized)
+            if (s_initialized == false)
                 s_instance = Instance;
             
             if (Database == null)
@@ -249,7 +243,6 @@ namespace MyAudios.Soundy.Sources.Managers.Controllers
             if (soundGroupData == null)
                 return null;
             
-            // if (Instance.DebugComponent) DDebug.Log("Play '" + databaseName + "' / '" + soundName + "' SoundGroupData and follow the '" + followTarget.name + "' GameObject", Instance);
             return soundGroupData.Play(followTarget, Database.GetSoundDatabase(databaseName).OutputAudioMixerGroup);
         }
 
@@ -262,7 +255,7 @@ namespace MyAudios.Soundy.Sources.Managers.Controllers
         /// <param name="followTarget"> The target transform that the sound will follow while playing </param>
         public static SoundyController Play(AudioClip audioClip, Transform followTarget)
         {
-            if (!s_initialized)
+            if (s_initialized == false)
                 s_instance = Instance;
             
             return Play(audioClip, null, followTarget);
@@ -277,7 +270,7 @@ namespace MyAudios.Soundy.Sources.Managers.Controllers
         /// <param name="soundName"> Sound Name of the sound </param>
         public static SoundyController Play(string databaseName, string soundName)
         {
-            if (!s_initialized)
+            if (s_initialized == false)
                 s_instance = Instance;
             
             if (Database == null)
@@ -313,7 +306,7 @@ namespace MyAudios.Soundy.Sources.Managers.Controllers
         /// <param name="audioClip"> The AudioClip to play </param>
         public static SoundyController Play(AudioClip audioClip)
         {
-            if (!s_initialized)
+            if (s_initialized == false)
                 s_instance = Instance;
             
             return Play(audioClip, null, Pooler.transform);
@@ -343,7 +336,7 @@ namespace MyAudios.Soundy.Sources.Managers.Controllers
             bool loop = false, 
             float spatialBlend = 1)
         {
-            if (!s_initialized)
+            if (s_initialized == false)
                 s_instance = Instance;
             
             if (audioClip == null)
@@ -383,7 +376,7 @@ namespace MyAudios.Soundy.Sources.Managers.Controllers
             bool loop = false,
             float spatialBlend = 1)
         {
-            if (!s_initialized)
+            if (s_initialized == false)
                 s_instance = Instance;
             
             if (audioClip == null)
@@ -392,6 +385,7 @@ namespace MyAudios.Soundy.Sources.Managers.Controllers
             SoundyController controller = SoundyPooler.GetControllerFromPool();
             controller.SetSourceProperties(audioClip, volume, pitch, loop, spatialBlend);
             controller.SetOutputAudioMixerGroup(outputAudioMixerGroup);
+            
             if (followTarget == null)
             {
                 spatialBlend = 0;
@@ -418,7 +412,7 @@ namespace MyAudios.Soundy.Sources.Managers.Controllers
             if (data == null)
                 return null;
             
-            if (!s_initialized)
+            if (s_initialized == false)
                 s_instance = Instance;
             
             switch (data.SoundSource)
@@ -430,7 +424,6 @@ namespace MyAudios.Soundy.Sources.Managers.Controllers
                 case SoundSource.MasterAudio:
 #if dUI_MasterAudio
                     DarkTonic.MasterAudio.MasterAudio.PlaySound(data.SoundName);
-                    //DDebug.Log("MasterAudio - Play Sound: " + data.SoundName);
 #endif
                     break;
             }
@@ -439,10 +432,8 @@ namespace MyAudios.Soundy.Sources.Managers.Controllers
         }
 
         /// <summary> Stop all the SoundyControllers that are currently playing </summary>
-        public static void StopAllControllers()
-        {
+        public static void StopAllControllers() =>
             SoundyController.StopAll();
-        }
 
         /// <summary> Stop all sound sources (including MasterAudio) </summary>
         public static void StopAllSounds()
@@ -454,10 +445,8 @@ namespace MyAudios.Soundy.Sources.Managers.Controllers
         }
 
         /// <summary> Unmute all the SoundyControllers that were previously muted </summary>
-        public static void UnmuteAllControllers()
-        {
+        public static void UnmuteAllControllers() =>
             SoundyController.UnmuteAll();
-        }
 
         /// <summary> Unmute all sound sources (including MasterAudio) </summary>
         public static void UnmuteAllSounds()
@@ -469,10 +458,8 @@ namespace MyAudios.Soundy.Sources.Managers.Controllers
         }
 
         /// <summary> Unpause all the SoundyControllers that were previously paused </summary>
-        public static void UnpauseAllControllers()
-        {
+        public static void UnpauseAllControllers() =>
             SoundyController.UnpauseAll();
-        }
 
         /// <summary> Unpause all sound sources (including MasterAudio) </summary>
         public static void UnpauseAllSounds()
