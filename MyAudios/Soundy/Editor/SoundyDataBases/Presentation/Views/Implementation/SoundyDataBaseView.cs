@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using Doozy.Editor.EditorUI;
 using Doozy.Editor.EditorUI.Components;
 using Doozy.Editor.EditorUI.Components.Internal;
-using Doozy.Engine.Soundy;
 using Doozy.Runtime.UIElements.Extensions;
 using MyAudios.Soundy.Editor.SoundDataBases.Presentation.Views.Interfaces;
 using MyAudios.Soundy.Editor.SoundGroups.Presentation.Controls;
 using MyAudios.Soundy.Editor.SoundyDataBases.Controllers;
 using MyAudios.Soundy.Editor.SoundyDataBases.Presentation.Controls;
-using MyAudios.Soundy.Editor.SoundyDataBases.Views.Interfaces;
-using MyAudios.Soundy.Sources.DataBases.Domain.Data;
+using MyAudios.Soundy.Editor.SoundyDataBases.Presentation.Views.Interfaces;
+using MyAudios.Soundy.Editor.SoundySetting.Presentation.Views.Interfaces;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 
@@ -23,9 +22,10 @@ namespace MyAudios.Soundy.Editor.SoundyDataBases.Views.Implementation
         private List<FluidToggleButtonTab> _fluidToggleButtonTabs;
         private List<SoundGroupVisualElement> _soundGroups;
         private List<FluidToggleButtonTab> _databasesButtons;
-        private ISoundDataBaseView _soundDataBaseView;
         
         public IReadOnlyList<FluidToggleButtonTab> DatabaseButtons => _databasesButtons;
+        public ISoundySettingsView SettingsView { get; private set; }
+        public ISoundDataBaseView SoundDataBaseView { get; private set; }
 
         public VisualElement Root { get; private set; }
 
@@ -51,6 +51,7 @@ namespace MyAudios.Soundy.Editor.SoundyDataBases.Views.Implementation
 
         public void Initialize()
         {
+            _fluidWindowLayout.SettingsButton.SetOnClick(() => _presenter.OpenSettings());
             _fluidWindowLayout.NewDataBaseButton.SetOnClick(() => _presenter.CreateNewDataBase());
             _fluidWindowLayout.RefreshButton.SetOnClick(() => _presenter.RefreshDataBases());
             _presenter.Initialize();
@@ -88,6 +89,14 @@ namespace MyAudios.Soundy.Editor.SoundyDataBases.Views.Implementation
             }
         }
 
+        public void AddSettings(ISoundySettingsView soundySettingsView)
+        {
+            SettingsView?.Dispose();
+            SoundDataBaseView?.Dispose();
+            SettingsView = soundySettingsView ?? throw new ArgumentNullException(nameof(soundySettingsView));
+            _fluidWindowLayout.content.AddChild(SettingsView.Root);
+        }
+
         public void AddDataBaseButton(string name, UnityAction callback)
         {
             FluidToggleButtonTab button =
@@ -102,8 +111,9 @@ namespace MyAudios.Soundy.Editor.SoundyDataBases.Views.Implementation
 
         public void SetSoundDataBase(ISoundDataBaseView dataBaseView)
         {
-            _soundDataBaseView?.Root.RemoveFromHierarchy();
-            _soundDataBaseView = dataBaseView;
+            SettingsView?.Dispose();
+            SoundDataBaseView?.Dispose();
+            SoundDataBaseView = dataBaseView;
             _fluidWindowLayout.content.AddChild(dataBaseView.Root);
         }
     }

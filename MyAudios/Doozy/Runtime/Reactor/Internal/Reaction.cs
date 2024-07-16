@@ -281,7 +281,9 @@ namespace Doozy.Runtime.Reactor.Internal
                 }
             }
 
-            if (isActive) Stop(true);
+            if (isActive)
+                Stop(true);
+            
             ResetElapsedValues();
             RefreshSettings();
 
@@ -337,7 +339,9 @@ namespace Doozy.Runtime.Reactor.Internal
             fromProgress = GetAdjustedProgress(fromProgress, settings.playMode);
             toProgress = GetAdjustedProgress(toProgress, settings.playMode);
 
-            if (isActive) Stop(true);
+            if (isActive)
+                Stop(true);
+            
             ResetElapsedValues();
             RefreshSettings();
 

@@ -9,7 +9,7 @@ using MyAudios.Soundy.Editor.SoundDataBases.Controllers;
 using MyAudios.Soundy.Editor.SoundDataBases.Presentation.Controls;
 using MyAudios.Soundy.Editor.SoundDataBases.Presentation.Views.Interfaces;
 using MyAudios.Soundy.Editor.SoundGroups.Presentation.Views.Interfaces;
-using MyAudios.Soundy.Editor.SoundyDataBases.Views.Interfaces;
+using MyAudios.Soundy.Editor.SoundyDataBases.Presentation.Views.Interfaces;
 using UnityEditor;
 using UnityEngine.Audio;
 using UnityEngine.UIElements;

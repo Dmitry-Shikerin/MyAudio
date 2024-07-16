@@ -27,10 +27,10 @@ MonoBehaviour:
   ResetSequenceAfterInactiveTime: 0
   SequenceResetTime: 2
   Sounds:
-  - AudioClip: {fileID: 0}
+  - AudioClip: {fileID: 8300000, guid: 8e15dae74e2679a40b0ab4294759e618, type: 3}
     Weight: 1
     IsPlaying: 0
-  - AudioClip: {fileID: 0}
+  - AudioClip: {fileID: 8300000, guid: 8e15dae74e2679a40b0ab4294759e618, type: 3}
     Weight: 1
     IsPlaying: 0
   IsPlaying: 0
@@ -60,9 +60,12 @@ MonoBehaviour:
   Mode: 1
   ResetSequenceAfterInactiveTime: 0
   SequenceResetTime: 5
-  Sounds: []
+  Sounds:
+  - AudioClip: {fileID: 0}
+    Weight: 1
+    IsPlaying: 0
   IsPlaying: 0
---- !u!114 &-5024964541281711146
+--- !u!114 &-659164088733465376
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -72,10 +75,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9f6c631d933489d4ca7328a2a5983e10, type: 3}
-  m_Name: Vuala
+  m_Name: Button
   m_EditorClassIdentifier: 
   DatabaseName: General
-  SoundName: Vuala
+  SoundName: Button
   IgnoreListenerPause: 1
   Volume:
     MinValue: 0
@@ -88,7 +91,10 @@ MonoBehaviour:
   Mode: 0
   ResetSequenceAfterInactiveTime: 0
   SequenceResetTime: 5
-  Sounds: []
+  Sounds:
+  - AudioClip: {fileID: 8300000, guid: 8e15dae74e2679a40b0ab4294759e618, type: 3}
+    Weight: 1
+    IsPlaying: 0
   IsPlaying: 0
 --- !u!114 &11400000
 MonoBehaviour:
@@ -107,9 +113,9 @@ MonoBehaviour:
   SoundNames:
   - No Sound
   - adgsdsdf
+  - Button
   - No Sound
-  - Vuala
   Database:
   - {fileID: -5726047050956110512}
   - {fileID: -5030960130438782761}
-  - {fileID: -5024964541281711146}
+  - {fileID: -659164088733465376}

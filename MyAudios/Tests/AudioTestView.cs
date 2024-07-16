@@ -12,18 +12,16 @@ namespace MyAudios.Tests
         private void OnEnable()
         {
             _button.onClick.AddListener(OnClick);
-            OnClick();
         }
 
         private void OnDisable()
         {
             _button.onClick.RemoveListener(OnClick);
-            OnClick();
         }
 
         private void OnClick()
         {
-            SoundyManager.Play("Example Clicks", "Adding Machine", Vector3.zero);
+            SoundyManager.Play("General", "Button", Vector3.zero);
         }
     }
 }
