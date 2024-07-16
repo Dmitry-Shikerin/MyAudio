@@ -53,13 +53,15 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Views.Implementati
                _presenter.ChangePitch(value.newValue));
            _visualElement.SpatialBlendSlider.slider.RegisterValueChangedCallback((value)
                => _presenter.ChangeSpatialBlend(value.newValue));
+           _visualElement.HeaderVisualElement.PingAssetButton.SetOnClick(() =>
+               Selection.activeObject = _presenter.GetSoundGroupData());
            
            _presenter.Initialize();
         }
 
         public void Dispose()
         {
-            
+            _presenter.Dispose();
         }
         
         public void SetVolume(Vector2 volume, Vector2 minMaxVolume)
@@ -83,6 +85,17 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Views.Implementati
             _visualElement.SpatialBlendSlider.slider.highValue = minMaxSpatialBlend.y;
         }
 
+        public void SetSoundName(string name)
+        {
+            _visualElement.HeaderVisualElement.SoundGroupTextField.value = name;
+        }
+
+        public void StopAllAudioData()
+        {
+            foreach (IAudioDataView audioDataView in _audioDataViews)
+                audioDataView.StopPlaySound();
+        }
+
         public void SetIsOnButtonTab(SoundGroupData.PlayMode playMode)
         {
             Action changePlayMode = playMode switch
@@ -95,13 +108,13 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Views.Implementati
             changePlayMode?.Invoke();
         }
         
-
         public void AddAudioData(IAudioDataView audioDataView)
         {
             _visualElement
                 .AudioDataContent
                 .AddChild(audioDataView.Root)
                 .AddSpace(2);
+            _audioDataViews.Add(audioDataView);
         }
     }
 }

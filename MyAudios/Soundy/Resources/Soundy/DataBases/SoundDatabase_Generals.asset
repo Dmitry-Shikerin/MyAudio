@@ -62,6 +62,34 @@ MonoBehaviour:
   SequenceResetTime: 5
   Sounds: []
   IsPlaying: 0
+--- !u!114 &-5024964541281711146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f6c631d933489d4ca7328a2a5983e10, type: 3}
+  m_Name: Vuala
+  m_EditorClassIdentifier: 
+  DatabaseName: General
+  SoundName: Vuala
+  IgnoreListenerPause: 1
+  Volume:
+    MinValue: 0
+    MaxValue: 0
+  Pitch:
+    MinValue: 0
+    MaxValue: 0
+  SpatialBlend: 0
+  Loop: 0
+  Mode: 0
+  ResetSequenceAfterInactiveTime: 0
+  SequenceResetTime: 5
+  Sounds: []
+  IsPlaying: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72,7 +100,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b400ee936d64d0e93e3892c7c321e09, type: 3}
-  m_Name: SoundDataBase_General
+  m_Name: SoundDatabase_Generals
   m_EditorClassIdentifier: 
   DatabaseName: General
   OutputAudioMixerGroup: {fileID: 0}
@@ -80,6 +108,8 @@ MonoBehaviour:
   - No Sound
   - adgsdsdf
   - No Sound
+  - Vuala
   Database:
   - {fileID: -5726047050956110512}
   - {fileID: -5030960130438782761}
+  - {fileID: -5024964541281711146}

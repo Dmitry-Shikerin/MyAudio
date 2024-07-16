@@ -14,6 +14,7 @@ namespace MyAudios.Soundy.Editor.AudioDatas.Controllers
         private AudioData _audioData;
         private SoundGroupData _soundGroupData;
         private IAudioDataView _view;
+        private AudioSource _audioSource;
 
         public AudioDataPresenter(
             AudioData audioData,
@@ -23,34 +24,33 @@ namespace MyAudios.Soundy.Editor.AudioDatas.Controllers
             _audioData = audioData ?? throw new ArgumentNullException(nameof(audioData));
             _soundGroupData = soundGroupData ?? throw new ArgumentNullException(nameof(soundGroupData));
             _view = view ?? throw new ArgumentNullException(nameof(view));
+            _audioSource = Object.FindObjectOfType<AudioSource>();
         }
 
         public void Initialize()
         {
+            _audioData.IsPlaying = false;
             _view.SetAudioClip(_audioData.AudioClip);
+            InitializeSliderValue();
         }
-        
+
         public void Dispose()
         {
             _audioData = null;
             _soundGroupData = null;
             _view = null;
+            EditorApplication.update -= SetSliderValue;
         }
 
         public void PlaySound()
         {
+            _view.StopAllSounds();
+            
             _audioData.IsPlaying = true;
             _soundGroupData.IsPlaying = true;
             EditorApplication.update += SetSliderValue;
             _view.SetStopIcon();
-            _soundGroupData.PlaySoundPreview(
-                Object.FindObjectOfType<AudioSource>(),
-                null, _audioData.AudioClip);
-        }
-
-        private void SetSliderValue()
-        {
-            _view.SetSliderValue(_audioData.AudioClip.length);
+            _soundGroupData.PlaySoundPreview(_audioSource, null, _audioData.AudioClip);
         }
 
         public void StopSound()
@@ -59,8 +59,7 @@ namespace MyAudios.Soundy.Editor.AudioDatas.Controllers
             _soundGroupData.IsPlaying = false;
             EditorApplication.update -= SetSliderValue;
             _view.SetPlayIcon();
-            _soundGroupData.StopSoundPreview(
-                Object.FindObjectOfType<AudioSource>());
+            _soundGroupData.StopSoundPreview(_audioSource);
             _view.SetSliderValue(0);
         }
 
@@ -75,10 +74,25 @@ namespace MyAudios.Soundy.Editor.AudioDatas.Controllers
 
         public void ChangeSoundGroupState()
         {
-            if (_audioData.IsPlaying)
+            if (_audioData.IsPlaying == false)
                 PlaySound();
             else
                 StopSound();
+        }
+
+        private void SetSliderValue()
+        {
+            _view.SetSliderValue(_audioSource.time);
+        }
+
+        private void InitializeSliderValue()
+        {
+            float maxValue = 0;
+            
+            if (_audioData.AudioClip != null)
+                maxValue = _audioData.AudioClip.length;
+            
+            _view.SetSliderValue(new Vector2(0, maxValue), 0);
         }
     }
 }

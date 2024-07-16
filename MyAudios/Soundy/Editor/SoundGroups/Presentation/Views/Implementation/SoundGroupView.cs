@@ -77,5 +77,10 @@ namespace MyAudios.Soundy.Editor.SoundGroups.Presentation.Views.Implementation
                 .SoundGroupDataButton
                 .SetLabelText(soundGroupName);
         }
+
+        public void StopAllAudioData()
+        {
+            
+        }
     }
 }

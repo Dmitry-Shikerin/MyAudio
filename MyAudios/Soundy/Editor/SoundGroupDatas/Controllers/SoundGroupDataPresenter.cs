@@ -1,5 +1,6 @@
 ﻿using System;
 using Doozy.Engine.Soundy;
+using JetBrains.Annotations;
 using MyAudios.Soundy.Editor.AudioDatas.Infrastructure.Factories;
 using MyAudios.Soundy.Editor.AudioDatas.Presentation.View.Interfaces;
 using MyAudios.Soundy.Editor.Presenters.Controllers;
@@ -7,21 +8,25 @@ using MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Views.Interfaces;
 using MyAudios.Soundy.Sources.DataBases.Domain.Constants;
 using MyAudios.Soundy.Sources.DataBases.Domain.Data;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace MyAudios.Soundy.Editor.SoundGroupDatas.Controllers
 {
     public class SoundGroupDataPresenter : IPresenter
     {
         private readonly SoundGroupData _soundGroupData;
+        private readonly SoundDatabase _soundDatabase;
         private readonly ISoundGroupDataView _view;
         private readonly AudioDataViewFactory _audioDataViewFactory;
 
         public SoundGroupDataPresenter(
             SoundGroupData soundGroupData,
+            SoundDatabase soundDatabase,
             ISoundGroupDataView view,
             AudioDataViewFactory audioDataViewFactory)
         {
             _soundGroupData = soundGroupData ?? throw new ArgumentNullException(nameof(soundGroupData));
+            _soundDatabase = soundDatabase ?? throw new ArgumentNullException(nameof(soundDatabase));
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _audioDataViewFactory = audioDataViewFactory ?? throw new ArgumentNullException(nameof(audioDataViewFactory));
         }
@@ -29,6 +34,7 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Controllers
         public void Initialize()
         {
             AddAudioDatas();
+            _view.SetSoundName(_soundGroupData.SoundName);
             _view.SetIsOnButtonTab(_soundGroupData.Mode);
             _view.SetVolume(
                 new Vector2(_soundGroupData.Volume.MinValue, _soundGroupData.Volume.MaxValue),
@@ -51,6 +57,7 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Controllers
             foreach (AudioData audioData in _soundGroupData.Sounds)
             {
                 IAudioDataView view = _audioDataViewFactory.Create(audioData, _soundGroupData);
+                view.SetSoundGroupData(_view);
                 _view.AddAudioData(view);
             }
         }
@@ -81,5 +88,8 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Controllers
         {
             _soundGroupData.SpatialBlend = value;
         }
+        
+        public SoundGroupData GetSoundGroupData() =>
+            _soundGroupData;
     }
 }

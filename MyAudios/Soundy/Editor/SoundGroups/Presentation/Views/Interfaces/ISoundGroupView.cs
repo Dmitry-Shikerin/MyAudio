@@ -14,5 +14,6 @@ namespace MyAudios.Soundy.Editor.SoundGroups.Presentation.Views.Interfaces
         void SetDataBase(ISoundDataBaseView soundDataBaseView);
         void StopPlaySound();
         void SetSoundGroupName(string soundGroupName);
+        void StopAllAudioData();
     }
 }

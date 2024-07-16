@@ -15,5 +15,7 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Views.Interfaces
         void SetVolume(Vector2 volume, Vector2 minMaxVolume);
         void SetPitch(Vector2 pitch, Vector2 minMaxPitch);
         void SetSpatialBlend(float spatialBlend, Vector2 minMaxSpatialBlend);
+        public void SetSoundName(string name);
+        void StopAllAudioData();
     }
 }

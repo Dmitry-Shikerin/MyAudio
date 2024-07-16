@@ -5,6 +5,7 @@ using Doozy.Editor.EditorUI.Utils;
 using Doozy.Runtime.UIElements.Extensions;
 using MyAudios.Soundy.Editor.MinMaxSliders;
 using MyAudios.Soundy.Editor.NewSoundContents.Presentation.Controlls;
+using MyAudios.Soundy.Editor.SoundDataBases.Presentation.Controls;
 using UnityEngine.UIElements;
 
 namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Controlls
@@ -14,42 +15,16 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Controlls
         public SoundGroupDataVisualElement()
         {
             Root = DesignUtils.column;
-            InitializeHeader();
-            Compose();
-        }
-
-        public VisualElement Root { get; private set; }
-        public ScrollView AudioDataContent { get; private set; }
-        private FluidComponentHeader Header { get; set; }
-        public Label Label { get; private set; }
-        public FluidToggleButtonTab RandomButtonTab { get; private set; }
-        public FluidToggleButtonTab SequenceButtonTab { get; private set; }
-        public FluidToggleSwitch ResetSequenceAfterInactiveTimeToggle { get; private set; }
-        public FloatField SequenceResetTimeField { get; private set; }
-        public FluidToggleSwitch LoopToggle { get; private set; }
-        public FluidMinMaxSlider VolumeSlider { get; private set; }
-        public FluidButton ResetVolumeButton { get; private set; }
-        public FluidMinMaxSlider PitchSlider { get; private set; }
-        public FluidRangeSlider SpatialBlendSlider { get; private set; }
-        public FluidButton ResetPitchButton { get; private set; }
-        public NewSoundContentVisualElement NewSoundContentVisualElement { get; private set; }
-
-        private void InitializeHeader()
-        {
+            
             Header =
                 FluidComponentHeader
                     .Get()
                     .SetComponentNameText("Sound Group")
                     .SetIcon(EditorSpriteSheets.EditorUI.Icons.Sound)
                     .SetAccentColor(EditorColors.EditorUI.Orange);
-        }
-
-        private void Compose()
-        {
-            Label = DesignUtils
-                .NewLabel("");
-            VisualElement labelRow = DesignUtils.row.AddChild(Label);
-
+            
+            HeaderVisualElement = new SoundDataBaseHeaderVisualElement();
+            
             //PlayMode
             FluidToggleGroup playModeToggleGroup = new FluidToggleGroup();
             playModeToggleGroup.iconContainer.image = EditorTextures.UIManager.Icons.UIToggleGroup;
@@ -273,13 +248,14 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Controlls
                     .ResetLayout()
                     .SetStyleFlexGrow(1)
                     .SetStyleFlexShrink(1);
-
+            
             VisualElement topContent =
                     DesignUtils
                         .column
                         .SetStyleMinHeight(300)
                         .AddChild(Header)
-                        .AddChild(labelRow)
+                        .AddSpace(10)
+                        .AddChild(HeaderVisualElement)
                         .AddSpaceBlock(2)
                         .AddChild(playModeRow)
                         .AddSpaceBlock(2)
@@ -288,9 +264,7 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Controlls
                         .AddChild(slidersToggleGroup)
                         .AddSpaceBlock(2)
                         .AddChild(NewSoundContentVisualElement)
-                        .AddSpaceBlock(2)
-                ;
-
+                        .AddSpaceBlock(2);
             Root
                 .AddChild(topContent)
                 .AddSpaceBlock(2)
@@ -299,5 +273,21 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Controlls
 
             Add(Root);
         }
+
+        public SoundDataBaseHeaderVisualElement HeaderVisualElement { get; private set; }
+        public VisualElement Root { get; private set; }
+        public ScrollView AudioDataContent { get; private set; }
+        private FluidComponentHeader Header { get; set; }
+        public FluidToggleButtonTab RandomButtonTab { get; private set; }
+        public FluidToggleButtonTab SequenceButtonTab { get; private set; }
+        public FluidToggleSwitch ResetSequenceAfterInactiveTimeToggle { get; private set; }
+        public FloatField SequenceResetTimeField { get; private set; }
+        public FluidToggleSwitch LoopToggle { get; private set; }
+        public FluidMinMaxSlider VolumeSlider { get; private set; }
+        public FluidButton ResetVolumeButton { get; private set; }
+        public FluidMinMaxSlider PitchSlider { get; private set; }
+        public FluidRangeSlider SpatialBlendSlider { get; private set; }
+        public FluidButton ResetPitchButton { get; private set; }
+        public NewSoundContentVisualElement NewSoundContentVisualElement { get; private set; }
     }
 }

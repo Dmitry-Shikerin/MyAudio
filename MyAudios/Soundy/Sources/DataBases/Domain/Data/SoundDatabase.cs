@@ -73,6 +73,29 @@ namespace MyAudios.Soundy.Sources.DataBases.Domain.Data
             return true;
         }
 
+        public void RenameSoundGroup(SoundGroupData soundGroupData, string newName, bool isApplyFirstSoundName = false)
+        {
+            if (Database.Contains(soundGroupData) == false)
+                return;
+
+            if (string.IsNullOrEmpty(newName))
+                return;
+
+            // if (isApplyFirstSoundName)
+            // {
+            //     if (soundGroupData.Sounds.Count == 0)
+            //         return;
+            //     
+            //     AssetDatabase.RenameAsset(
+            //         AssetDatabase.GetAssetPath(soundGroupData),
+            //         soundGroupData.Sounds[0].AudioClip.name);
+            //     
+            //     return;
+            // }
+            //
+            //AssetDatabase.RenameAsset(AssetDatabase.GetAssetPath(soundGroupData), "SoundGroupData_" + newName);
+        }
+        
         /// <summary> Adds a new entry, a sound name, to the database. Returns a reference to the newly added SoundGroupData </summary>
         /// <param name="soundName"> The sound name </param>
         /// <param name="performUndo"> Record changes? </param>

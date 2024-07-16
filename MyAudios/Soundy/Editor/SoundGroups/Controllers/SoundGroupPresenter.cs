@@ -55,10 +55,18 @@ namespace MyAudios.Soundy.Editor.SoundGroups.Controllers
         private void PlaySound()
         {
             _view.StopAllAudioGroup();
+            
+            if (_audioSource == null)
+                return;
+            
+            _soundGroupData.PlaySoundPreview(_audioSource, null);
+            
+            if (_audioSource.isPlaying == false)
+                return;
+            
             _soundGroupData.IsPlaying = true;
             EditorApplication.update += SetSliderValue;
             _view.SetStopIcon();
-            _soundGroupData.PlaySoundPreview(_audioSource, null);
             _view.SetSliderMaxValue(_audioSource.clip.length);
         }
 

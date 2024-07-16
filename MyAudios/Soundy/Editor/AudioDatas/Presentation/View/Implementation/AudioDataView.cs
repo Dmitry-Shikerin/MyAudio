@@ -4,6 +4,8 @@ using Doozy.Editor.EditorUI.Components;
 using MyAudios.Soundy.Editor.AudioDatas.Controllers;
 using MyAudios.Soundy.Editor.AudioDatas.Presentation.Controlls;
 using MyAudios.Soundy.Editor.AudioDatas.Presentation.View.Interfaces;
+using MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Views.Interfaces;
+using MyAudios.Soundy.Editor.SoundGroups.Presentation.Views.Interfaces;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -21,7 +23,8 @@ namespace MyAudios.Soundy.Editor.AudioDatas.Presentation.View.Implementation
         private bool _isPlaying;
         private ObjectField _objectField;
         private Label _label;
-        
+        private SoundGroupDatas.Presentation.Views.Interfaces.ISoundGroupDataView _soundGroupDataView;
+
         public VisualElement Root { get; private set; }
 
         public void Construct(AudioDataPresenter audioDataPresenter)
@@ -62,6 +65,13 @@ namespace MyAudios.Soundy.Editor.AudioDatas.Presentation.View.Implementation
         public void SetSliderValue(float value) =>
             _topSlider.slider.value = value;
 
+        public void SetSliderValue(Vector2 minMaxValue, float value)
+        {
+            _topSlider.slider.lowValue = minMaxValue.x;
+            _topSlider.slider.highValue = minMaxValue.y;
+            _topSlider.slider.value = value;
+        }
+
         public void SetStopIcon() =>
             _playButton.SetIcon(EditorSpriteSheets.EditorUI.Icons.Stop);
 
@@ -70,6 +80,14 @@ namespace MyAudios.Soundy.Editor.AudioDatas.Presentation.View.Implementation
 
         public void SetAudioClip(AudioClip audioClip) =>
             _objectField.SetValueWithoutNotify(audioClip);
+
+        public void StopAllSounds() =>
+            _soundGroupDataView.StopAllAudioData();
+
+        public void SetSoundGroupData(ISoundGroupDataView soundGroupDataView)
+        {
+            _soundGroupDataView = soundGroupDataView ?? throw new ArgumentNullException(nameof(soundGroupDataView));
+        }
 
         public void Dispose()
         {
