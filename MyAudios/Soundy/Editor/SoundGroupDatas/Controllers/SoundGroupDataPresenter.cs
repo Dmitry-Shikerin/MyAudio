@@ -34,6 +34,7 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Controllers
         public void Initialize()
         {
             AddAudioDatas();
+            _view.SetLoop(_soundGroupData.Loop);
             _view.SetSoundName(_soundGroupData.SoundName);
             _view.SetIsOnButtonTab(_soundGroupData.Mode);
             _view.SetVolume(
@@ -84,12 +85,13 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Controllers
             _soundGroupData.Pitch.MaxValue = pitch.y;
         }
 
-        public void ChangeSpatialBlend(float value)
-        {
+        public void ChangeSpatialBlend(float value) =>
             _soundGroupData.SpatialBlend = value;
-        }
-        
+
         public SoundGroupData GetSoundGroupData() =>
             _soundGroupData;
+
+        public void ChangeLoopState(bool value) =>
+            _soundGroupData.Loop = value;
     }
 }

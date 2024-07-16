@@ -42,7 +42,7 @@ MonoBehaviour:
     MaxValue: 0
   SpatialBlend: 0
   Loop: 0
-  Mode: 0
+  Mode: 1
   ResetSequenceAfterInactiveTime: 0
   SequenceResetTime: 5
   Sounds: []

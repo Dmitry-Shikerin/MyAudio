@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Doozy.Editor.EditorUI.Components;
 using Doozy.Editor.EditorUI.Components.Internal;
+using Doozy.Editor.EditorUI.Events;
 using Doozy.Engine.Soundy;
 using Doozy.Runtime.UIElements.Extensions;
 using MyAudios.Soundy.Editor.AudioDatas.Presentation.View.Interfaces;
@@ -43,10 +44,9 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Views.Implementati
                 _presenter.SetPlayMode(SoundGroupData.PlayMode.Random));
            _visualElement.SequenceButtonTab.SetOnClick(() => 
                _presenter.SetPlayMode(SoundGroupData.PlayMode.Sequence));
+           _visualElement.LoopToggle.OnValueChanged += ChangeLoop;
            _visualElement.NewSoundContentVisualElement.CreateButton.SetOnClick(
                () => _presenter.CreateAudioData());
-           // _visualElement.RandomButtonTab.SetIsOn(_presenter.PlayMode == SoundGroupData.PlayMode.Random);
-           // _visualElement.SequenceButtonTab.SetIsOn(_presenter.PlayMode == SoundGroupData.PlayMode.Sequence);
            _visualElement.VolumeSlider.slider.RegisterValueChangedCallback((value) => 
                _presenter.ChangeVolume(value.newValue));
            _visualElement.PitchSlider.slider.RegisterValueChangedCallback((value) => 
@@ -59,8 +59,12 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Views.Implementati
            _presenter.Initialize();
         }
 
+        private void ChangeLoop(FluidBoolEvent fluidBoolEvent) =>
+            _presenter.ChangeLoopState(fluidBoolEvent.newValue);
+
         public void Dispose()
         {
+            _visualElement.LoopToggle.OnValueChanged -= ChangeLoop;
             _presenter.Dispose();
         }
         
@@ -95,6 +99,9 @@ namespace MyAudios.Soundy.Editor.SoundGroupDatas.Presentation.Views.Implementati
             foreach (IAudioDataView audioDataView in _audioDataViews)
                 audioDataView.StopPlaySound();
         }
+
+        public void SetLoop(bool loop) =>
+            _visualElement.LoopToggle.isOn = loop;
 
         public void SetIsOnButtonTab(SoundGroupData.PlayMode playMode)
         {
