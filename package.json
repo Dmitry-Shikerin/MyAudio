@@ -1,6 +1,6 @@
 ﻿{
   "name": "com.dmitry_shikerin.my_audio",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "displayName": "MyAudio",
   "description": "Plug-in for sound management",
   "unity": "2022.3",
