@@ -1,6 +1,6 @@
 ﻿{
   "name": "com.dmitry_shikerin.my_audio",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "displayName": "MyAudio",
   "description": "Plug-in for sound management",
   "unity": "2022.3",
@@ -10,12 +10,8 @@
   "licensesUrl": "https://github.com/Dmitry-Shikerin/MyAudio",
   "dependencies": {
   },
-  "keywords": [
-  ],
   "author": {
-    "name": "Dmitry Shikerin",
-    "email": "unity@example.com",
-    "url": "https://www.unity3d.com"
+    "name": "Dmitry Shikerin"
   },
   "samples": [
     {
