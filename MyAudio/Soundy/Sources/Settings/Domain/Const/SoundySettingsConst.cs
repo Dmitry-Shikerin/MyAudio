@@ -4,7 +4,7 @@
     {
         public const string FileName = "SoundySettings";
         public const string ResourcesPath = "Assets/Resources/Soundy/Settings/";
-        public const string AssetPath = ResourcesPath + FileName;
+        public const string AssetPath = "Assets/Resources/Soundy/Settings/SoundySettings";
         public const string Asset = "t:SoundySettings";
     }
 }

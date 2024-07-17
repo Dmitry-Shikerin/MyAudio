@@ -67,6 +67,7 @@ namespace MyAudios.MyUiFramework.Utils
                 return null;
 
             T asset = AssetDatabase.LoadAssetAtPath<T>(resourcesPath + fileName);
+            Debug.Log(resourcesPath + fileName);
 
             if (asset == null)
             {
