@@ -187,7 +187,9 @@ namespace Doozy.Editor.EditorUI.Components.Internal
 
             invisibleToggle.RegisterValueChangedCallback(evt =>
             {
-                if (isOn == evt.newValue) return;
+                if (isOn == evt.newValue)
+                    return;
+                
                 isOn = evt.newValue;
             });
 

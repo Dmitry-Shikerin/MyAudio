@@ -9,7 +9,6 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-
 namespace Doozy.Editor.EditorUI.Components
 {
     public abstract class FluidWindowLayout : VisualElement
@@ -41,7 +40,6 @@ namespace Doozy.Editor.EditorUI.Components
         public Dictionary<ISearchable, FluidSearchableItem> searchableItems { get; }
 
         protected virtual int maximumNumberOfItemsVisibleAtOnce => 10;
-
         protected virtual int spacing => DesignUtils.k_Spacing;
 
         public void Dispose()

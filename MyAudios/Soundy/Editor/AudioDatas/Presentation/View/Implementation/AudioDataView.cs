@@ -23,7 +23,7 @@ namespace MyAudios.Soundy.Editor.AudioDatas.Presentation.View.Implementation
         private bool _isPlaying;
         private ObjectField _objectField;
         private Label _label;
-        private SoundGroupDatas.Presentation.Views.Interfaces.ISoundGroupDataView _soundGroupDataView;
+        private ISoundGroupDataView _soundGroupDataView;
 
         public VisualElement Root { get; private set; }
 

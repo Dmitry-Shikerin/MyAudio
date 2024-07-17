@@ -18,7 +18,7 @@ namespace MyAudios.Soundy.Editor.AudioDatas.Presentation.Controlls
 
         public AudioDataVisualElement()
         {
-                        VisualElement container =
+            VisualElement container =
                 DesignUtils.column
                     .ResetLayout()
                     .SetStyleColor(EditorColors.Default.Background)
